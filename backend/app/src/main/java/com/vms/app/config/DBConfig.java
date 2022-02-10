@@ -1,14 +1,9 @@
 package com.vms.app.config;
 
-import java.beans.PropertyVetoException;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
