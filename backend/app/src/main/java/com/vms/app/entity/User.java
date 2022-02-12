@@ -1,8 +1,16 @@
 package com.vms.app.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,18 +54,21 @@ public class User {
   @Column
   private int isCheckLogin; // 로그인 승인 여부
 
-  /*
-   *
-   * test 중에는 매핑을 하지 않음
-   * 관계 매핑시 밑에 두개 바꿀 것
-   *
-   */
+  // User - Company (N:1) [Onwer]
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "company")
+  private Company company;
 
-  @Column
-  private String company;
+  // User - Appointment (1:N)
+  @OneToMany(mappedBy = "host", fetch = FetchType.LAZY)
+  private List<Appointment> appointments = new ArrayList<Appointment>();
 
-  // 회사(관계 매핑 시 구현할 것)
-  // @Column
-  // private Company company;
+  @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY) // 양방향 관계를 맞추기 위해 (사용 X)
+  private List<Appointment> _appointments = new ArrayList<Appointment>();
+
+  // Setting은 1:1매핑이지만 @oneToOne은 지양함으로 1:N 양방향 매핑
+  // User - Setting (1:N)
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  private List<Setting> settings = new ArrayList<Setting>();
 
 }

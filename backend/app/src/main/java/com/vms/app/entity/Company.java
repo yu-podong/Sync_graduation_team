@@ -1,8 +1,13 @@
 package com.vms.app.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,5 +32,9 @@ public class Company {
 
   @Column(length = 45, nullable = false)
   private String department;
+
+  // Company - User (1:N)
+  @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+  private List<User> users = new ArrayList<User>();
 
 }
