@@ -26,7 +26,7 @@ public class AppointmentPeriodOfUse {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column()
-  private int Ap_periodID;
+  private long Ap_periodID;
 
   @Column
   private int isApproval; // 승인여부

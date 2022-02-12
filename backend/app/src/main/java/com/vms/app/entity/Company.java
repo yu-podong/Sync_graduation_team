@@ -25,7 +25,7 @@ public class Company {
 
   @Id
   @Column()
-  private int companyID; // 고유 pin 번호
+  private long companyID; // 고유 pin 번호
 
   @Column(length = 45, nullable = false)
   private String company_name;

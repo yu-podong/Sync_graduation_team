@@ -26,7 +26,7 @@ public class AppointmentRequestResult {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column()
-  private int Ap_reqResultID;
+  private long Ap_reqResultID;
 
   @Column
   private int isApproval; // 승인여부

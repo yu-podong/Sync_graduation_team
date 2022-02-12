@@ -30,7 +30,7 @@ public class Appointment {
   @Id()
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(length = 45, name = "appointmentID")
-  private int appointmentID;
+  private long appointmentID;
 
   @Column(length = 100)
   private String date; // 방문 날짜

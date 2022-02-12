@@ -29,7 +29,7 @@ public class Setting {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column
-  private int settingID;
+  private long settingID;
 
   @ColumnTransformer
   private int is_Visit_request; // 방문요청 알림
