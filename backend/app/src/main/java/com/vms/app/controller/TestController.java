@@ -247,9 +247,9 @@ public class TestController {
 		return "success";
 	}
 
-	// Model Mapper Test func
-	@GetMapping(value = "/mapperTest")
-	public Map<String, Object> getAllData_User() {
+	// Model Mapper Test func 하나의 객체 가져오기
+	@GetMapping(value = "/mapperTest_getOneData")
+	public Map<String, Object> mapperTest_getOneData() {
 		Map<String, Object> map = new HashMap<>();
 
 		User user = userRepository.findById("ksygt728").get();
@@ -262,9 +262,23 @@ public class TestController {
 
 		return map;
 
-		// Map<String, Object> map = new LinkedHashMap<String, Object>();
-		// map.put("result", userRepository.findAll());
-		// return map;
+	}
+
+	// Model Mapper Test func 하나의 객체 가져오기
+	@GetMapping(value = "/mapperTest_getAllData")
+	public Map<String, Object> mapperTest_getAllData() {
+		Map<String, Object> map = new HashMap<>();
+
+		List<User> userList = userRepository.findAll();
+		List<UserDto> userDtoList = new ArrayList<>();
+		userList.forEach(user -> {
+			userDtoList.add(modelMapper.map(user, UserDto.class));
+		});
+
+		map.put("userList", userDtoList);
+
+		return map;
+
 	}
 
 }
