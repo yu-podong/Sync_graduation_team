@@ -109,6 +109,13 @@
 			<version>1.4.7</version>
 		</dependency>
 
+		<!--ModelMapper-->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.4.4</version>
+		</dependency>
+
 		<!-- jackson-->
 		<!-- <dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>

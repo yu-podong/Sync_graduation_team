@@ -2,13 +2,14 @@ package com.vms.app.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import com.vms.app.dto.CompanyDto;
+import com.vms.app.dto.UserDto;
 import com.vms.app.entity.Company;
 import com.vms.app.entity.User;
 import com.vms.app.repository.AppointmentPeriodOfUseRepository;
@@ -19,6 +20,7 @@ import com.vms.app.repository.NoticeRepository;
 import com.vms.app.repository.SettingRepository;
 import com.vms.app.repository.UserRepository;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,9 @@ public class TestController {
 
 	@Autowired
 	private SettingRepository settingRepository;
+
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@ModelAttribute("cp")
 	public String getContextPath(HttpServletRequest request) {
@@ -242,18 +247,24 @@ public class TestController {
 		return "success";
 	}
 
-	@GetMapping(value = "/getAllData_User")
+	// Model Mapper Test func
+	@GetMapping(value = "/mapperTest")
 	public Map<String, Object> getAllData_User() {
-		// Map<String, Object> map = new HashMap<>();
-		// log.info("size : " + userRepository.findAll().size());
-		// map.put("companyList", userRepository.findAll().get(0).getCompany());
-		// map.put("list", userRepository.findById("ksygt728").get().getID());
-		// map.put("result", "ksygt");
-		// return map;
+		Map<String, Object> map = new HashMap<>();
 
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		map.put("result", userRepository.getAllList());
+		User user = userRepository.findById("ksygt728").get();
+		UserDto userDto = modelMapper.map(user, UserDto.class);
+
+		Company company = user.getCompany();
+		CompanyDto companyDto = modelMapper.map(company, CompanyDto.class);
+		map.put("user", userDto);
+		map.put("company", companyDto);
+
 		return map;
+
+		// Map<String, Object> map = new LinkedHashMap<String, Object>();
+		// map.put("result", userRepository.findAll());
+		// return map;
 	}
 
 }

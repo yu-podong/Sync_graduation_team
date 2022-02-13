@@ -3,6 +3,7 @@ package com.vms.app.config;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -34,4 +35,8 @@ public class UtilConfig {
 		return new HashMap<String, Object>();
 	}
 
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
+	}
 }
