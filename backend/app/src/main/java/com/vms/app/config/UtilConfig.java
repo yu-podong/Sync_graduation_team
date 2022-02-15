@@ -1,6 +1,9 @@
 package com.vms.app.config;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.modelmapper.ModelMapper;
@@ -38,5 +41,10 @@ public class UtilConfig {
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
+	}
+
+	@Bean
+	public SimpleDateFormat currentTimeFormat() {
+		return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	}
 }

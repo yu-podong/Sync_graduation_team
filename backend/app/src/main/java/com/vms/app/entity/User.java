@@ -10,9 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +23,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity(name = "user")
 public class User {
 
@@ -68,7 +69,7 @@ public class User {
 
   // Setting은 1:1매핑이지만 @oneToOne은 지양함으로 1:N 양방향 매핑
   // User - Setting (1:N)
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  private List<Setting> settings = new ArrayList<Setting>();
+  // @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  // private List<Setting> settings = new ArrayList<Setting>();
 
 }
