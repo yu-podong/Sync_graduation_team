@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity(name = "appointmentPeriodOfUse")
 public class AppointmentPeriodOfUse {
 
@@ -27,9 +29,6 @@ public class AppointmentPeriodOfUse {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column()
   private long Ap_periodID;
-
-  @Column
-  private int isApproval; // 승인여부
 
   @Column(length = 100)
   private String checkIn; // 일정 시작 시간
