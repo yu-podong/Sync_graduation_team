@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
@@ -26,6 +29,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@NamedEntityGraph(name = "Appointment.all", attributeNodes = {
+    @NamedAttributeNode("host"),
+    @NamedAttributeNode("guest"),
+})
 @Entity(name = "appointment")
 public class Appointment {
 
@@ -68,11 +75,11 @@ public class Appointment {
   private User guest;
 
   // Appointment - AppointmentPeriodOfUse (1:N)
-  @OneToMany(mappedBy = "appointment")
+  @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
   private List<AppointmentPeriodOfUse> appointmentPeriodOfUse_list = new ArrayList<AppointmentPeriodOfUse>();
 
   // Appointment - AppointmentRequestResult (1:N)
-  @OneToMany(mappedBy = "appointment")
+  @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
   private List<AppointmentRequestResult> appointmentRequestResult_list = new ArrayList<AppointmentRequestResult>();
 
   // ------------------------------------------------------------------

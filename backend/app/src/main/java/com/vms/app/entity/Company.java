@@ -9,9 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.Generated;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +25,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@NamedEntityGraph(name = "Company.All", attributeNodes = {
+// not yet
+})
 @Entity(name = "company")
 public class Company {
 
