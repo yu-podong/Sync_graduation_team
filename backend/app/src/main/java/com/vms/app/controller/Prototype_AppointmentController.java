@@ -34,9 +34,9 @@ import lombok.extern.log4j.Log4j2;
           
     3-3. [Guest] 신청내역 확인하기
     
-    3-4.[Guest] 도착 알림 보내기 (isArrival = 1)
     
     <나중에 구현할 것>
+    3-4.[Guest] 도착 알림 보내기 (isArrival = 1)
     [Host] 내 약속 보기 수정 : 호스트가 임의로 약속을 수정할 수 있는 ??? (호스트 Service)
 */
 
@@ -69,13 +69,13 @@ public class Prototype_AppointmentController {
 
   /*** [Host][Guest] 내 약속 보기 ***/
   @GetMapping("/getMyAppointment")
-  public Map<String, Object> getMyAppointment(String ID) {
+  public Map<String, Object> getMyAppointment(String ID, String tempRole) {
     /*
      * 1. 로그인 체크 (security나 interceptor에서)
      */
 
     // guestService에서 분기
-    Map<String, Object> results = appointmentService_guest.getMyAppointment(ID);
+    Map<String, Object> results = appointmentService_guest.getMyAppointment(ID, tempRole);
 
     return results;
   }
@@ -87,8 +87,7 @@ public class Prototype_AppointmentController {
      * 1. 로그인 체크 (security나 interceptor에서)
      */
 
-    Map<String, Object> results = new LinkedHashMap<>();
-
+    Map<String, Object> results = appointmentService_guest.getMyHistory(ID);
     return results;
   }
 

@@ -68,11 +68,11 @@ public class Appointment {
   private User guest;
 
   // Appointment - AppointmentPeriodOfUse (1:N)
-  @OneToMany(mappedBy = "appointment")
+  @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
   private List<AppointmentPeriodOfUse> appointmentPeriodOfUse_list = new ArrayList<AppointmentPeriodOfUse>();
 
   // Appointment - AppointmentRequestResult (1:N)
-  @OneToMany(mappedBy = "appointment")
+  @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
   private List<AppointmentRequestResult> appointmentRequestResult_list = new ArrayList<AppointmentRequestResult>();
 
   // ------------------------------------------------------------------

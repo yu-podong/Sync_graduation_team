@@ -13,11 +13,11 @@ public class UserDto {
 
   private String ID;
 
-  private String password;
+  // private String password;
 
   private String name;
 
-  private String identityNum; // 주민번호
+  // private String identityNum; // 주민번호
 
   private String phoneNum;
 
@@ -25,11 +25,11 @@ public class UserDto {
 
   private String email_back;
 
-  private String role;
+  // private String role;
 
-  private int isCheckLogin; // 로그인 승인 여부
+  // private int isCheckLogin; // 로그인 승인 여부
 
-  private long companyId;
+  private CompanyDto company;
 
   // @OneToMany는 표기X;
 }

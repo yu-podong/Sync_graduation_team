@@ -4,8 +4,12 @@ import java.util.Map;
 
 public interface AppointmentService_guest {
 
-  /*** [Guest] 내 약속 보기 ***/
-  public Map<String, Object> getMyAppointment(String ID);
+  /***
+   * [Guest] 내 약속 보기
+   * 
+   * @param tempRole
+   ***/
+  public Map<String, Object> getMyAppointment(String ID, String tempRole);
 
   /*** [Guest] 신청내역 확인하기 ***/
   public Map<String, Object> getMyHistory(String ID);
