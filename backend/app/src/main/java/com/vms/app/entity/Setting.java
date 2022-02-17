@@ -6,6 +6,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -26,6 +28,9 @@ import lombok.ToString;
 @DynamicInsert
 @DynamicUpdate
 @Builder
+@NamedEntityGraph(name = "Setting.All", attributeNodes = {
+    @NamedAttributeNode("user")
+})
 @Entity(name = "setting")
 public class Setting {
 
