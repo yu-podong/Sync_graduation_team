@@ -15,5 +15,5 @@ public interface AppointmentService_guest {
   public Map<String, Object> getMyHistory(String ID);
 
   /*** [GUEST] 도착 알림 보내기 ***/
-  public Map<String, Object> sendArrived(String ID);
+  public int sendArrived(long appointmentID);
 }
