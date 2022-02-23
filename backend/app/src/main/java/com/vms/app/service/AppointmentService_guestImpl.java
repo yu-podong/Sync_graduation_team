@@ -5,13 +5,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.vms.app.dto.AppointmentDto;
-import com.vms.app.dto.AppointmentPeriodOfUseDto;
-import com.vms.app.dto.AppointmentRequestResultDto;
 import com.vms.app.entity.Appointment;
-import com.vms.app.entity.AppointmentPeriodOfUse;
-import com.vms.app.entity.AppointmentRequestResult;
 import com.vms.app.entity.User;
 import com.vms.app.repository.AppointmentRepository;
 import com.vms.app.repository.UserRepository;
@@ -113,8 +110,18 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
   }
 
   @Override
-  public Map<String, Object> sendArrived(String ID) {
-    return null;
+  @Transactional
+  public int sendArrived(long appointmentID) {
+
+    // 1. 해당 guest가 약속을 잡은게 맞는지 확인 : Optional Fliter로 토근값과 일치하는지 확인
+
+    appointmentRepository.findById(appointmentID).ifPresentOrElse(ap -> ap.setIsArrival(1), () -> {
+      log.info("일치하는 값 없음");
+    });
+
+    // 2. 접견자에게 알림보내기
+
+    return 1;
   }
 
 }

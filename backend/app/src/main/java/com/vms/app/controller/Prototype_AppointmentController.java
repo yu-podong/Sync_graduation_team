@@ -2,6 +2,7 @@ package com.vms.app.controller;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +14,7 @@ import com.vms.app.service.AppointmentService_host;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.log4j.Log4j2;
@@ -92,15 +94,14 @@ public class Prototype_AppointmentController {
   }
 
   /*** [GUEST] 도착 알림 보내기 ***/
-  @GetMapping("/sendArrived")
-  public Map<String, Object> sendArrived(String ID) {
+  @PostMapping("/sendArrived")
+  public int sendArrived(long appointmentID) {
     /*
      * 1. 로그인 체크 (security나 interceptor에서)
+     * 2. 권한체크 (security나 interceptor에서)
      */
 
-    Map<String, Object> results = new LinkedHashMap<>();
-
-    return results;
+    return appointmentService_guest.sendArrived(appointmentID);
   }
 
 }
