@@ -118,6 +118,9 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
     appointmentRepository.findById(appointmentID).ifPresentOrElse(ap -> ap.setIsArrival(1), () -> {
       log.info("일치하는 값 없음");
     });
+
+    // 2. 접견자에게 알림보내기
+
     return 1;
   }
 
