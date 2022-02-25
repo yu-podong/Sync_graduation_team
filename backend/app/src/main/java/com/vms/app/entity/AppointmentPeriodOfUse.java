@@ -8,8 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +25,10 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@NamedEntityGraph(name = "AppointmentPeriodOfUse.All", attributeNodes = {
+    @NamedAttributeNode("appointment")
+})
 @Entity(name = "appointmentPeriodOfUse")
 public class AppointmentPeriodOfUse {
 
@@ -27,9 +36,6 @@ public class AppointmentPeriodOfUse {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column()
   private long Ap_periodID;
-
-  @Column
-  private int isApproval; // 승인여부
 
   @Column(length = 100)
   private String checkIn; // 일정 시작 시간
