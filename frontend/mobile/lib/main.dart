@@ -14,11 +14,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialRoute: '/',
-      routes: {
-        '/':(context)=>Login(),
-        '/home':(context)=>ScreenB(),
-        '/join':(context)=>ScreenC()
-      },initialBinding: InitBinding(),
+      getPages: [
+        GetPage(
+          name: '/',
+          page:()=>Login(),
+        ),
+        GetPage(
+          name: '/home',
+          page:()=>ScreenB(),
+        ),
+        GetPage(
+          name: '/join',
+          page:()=>ScreenC(),
+        )
+      ],initialBinding: InitBinding(),
     );
   }
 }
