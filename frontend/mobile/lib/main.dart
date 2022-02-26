@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/binding/init_bindings.dart';
-import 'package:mobile/login.dart';
-import 'package:mobile/ScreenB.dart';
-import 'package:mobile/ScreenC.dart';
+import 'package:mobile/pages/login.dart';
+import 'package:mobile/pages/ScreenB.dart';
+import 'package:mobile/pages/Join.dart';
 import 'package:get/get.dart';
 
 void main() => runApp(MyApp());
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/join',
-          page:()=>ScreenC(),
+          page:()=>Join(),
         )
       ],initialBinding: InitBinding(),
     );
