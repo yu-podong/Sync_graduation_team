@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/ScreenA.dart';
-import 'package:mobile/ScreenB.dart';
-import 'package:mobile/ScreenC.dart';
+
+import 'package:mobile/binding/init_bindings.dart';
+import 'package:mobile/pages/login.dart';
+import 'package:mobile/pages/ScreenB.dart';
+import 'package:mobile/pages/Join.dart';
+import 'package:mobile/pages/requestedList.dart';
+import 'package:get/get.dart';
+
+
 
 void main() => runApp(MyApp());
 
@@ -10,13 +16,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       initialRoute: '/',
-      routes: {
-        '/':(context)=>ScreenA(),
-        '/home':(context)=>ScreenB(),
-        '/join':(context)=>ScreenC()
-      },
+      getPages: [
+        GetPage(
+          name: '/',
+          page:()=>Login(),
+        ),
+        GetPage(
+          name: '/home',
+          page:()=>ScreenB(),
+        ),
+        GetPage(
+          name: '/join',
+          page:()=>Join(),
+        ),
+      ],initialBinding: InitBinding(),
     );
   }
 }
