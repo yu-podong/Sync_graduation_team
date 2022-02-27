@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mobile/pages/myList.dart';
+import 'package:mobile/pages/notice.dart';
+import 'package:mobile/pages/requestedList.dart';
+import 'package:mobile/pages/visitorLog.dart';
 
 enum HomeMenuType {REQUEST,MY,VISITORLOG,NOTICE}
 
@@ -18,11 +23,14 @@ class HomeMenuWidget extends StatelessWidget {
     this.height,
   }) : super(key: key);
 
+
   Widget requestWidget() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50.0),
       child: ElevatedButton(
-        onPressed: (){},
+        onPressed: (){
+          Get.to(()=> const RequestedList());
+        },
         child: Align(
           alignment: Alignment.centerLeft,
             child: Text(
@@ -43,7 +51,9 @@ class HomeMenuWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50.0),
       child: ElevatedButton(
-        onPressed: (){},
+        onPressed: (){
+          Get.to(()=> const MyList());
+        },
         child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -64,7 +74,9 @@ class HomeMenuWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50.0),
       child: ElevatedButton(
-        onPressed: (){},
+        onPressed: (){
+          Get.to(()=> const VisitorLog());
+        },
         child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -83,8 +95,11 @@ class HomeMenuWidget extends StatelessWidget {
 
   Widget noticeWidget() {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 50.0),
       child: ElevatedButton(
-        onPressed: (){},
+        onPressed: (){
+          Get.to(()=> const Notice());
+        },
         child: Align(
             alignment: Alignment.centerLeft,
             child: Text(

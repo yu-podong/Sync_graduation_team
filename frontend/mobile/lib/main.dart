@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+
 import 'package:mobile/binding/init_bindings.dart';
 import 'package:mobile/pages/login.dart';
 import 'package:mobile/pages/ScreenB.dart';
 import 'package:mobile/pages/Join.dart';
+import 'package:mobile/pages/requestedList.dart';
 import 'package:get/get.dart';
+
+
 
 void main() => runApp(MyApp());
 
@@ -26,7 +30,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/join',
           page:()=>Join(),
-        )
+        ),
       ],initialBinding: InitBinding(),
     );
   }

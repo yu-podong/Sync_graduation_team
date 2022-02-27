@@ -16,19 +16,19 @@ class Home extends StatelessWidget {
         ),
         SizedBox(height: 10.0),
         HomeMenuWidget(
-            type: HomeMenuType.REQUEST,
+            type: HomeMenuType.MY,
             text: '내 약속 리스트 보기',
             color: Color(0xffCBDCFF)
         ),
         SizedBox(height: 10.0),
         HomeMenuWidget(
-            type: HomeMenuType.REQUEST,
+            type: HomeMenuType.VISITORLOG,
             text: '방문자 방문기록 조회',
             color: Color(0xffC9C9C9),
         ),
         SizedBox(height: 10.0),
         HomeMenuWidget(
-            type: HomeMenuType.REQUEST,
+            type: HomeMenuType.NOTICE,
             text: '공지사항',
             color: Color(0xffC9C9C9),
         ),
@@ -41,11 +41,13 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, //뒤로가기 버튼 없애기
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
-          'vms',
+          '홈',
           style: TextStyle(
-              color: Colors.black
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Colors.white,

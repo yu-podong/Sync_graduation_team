@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -104,7 +105,8 @@ class Login extends StatelessWidget {
                     primary: Colors.black,
                   ),
                     onPressed: (){
-                      Navigator.pushNamed(context, '/join');},
+                      Get.toNamed('/join');
+                    },
                     child: Text('회원가입')
                 ),
               ),

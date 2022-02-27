@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../pages/add.dart';
 
-enum PageName{HOME,ADD,MYPAGE,REQUESTEDLIST,MYLIST,VISTORLOG,NOTICE}
+enum PageName{HOME,ADD,MYPAGE}
 
 class BottomNavController extends GetxController{
   RxInt pageIndex = 0.obs;

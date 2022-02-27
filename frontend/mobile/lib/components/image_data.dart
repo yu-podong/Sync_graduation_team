@@ -21,6 +21,6 @@ class IconsPath{
   static String get user_on => 'assets/images/user on.png';
   static String get add => 'assets/images/plus 1.png';
   static String get bell => 'assets/images/bell-ring 1.png';
-
+  static String get logo => 'assets/images/logo.png';
 
 }

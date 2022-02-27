@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/image_data.dart';
 import 'package:mobile/pages/home.dart';
-import '../contoller/bottom_nav_controller.dart';
+import '../controller/bottom_nav_controller.dart';
 import 'package:get/get.dart';
 
 class ScreenB extends GetView<BottomNavController> {
