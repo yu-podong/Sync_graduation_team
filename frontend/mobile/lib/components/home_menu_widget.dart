@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile/controller/bottom_nav_controller.dart';
 import 'package:mobile/pages/myList.dart';
 import 'package:mobile/pages/notice.dart';
 import 'package:mobile/pages/requestedList.dart';
@@ -52,7 +53,9 @@ class HomeMenuWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 50.0),
       child: ElevatedButton(
         onPressed: (){
-          Get.to(()=> const MyList());
+          Get.to(MyList(),binding: BindingsBuilder((){
+            Get.put(BottomNavController());
+          }));
         },
         child: Align(
             alignment: Alignment.centerLeft,
@@ -121,18 +124,13 @@ class HomeMenuWidget extends StatelessWidget {
     switch(type){
       case HomeMenuType.REQUEST:
         return requestWidget();
-        break;
       case HomeMenuType.MY:
         return myWidget();
-        break;
       case HomeMenuType.VISITORLOG:
         return visitorLogWidget();
-        break;
       case HomeMenuType.NOTICE:
         return noticeWidget();
-        break;
     }
-    return Container();
   }
 
 
