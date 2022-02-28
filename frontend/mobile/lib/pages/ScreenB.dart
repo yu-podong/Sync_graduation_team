@@ -17,7 +17,6 @@ class ScreenB extends GetView<BottomNavController> {
             const Home(),
             Container(child: Center(child: Text('ADD')),),
             Container(child: Center(child: Text('MYPAGE')),),
-
           ],
 
         ),
@@ -41,7 +40,6 @@ class ScreenB extends GetView<BottomNavController> {
               icon: ImageData(IconsPath.user_off),
               activeIcon: ImageData(IconsPath.user_on),
               label: 'MyPage',
-
             ),
           ],
         ),

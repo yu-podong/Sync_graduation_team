@@ -12,7 +12,7 @@ class BottomNavController extends GetxController{
     var page = PageName.values[value];
     switch(page){
       case PageName.ADD:
-        Get.to(()=> const Add());
+        Get.to(()=> Add());
         break;
       case PageName.HOME:
       case PageName.MYPAGE:
