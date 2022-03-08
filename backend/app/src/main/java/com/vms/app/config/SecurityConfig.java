@@ -1,103 +1,73 @@
-// package com.finaltest.lins.config;
+package com.vms.app.config;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.context.annotation.Bean;
-// import org.springframework.context.annotation.Configuration;
-// import
-// org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-// import
-// org.springframework.security.config.annotation.web.builders.HttpSecurity;
-// import
-// org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-// import
-// org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-// import org.springframework.security.core.session.SessionRegistry;
-// import org.springframework.security.core.session.SessionRegistryImpl;
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.vms.app.filter.MyFilter1;
+import com.vms.app.jwt.JwtAthorizationFilter;
+import com.vms.app.jwt.JwtAuthenticationFilter;
+import com.vms.app.jwt.JwtProvider;
+import com.vms.app.repository.UserRepository;
 
-// import com.finaltest.lins.auth.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
-// @Configuration
-// @EnableWebSecurity
-// public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-// @Bean
-// public BCryptPasswordEncoder passwordEncoder() {
-// return new BCryptPasswordEncoder();
-// }
+  @Autowired
+  JwtProvider jwtProvider;
 
-// @Autowired
-// CustomUserDetailsService userDetailsService;
+  @Autowired
+  private UserRepository userRepository;
 
-// @Autowired
-// void configureAuthenticationManager(AuthenticationManagerBuilder auth)
-// throws Exception {
-// auth.userDetailsService(userDetailsService)
-// .passwordEncoder(passwordEncoder());
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-// }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
 
-// @Override
-// protected void configure(HttpSecurity http) throws Exception {
-// http.csrf().disable();
+    http.addFilterBefore(new MyFilter1(), SecurityContextPersistenceFilter.class);
 
-// // setting authentication
-// http.authorizeRequests()
-// .antMatchers("/community/write/**").authenticated()
-// .antMatchers("/calendar").authenticated()
-// .antMatchers("/questions/write").authenticated()
-// .antMatchers("/questionListAction").authenticated()
-// .antMatchers("/commentWriteAction").authenticated()
-// .antMatchers("/licenseScrapAction").authenticated()
-// .antMatchers("/commuScrapAction").authenticated()
-// // .antMatchers("/deleteAction").authenticated()
-// // .antMatchers("/modify").authenticated()
-// // .antMatchers("/modifyAction").authenticated()
-// .antMatchers("/myPage").authenticated()
-// .antMatchers("/my-page/scrapLicense").authenticated()
-// .antMatchers("/my-page/scrapCommu").authenticated()
-// .antMatchers("/my-page/user-writing-list").authenticated()
-// .antMatchers("/myPage_checkPasswordAction").authenticated()
-// .antMatchers("/myPage_changePasswordAction").authenticated()
-// .antMatchers("/myPage_changeEmailAction").authenticated()
-// .antMatchers("/withdrawalAction").authenticated()
-// // example
-// .antMatchers("/example1/**").access("hasRole('ROLE_ADMIN') or
-// hasRole('ROLE_MANAGER')")
-// .antMatchers("/example2/**").access("hasRole('ROLE_ADMIN')")
-// .antMatchers("/example3/**").access("hasRole('ROLE_USER')")
-// .anyRequest().permitAll()
-// // .and()
-// ;
+    // JWT Version
+    http.csrf().disable();
+    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Session 사용 X
+        .and()
+        .formLogin().disable()
+        .httpBasic().disable()
+        // 기존 코드
+        // .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+        // .addFilter(new JwtAthorizationFilter(authenticationManager(),
+        // userRepository))
 
-// // login
-// http.formLogin()
-// .loginPage("/index") // 기본적으로 로그인이 필요할때 이동되는 로그인 페이지
-// .usernameParameter("ID")
-// .loginProcessingUrl("/loginAction") // loginAction 주소가 호출 되면 시큐리티가 낚아채서 대신
-// 로그인을 진행해 준다
-// .defaultSuccessUrl("/"); // 기본 로그인 페이지
+        /* JwtProvider를 사용하기 위해 새로 만든 constructor */
+        /*********************************************************************************************/
+        .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtProvider))
+        .addFilter(new JwtAthorizationFilter(authenticationManager(), jwtProvider))
+        /********************************************************************************************** */
+        .authorizeRequests()
+        .antMatchers("/user/**")
+        .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        .antMatchers("/manager/**")
+        .access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        .antMatchers("/admin/**")
+        .access("hasRole('ROLE_ADMIN')")
+        .anyRequest().permitAll();
+  }
 
-// // logout
-// http.logout()
-// .logoutUrl("/logoutAction")
-// .logoutSuccessUrl("/index")
-// .invalidateHttpSession(true)
-// .deleteCookies("JSESSIONID");
+  @Bean
+  public SessionRegistry sessionRegistry() {
+    return new SessionRegistryImpl();
+  }
 
-// // session management
-// http.sessionManagement()
-// .maximumSessions(1)
-// .maxSessionsPreventsLogin(false)
-// .expiredUrl("/index")
-// .sessionRegistry(sessionRegistry());
-// ;
-
-// }
-
-// @Bean
-// public SessionRegistry sessionRegistry() {
-// return new SessionRegistryImpl();
-// }
-
-// }
+}

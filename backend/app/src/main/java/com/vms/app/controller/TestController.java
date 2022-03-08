@@ -31,11 +31,13 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.web.bind.annotation.RequestParam;
 
 // 프로토타입 개발중 간단한 데이터 확인을 위한 test컨트롤러
 
@@ -71,6 +73,9 @@ public class TestController {
 
 	@Autowired
 	private SimpleDateFormat time;
+
+	@Autowired
+	private PasswordEncoder bCryPasswordEncoder;
 
 	@ModelAttribute("cp")
 	public String getContextPath(HttpServletRequest request) {
@@ -159,19 +164,22 @@ public class TestController {
 
 			List<User> users = new ArrayList<>();
 
-			User user1 = new User("ksygt728", "123", "김승연", "961019-1234567", "01091360767", "ksygt728", "gmail.com", "User",
+			// password : 123 모두 동일
+
+			User user1 = new User("ksygt728", bCryPasswordEncoder.encode("123"), "김승연", "961019-1234567", "01091360767",
+					"ksygt728", "gmail.com", "ROLE_USER",
 					1, companies.get(0), null, null);
-			User user2 = new User("saiqgo522", "123", "홍길동", "961022-1222267",
-					"01012142243", "qwee242", "gmail.com", "User",
+			User user2 = new User("saiqgo522", bCryPasswordEncoder.encode("123"), "홍길동", "961022-1222267",
+					"01012142243", "qwee242", "gmail.com", "ROLE_USER",
 					1, companies.get(1), null, null);
-			User user3 = new User("q1q1", "123", "김이름", "961019-1232887",
-					"01091361232", "zzvs5200", "gmail.com", "User",
+			User user3 = new User("q1q1", bCryPasswordEncoder.encode("123"), "김이름", "961019-1232887",
+					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
 					1, companies.get(3), null, null);
-			User user4 = new User("q3q3", "123", "유현진", "961027-1452467",
-					"01091361232", "zzvs5200", "gmail.com", "User",
+			User user4 = new User("q3q3", bCryPasswordEncoder.encode("123"), "유현진", "961027-1452467",
+					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
 					1, companies.get(3), null, null);
-			User user5 = new User("w2w2", "123", "이지민", "961022-1342467",
-					"01091361232", "zzvs5200", "gmail.com", "User",
+			User user5 = new User("w2w2", bCryPasswordEncoder.encode("123"), "이지민", "961022-1342467",
+					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
 					1, companies.get(3), null, null);
 
 			users.add(user1);
@@ -561,6 +569,21 @@ public class TestController {
 
 		return map;
 
+	}
+
+	@GetMapping("/user")
+	public String user() {
+		return "user";
+	}
+
+	@GetMapping("/manager")
+	public String manager() {
+		return "manager";
+	}
+
+	@GetMapping("/admin")
+	public String admin() {
+		return "admin";
 	}
 
 }

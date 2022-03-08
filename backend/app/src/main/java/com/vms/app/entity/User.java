@@ -13,6 +13,9 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@JsonIgnoreProperties(ignoreUnknown = true) // JwtAuthenticationFilter.java 에서 jackson ObejctMapper null값이 들어가는것을 무시
 @Getter
 @Setter
 @ToString
@@ -34,6 +38,7 @@ public class User {
 
   @Id
   @Column(length = 45)
+  @JsonProperty("ID") // JwtAuthenticationFilter.java 에서 jackson ObejctMapper 대문자가 소문자로 출력되는 오류
   private String ID;
 
   @Column(length = 100, nullable = false)
