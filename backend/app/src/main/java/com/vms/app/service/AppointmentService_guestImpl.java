@@ -43,6 +43,7 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
     Map<String, Object> results = new LinkedHashMap<>();
 
     /* 1. userRepository로 권한 얻어오기 */
+    /** ID = w3w3 일때 noSuchElementsException */
     User user = userRepository.findById(ID).get();
     String userRole = user.getRole();
 
