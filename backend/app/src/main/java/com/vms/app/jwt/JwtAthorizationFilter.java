@@ -7,6 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,22 +40,33 @@ public class JwtAthorizationFilter extends BasicAuthenticationFilter {
       throws IOException, ServletException {
     log.warn("[ACCESS] JwtAthorizationFilter");
 
-    String jwtToken = jwtProvider.resolveToken(request);
+    String jwtToken = jwtProvider.resolveAccessToken(request);
     if (jwtToken == null)
       chain.doFilter(request, response);
 
     /* ID가져오기 */
-    String ID = jwtProvider.verifyJwtToken(jwtToken);
+    String ID = null;
+    try {
+      ID = jwtProvider.getClaimID(jwtToken);
+    } catch (TokenExpiredException tokenExpiredException) {
+      // tokenExpiredException.printStackTrace();
+      log.error("Access Token 만료 됨 : " + tokenExpiredException.getMessage());
+    } catch (SignatureVerificationException signatureVerificationException) {
+      signatureVerificationException.printStackTrace();
+      log.error("서명이 되지 않음 (서명 정상 X)");
+    } finally {
+      /* 서명 정상 확인 */
+      if (ID != null) {
+        /* JWT 토큰 서명을 통해서 서명이 정상이면 Authentication 객체생성 */
+        Authentication authentication = jwtProvider.getAuthentication(ID);
 
-    /* 서명 정상 확인 */
-    if (ID != null) {
-      /* JWT 토큰 서명을 통해서 서명이 정상이면 Authentication 객체생성 */
-      Authentication authentication = jwtProvider.getAuthentication(ID);
+        /* 강제로 시큐리티의 세션에 접근하여 Authentication 객체를 저장(권한 처리) */
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-      /* 강제로 시큐리티의 세션에 접근하여 Authentication 객체를 저장(권한 처리) */
-      SecurityContextHolder.getContext().setAuthentication(authentication);
+      }
+      chain.doFilter(request, response);
 
     }
-    chain.doFilter(request, response);
+
   }
 }
