@@ -78,7 +78,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
     /* 로그인이 완료되었기 때문에 JWT 토큰 생성 */
-    response.addHeader("Authorization", jwtProvider.createAccessToken(principalDetails));
+    response.addHeader("Authorization-AccessToken", jwtProvider.createAccessToken(principalDetails));
     response.addHeader("Authorization-RefreshToken", jwtProvider.createRefreshToken(principalDetails));
 
   }
