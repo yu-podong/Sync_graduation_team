@@ -65,6 +65,9 @@ public class User {
   @Column
   private int isCheckLogin; // 로그인 승인 여부
 
+  @Column(length = 2048)
+  private String refreshToken;
+
   // User - Company (N:1) [Onwer]
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "company")

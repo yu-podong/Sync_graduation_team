@@ -16,6 +16,7 @@ import com.vms.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -58,6 +59,7 @@ public class JwtProvider {
   }
 
   /* Create Refresh Token */
+  @Transactional
   public String createRefreshToken(PrincipalDetails principalDetails) {
     String JwtToken = JWT.create()
         .withSubject(this.FIRST_SUBJECT)
@@ -69,6 +71,8 @@ public class JwtProvider {
             principalDetails.getUser().getPhoneNum()) // 비공개 클레임
         .sign(Algorithm.HMAC512(SECRET_KEY));
 
+    String ID = principalDetails.getUser().getID();
+    this.updateRefreshToken(ID, BEARER_TYPE + JwtToken);
     return BEARER_TYPE + JwtToken;
   }
 
@@ -166,5 +170,22 @@ public class JwtProvider {
   public PrincipalDetails createPrincipalDetails(String ID) {
     User user = userRepository.findById(ID).orElse(null);
     return new PrincipalDetails(user);
+  }
+
+  /* DB에 refreshToken 업데이트 */
+  public void updateRefreshToken(String ID, String refreshToken) {
+    try {
+      User user = userRepository.findById(ID).orElse(null);
+      user.setRefreshToken(refreshToken);
+    } catch (Exception e) {
+      log.warn("[JwtProvider : updateRefreshToken] : Maybe user is null");
+      e.printStackTrace();
+    }
+  }
+
+  /* DB에 refreshToken이 일치한지 확인 */
+  public boolean isEqualsRefreshToken(String ID, String refreshToken) {
+    User user = userRepository.findById(ID).orElse(null);
+    return user.getRefreshToken().equals(refreshToken) ? true : false;
   }
 }

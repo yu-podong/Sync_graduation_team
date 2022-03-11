@@ -57,16 +57,23 @@ public class JwtAthorizationFilter extends BasicAuthenticationFilter {
         return;
       } else {
         if (jwtProvider.isVaildRefreshToken(JWT_REFRESH_TOKEN)) {
-          // 토큰 재 발급
+          // DB에 저장되어 있는 refreshToken과 일치한지 확인
           String ID = jwtProvider.getClaimID(JWT_REFRESH_TOKEN);
-          PrincipalDetails principalDetails = jwtProvider.createPrincipalDetails(ID);
-          response.addHeader("Authorization-AccessToken", jwtProvider.createAccessToken(principalDetails));
-          response.addHeader("Authorization-RefreshToken", jwtProvider.createRefreshToken(principalDetails));
-          response.sendError(2,
-              "Reissue your AccessToken & RefreshToken in [RESPONSE HEADER]. check your header and try again!");
+          if (jwtProvider.isEqualsRefreshToken(ID, JWT_REFRESH_TOKEN)) {
+            // 토큰 재 발급
+            PrincipalDetails principalDetails = jwtProvider.createPrincipalDetails(ID);
+            response.addHeader("Authorization-AccessToken", jwtProvider.createAccessToken(principalDetails));
+            response.addHeader("Authorization-RefreshToken", jwtProvider.createRefreshToken(principalDetails));
+            response.sendError(2,
+                "Reissue your AccessToken & RefreshToken in [RESPONSE HEADER]. check your header and try again!");
 
-          log.info(
-              "[JwtAthorizationFilter] response로 ACCESS_TOKEN, REFRESH_TOKEN 을 재 발급했습니다. front단에서는 사용자의 개입 없이(별도의 처리 없이) 코드로 로그인을해야 합니다.");
+            log.info(
+                "[JwtAthorizationFilter] response로 ACCESS_TOKEN, REFRESH_TOKEN 을 재 발급했습니다. front단에서는 사용자의 개입 없이(별도의 처리 없이) 코드로 로그인을해야 합니다.");
+
+          } else {
+            log.info("[JwtWuthorizationFilter] This message is wired. check your code.");
+            response.sendError(13, "The token is not match database token");
+          }
           return;
         } else { // 로그 아웃(or 휴면 계정)
           log.info("[info] 로그아웃 페이지로 이동 시켜 주세요!");
