@@ -168,19 +168,19 @@ public class TestController {
 
 			User user1 = new User("ksygt728", bCryPasswordEncoder.encode("123"), "김승연", "961019-1234567", "01091360767",
 					"ksygt728", "gmail.com", "ROLE_USER",
-					1, companies.get(0), null, null);
+					1, null, companies.get(0), null, null);
 			User user2 = new User("saiqgo522", bCryPasswordEncoder.encode("123"), "홍길동", "961022-1222267",
 					"01012142243", "qwee242", "gmail.com", "ROLE_USER",
-					1, companies.get(1), null, null);
+					1, null, companies.get(1), null, null);
 			User user3 = new User("q1q1", bCryPasswordEncoder.encode("123"), "김이름", "961019-1232887",
 					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
-					1, companies.get(3), null, null);
+					1, null, companies.get(3), null, null);
 			User user4 = new User("q3q3", bCryPasswordEncoder.encode("123"), "유현진", "961027-1452467",
 					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
-					1, companies.get(3), null, null);
+					1, null, companies.get(3), null, null);
 			User user5 = new User("w2w2", bCryPasswordEncoder.encode("123"), "이지민", "961022-1342467",
 					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
-					1, companies.get(3), null, null);
+					1, null, companies.get(3), null, null);
 
 			users.add(user1);
 			users.add(user2);

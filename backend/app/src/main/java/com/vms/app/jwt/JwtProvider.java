@@ -16,6 +16,7 @@ import com.vms.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -36,21 +37,21 @@ public class JwtProvider {
   private final String SECOND_SUBJECT = "ID"; // DO NOT CHANGE!
   private final String THIRD_SUBJECT = "phoneNum";
 
-  private final long ACCESS_EXPIRE_TIME = 1000L * 20; // 10초 (TEST CODE)
-  private final long REFRESH_EXPIRE_TIME = (1000L * 60 * 60 * 24) * 60; // 60일
-  // private final long ACCESS_EXPIRE_TIME = 1000L * 60 * 10; // 10분
-  // private final long REFRESH_EXPIRE_TIME = (1000L * 60 * 60 * 24) * 60; // 60일
+  // private final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 20; // 10초 (TEST CODE)
+  private final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 10; // 10분
+  private final long REFRESH_TOKEN_EXPIRE_TIME = (1000L * 60 * 60 * 24) * 60; // 60일
+  private final long DEAD_TIME_FOR_SERVER = 1000L * 10; // api request & response 시간에 약 1초의 시간으로 토큰 미발행 이슈를 해결하기 위함.
   private final String SECRET_KEY = "vms";
 
   /* Create Access Token */
   public String createAccessToken(PrincipalDetails principalDetails) {
     String JwtToken = JWT.create()
-        .withSubject(this.FIRST_SUBJECT)
+        .withSubject(FIRST_SUBJECT)
         .withIssuer(ISSUER)
         .withIssuedAt(new Date(System.currentTimeMillis()))
-        .withExpiresAt(new Date(System.currentTimeMillis() + ACCESS_EXPIRE_TIME)) // 10분
-        .withClaim(this.SECOND_SUBJECT, principalDetails.getUsername()) // 비공개 클레임
-        .withClaim(this.THIRD_SUBJECT,
+        .withExpiresAt(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRE_TIME)) // 10분
+        .withClaim(SECOND_SUBJECT, principalDetails.getUsername()) // 비공개 클레임
+        .withClaim(THIRD_SUBJECT,
             principalDetails.getUser().getPhoneNum()) // 비공개 클레임
         .sign(Algorithm.HMAC512(SECRET_KEY));
 
@@ -58,54 +59,40 @@ public class JwtProvider {
   }
 
   /* Create Refresh Token */
+  @Transactional
   public String createRefreshToken(PrincipalDetails principalDetails) {
     String JwtToken = JWT.create()
-        .withSubject(this.FIRST_SUBJECT)
+        .withSubject(FIRST_SUBJECT)
         .withIssuer(ISSUER)
         .withIssuedAt(new Date(System.currentTimeMillis()))
-        .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_EXPIRE_TIME)) // 60일
-        .withClaim(this.SECOND_SUBJECT, principalDetails.getUsername()) // 비공개 클레임
-        .withClaim(this.THIRD_SUBJECT,
+        .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRE_TIME)) // 60일
+        .withClaim(SECOND_SUBJECT, principalDetails.getUsername()) // 비공개 클레임
+        .withClaim(THIRD_SUBJECT,
             principalDetails.getUser().getPhoneNum()) // 비공개 클레임
         .sign(Algorithm.HMAC512(SECRET_KEY));
 
+    String ID = principalDetails.getUser().getID();
+    updateRefreshToken(ID, JwtToken);
     return BEARER_TYPE + JwtToken;
   }
 
-  /* 토큰 재 발생 (A.T + R.T) */
-  // public String reIssue(PrincipalDetails principalDetails, String refreshToken)
-  // {
-  // String JwtToken = JWT.create()
-  // .withSubject(this.FIRST_SUBJECT)
-  // .withIssuer(ISSUER)
-  // .withIssuedAt(new Date(System.currentTimeMillis()))
-  // .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_EXPIRE_TIME)) //
-  // 60일
-  // .withClaim(this.SECOND_SUBJECT, principalDetails.getUsername()) // 비공개 클레임
-  // .withClaim(this.THIRD_SUBJECT,
-  // principalDetails.getUser().getPhoneNum()) // 비공개 클레임
-  // .sign(Algorithm.HMAC512(SECRET_KEY));
-
-  // return BEARER_TYPE + JwtToken;
-  // }
-
   /* Header에서 Access Token 가져오기 */
   public String resolveAccessToken(HttpServletRequest request) {
-    String jwtHeader = request.getHeader(this.ACCESS_TOKEN_HEADER_NAME);
+    String jwtHeader = request.getHeader(ACCESS_TOKEN_HEADER_NAME);
 
     // Header가 있는지 확인
-    return (jwtHeader == null || !jwtHeader.startsWith(this.BEARER_TYPE)) ? null
-        : jwtHeader.replace(this.BEARER_TYPE, "");
+    return (jwtHeader == null || !jwtHeader.startsWith(BEARER_TYPE)) ? null
+        : jwtHeader.replace(BEARER_TYPE, "");
 
   }
 
   /* Header에서 Refresh Token 가져오기 */
   public String resolveRefreshToken(HttpServletRequest request) {
-    String jwtHeader = request.getHeader(this.REFRESH_TOKEN_HEADER_NAME);
+    String jwtHeader = request.getHeader(REFRESH_TOKEN_HEADER_NAME);
 
     // Header가 있는지 확인
-    return (jwtHeader == null || !jwtHeader.startsWith(this.BEARER_TYPE)) ? null
-        : jwtHeader.replace(this.BEARER_TYPE, "");
+    return (jwtHeader == null || !jwtHeader.startsWith(BEARER_TYPE)) ? null
+        : jwtHeader.replace(BEARER_TYPE, "");
 
   }
 
@@ -115,7 +102,9 @@ public class JwtProvider {
       DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(jwtToken);
       Date currentTime = new Date(System.currentTimeMillis());
       Date expiresAt_AccessToken = decodedJWT.getExpiresAt();
-      return expiresAt_AccessToken.compareTo(currentTime) > 0 ? true : false;
+      Date DEAD_LINE = new Date(expiresAt_AccessToken.getTime() - DEAD_TIME_FOR_SERVER);
+
+      return currentTime.compareTo(DEAD_LINE) < 0 ? true : false;
     } catch (TokenExpiredException tokenExpiredException) {
       log.error("[JwtProvider : isVaildAccessToken] Access Token 만료 됨");
     } catch (SignatureVerificationException signatureVerificationException) {
@@ -130,7 +119,9 @@ public class JwtProvider {
       DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(jwtToken);
       Date currentTime = new Date(System.currentTimeMillis());
       Date expiresAt_RefreshToken = decodedJWT.getExpiresAt();
-      return expiresAt_RefreshToken.compareTo(currentTime) > 0 ? true : false;
+      Date DEAD_LINE = new Date(expiresAt_RefreshToken.getTime() - DEAD_TIME_FOR_SERVER);
+
+      return currentTime.compareTo(DEAD_LINE) < 0 ? true : false;
     } catch (TokenExpiredException tokenExpiredException) {
       log.error("[JwtProvider : isVaildRefreshToken] Access Token 만료 됨");
     } catch (SignatureVerificationException signatureVerificationException) {
@@ -167,4 +158,40 @@ public class JwtProvider {
     User user = userRepository.findById(ID).orElse(null);
     return new PrincipalDetails(user);
   }
+
+  /* DB에 refreshToken 업데이트 */
+  public void updateRefreshToken(String ID, String refreshToken) {
+    try {
+      User user = userRepository.findById(ID).orElse(null);
+      user.setRefreshToken(refreshToken);
+    } catch (Exception e) {
+      log.warn("[JwtProvider : updateRefreshToken] : Maybe user is null");
+      e.printStackTrace();
+    }
+  }
+
+  /* DB에 refreshToken이 일치한지 확인 */
+  public boolean isEqualsRefreshToken(String ID, String refreshToken) {
+    User user = userRepository.findById(ID).orElse(null);
+    return user.getRefreshToken().equals(refreshToken) ? true : false;
+  }
+
+  /* 토큰 재 발생 (A.T + R.T) */
+  // public String reIssue(PrincipalDetails principalDetails, String refreshToken)
+  // {
+  // String JwtToken = JWT.create()
+  // .withSubject(FIRST_SUBJECT)
+  // .withIssuer(ISSUER)
+  // .withIssuedAt(new Date(System.currentTimeMillis()))
+  // .withExpiresAt(new Date(System.currentTimeMillis() +
+  // REFRESH_TOKEN_EXPIRE_TIME)) //
+  // 60일
+  // .withClaim(SECOND_SUBJECT, principalDetails.getUsername()) // 비공개 클레임
+  // .withClaim(THIRD_SUBJECT,
+  // principalDetails.getUser().getPhoneNum()) // 비공개 클레임
+  // .sign(Algorithm.HMAC512(SECRET_KEY));
+
+  // return BEARER_TYPE + JwtToken;
+  // }
+
 }
