@@ -9,4 +9,7 @@ public interface AppointmentService_host {
 
   /*** [Host] 내 약속 보기 ***/
   public Map<String, Object> getMyAppointment(String ID);
+
+  /** [Host] 약속 승인하기 **/
+  public int approvalAppointment(long appointmentID);
 }
