@@ -64,23 +64,33 @@ public class AppointmentService_hostImpl implements AppointmentService_host {
   @Transactional
   @Override
   public int approvalAppointment(long appointmentID) {
+    Appointment appointment = new Appointment();
+    appointment.setAppointmentID(appointmentID);
+
     AppointmentRequestResult appointmentRequestResult = new AppointmentRequestResult();
     appointmentRequestResult.setApprovalTime(time.format(new Date(System.currentTimeMillis())));
     appointmentRequestResult.setIsApproval(1);
-
-    /* 1. */
-    // Appointment appointment =
-    // appointmentRepository.findById(appointmentID).orElse(null);
-
-    /* 2. */
-    Appointment appointment = new Appointment();
-    appointment.setAppointmentID(appointmentID);
-    //
-
     appointmentRequestResult.setAppointment(appointment);
     appointmentRequestResultRepository.save(appointmentRequestResult);
 
-    return 0;
+    return 1;
+  }
+
+  @Transactional
+  @Override
+  public int rejectAppointment(long appointmentID, String rejectReason) {
+    Appointment appointment = new Appointment();
+    appointment.setAppointmentID(appointmentID);
+
+    AppointmentRequestResult appointmentRequestResult = new AppointmentRequestResult();
+    appointmentRequestResult.setApprovalTime(time.format(new Date(System.currentTimeMillis())));
+    appointmentRequestResult.setIsApproval(-1);
+    appointmentRequestResult.setRejectReason(rejectReason);
+    appointmentRequestResult.setAppointment(appointment);
+    appointmentRequestResultRepository.save(appointmentRequestResult);
+
+    return 1;
+
   }
 
 }

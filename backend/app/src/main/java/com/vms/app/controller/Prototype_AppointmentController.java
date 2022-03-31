@@ -115,4 +115,15 @@ public class Prototype_AppointmentController {
     return appointmentService_host.approvalAppointment(appointmentID);
   }
 
+  /*** [HOST] 약속 거절 ***/
+  @PostMapping("/rejectAppointment")
+  public int rejectAppointment(long appointmentID, String rejectReason) {
+    /*
+     * 1. 로그인 체크 (security나 interceptor에서)
+     * 2. 권한체크 (security나 interceptor에서)
+     */
+
+    return appointmentService_host.rejectAppointment(appointmentID, rejectReason);
+  }
+
 }
