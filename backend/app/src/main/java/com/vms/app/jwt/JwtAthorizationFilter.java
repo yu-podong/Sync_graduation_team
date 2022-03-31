@@ -41,8 +41,10 @@ public class JwtAthorizationFilter extends BasicAuthenticationFilter {
 
     String JWT_ACCESS_TOKEN = jwtProvider.resolveAccessToken(request);
     String JWT_REFRESH_TOKEN = null;
-    if (JWT_ACCESS_TOKEN == null) // header is unavailable
+    if (JWT_ACCESS_TOKEN == null) { // header is unavailable (인증이 필요하지 않는 요청은 chain을 태우고 다음 코드를 실행하지 않는다)
       chain.doFilter(request, response);
+      return;
+    }
 
     /*
      * Access Token이 유효하지 않는 경우 RefreshToken을 들고 왔는지 확인

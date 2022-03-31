@@ -69,7 +69,6 @@ public class Prototype_AppointmentController {
     return results;
   }
 
-  /*** [Host][Guest] 내 약속 보기 ***/
   @GetMapping("/getMyAppointment")
   public Map<String, Object> getMyAppointment(String ID, String tempRole) {
     /*
@@ -89,6 +88,7 @@ public class Prototype_AppointmentController {
      * 1. 로그인 체크 (security나 interceptor에서)
      */
 
+    /*** [Host][Guest] 내 약속 보기 ***/
     Map<String, Object> results = appointmentService_guest.getMyHistory(ID);
     return results;
   }
@@ -102,6 +102,28 @@ public class Prototype_AppointmentController {
      */
 
     return appointmentService_guest.sendArrived(appointmentID);
+  }
+
+  /*** [HOST] 약속 승인 ***/
+  @PostMapping("/approvalAppointment")
+  public int approvalAppointment(long appointmentID) {
+    /*
+     * 1. 로그인 체크 (security나 interceptor에서)
+     * 2. 권한체크 (security나 interceptor에서)
+     */
+
+    return appointmentService_host.approvalAppointment(appointmentID);
+  }
+
+  /*** [HOST] 약속 거절 ***/
+  @PostMapping("/rejectAppointment")
+  public int rejectAppointment(long appointmentID, String rejectReason) {
+    /*
+     * 1. 로그인 체크 (security나 interceptor에서)
+     * 2. 권한체크 (security나 interceptor에서)
+     */
+
+    return appointmentService_host.rejectAppointment(appointmentID, rejectReason);
   }
 
 }
