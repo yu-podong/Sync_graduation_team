@@ -12,30 +12,27 @@ class Home extends StatelessWidget {
         HomeMenuWidget(
             type: HomeMenuType.REQUEST,
             text: '요청된 약속 리스트 보기',
-            color: Color(0xffFFCBCB)
-        ),
+            color: Color(0xffFFCBCB)),
         SizedBox(height: 10.0),
         HomeMenuWidget(
             type: HomeMenuType.MY,
             text: '내 약속 리스트 보기',
-            color: Color(0xffCBDCFF)
+            color: Color(0xffCBDCFF)),
+        SizedBox(height: 10.0),
+        HomeMenuWidget(
+          type: HomeMenuType.VISITORLOG,
+          text: '방문자 방문기록 조회',
+          color: Color(0xffC9C9C9),
         ),
         SizedBox(height: 10.0),
         HomeMenuWidget(
-            type: HomeMenuType.VISITORLOG,
-            text: '방문자 방문기록 조회',
-            color: Color(0xffC9C9C9),
-        ),
-        SizedBox(height: 10.0),
-        HomeMenuWidget(
-            type: HomeMenuType.NOTICE,
-            text: '공지사항',
-            color: Color(0xffC9C9C9),
+          type: HomeMenuType.NOTICE,
+          text: '공지사항',
+          color: Color(0xffC9C9C9),
         ),
       ],
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +41,9 @@ class Home extends StatelessWidget {
         automaticallyImplyLeading: false, //뒤로가기 버튼 없애기
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
-          '홈',
+          'TODAY',
           style: TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Colors.white,
@@ -67,9 +63,7 @@ class Home extends StatelessWidget {
         children: [
           _homeMenuList(),
         ],
-
       ),
     );
   }
 }
-

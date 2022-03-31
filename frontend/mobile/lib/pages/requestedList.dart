@@ -30,20 +30,17 @@ class RequestedList extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        //스크롤은 컬럼혹은 로우 형태여야됨
-        child: Column(
-          children: [
-            Container(
-              color: Colors.white,
-              height: 1000,
-              child: _requestedList(),
-            )
-          ],
-        )
-      ),
+          scrollDirection: Axis.vertical,
+          //스크롤은 컬럼혹은 로우 형태여야됨
+          child: Column(
+            children: [
+              Container(
+                color: Colors.white,
+                height: 1000,
+                child: _requestedList(),
+              )
+            ],
+          )),
     );
   }
 }
-
-

@@ -49,7 +49,7 @@ class Login extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     filled:true,
-                    labelText: 'UserId',
+                    labelText: 'ID',
                     fillColor: Color(0xffF5F5F5),
                   ),
                 ),
@@ -65,7 +65,7 @@ class Login extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     filled:true,
-                    labelText: 'Password',
+                    labelText: 'PASSWORD',
                     fillColor: Color(0xffF5F5F5),
                   ),
                 ),
@@ -77,7 +77,7 @@ class Login extends StatelessWidget {
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: ElevatedButton(
-                  child: Text('Login',
+                  child: Text('로그인',
                   style: TextStyle(
                     color: Color(0xff000000),
                   ),),
