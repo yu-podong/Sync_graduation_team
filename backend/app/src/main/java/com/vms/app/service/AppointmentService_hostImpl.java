@@ -86,13 +86,16 @@ public class AppointmentService_hostImpl implements AppointmentService_host {
   @Transactional
   @Override
   public int approvalAppointment(long appointmentID) {
-    Appointment appointment = new Appointment();
-    appointment.setAppointmentID(appointmentID);
+    Appointment appointment = Appointment.builder()
+        .appointmentID(appointmentID)
+        .build();
 
-    AppointmentRequestResult appointmentRequestResult = new AppointmentRequestResult();
-    appointmentRequestResult.setApprovalTime(time.format(new Date(System.currentTimeMillis())));
-    appointmentRequestResult.setIsApproval(1);
-    appointmentRequestResult.setAppointment(appointment);
+    AppointmentRequestResult appointmentRequestResult = AppointmentRequestResult.builder()
+        .approvalTime(time.format(new Date(System.currentTimeMillis())))
+        .isApproval(1)
+        .appointment(appointment)
+        .build();
+
     appointmentRequestResultRepository.save(appointmentRequestResult);
 
     return 1;
@@ -101,14 +104,16 @@ public class AppointmentService_hostImpl implements AppointmentService_host {
   @Transactional
   @Override
   public int rejectAppointment(long appointmentID, String rejectReason) {
-    Appointment appointment = new Appointment();
-    appointment.setAppointmentID(appointmentID);
+    Appointment appointment = Appointment.builder()
+        .appointmentID(appointmentID)
+        .build();
 
-    AppointmentRequestResult appointmentRequestResult = new AppointmentRequestResult();
-    appointmentRequestResult.setApprovalTime(time.format(new Date(System.currentTimeMillis())));
-    appointmentRequestResult.setIsApproval(-1);
-    appointmentRequestResult.setRejectReason(rejectReason);
-    appointmentRequestResult.setAppointment(appointment);
+    AppointmentRequestResult appointmentRequestResult = AppointmentRequestResult.builder()
+        .approvalTime(time.format(new Date(System.currentTimeMillis())))
+        .isApproval(-1)
+        .rejectReason(rejectReason)
+        .appointment(appointment)
+        .build();
     appointmentRequestResultRepository.save(appointmentRequestResult);
 
     return 1;
