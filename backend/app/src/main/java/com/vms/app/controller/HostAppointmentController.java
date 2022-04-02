@@ -1,10 +1,10 @@
 package com.vms.app.controller;
 
+import java.security.Principal;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.vms.app.service.AppointmentService_guest;
 import com.vms.app.service.AppointmentService_host;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,50 +27,32 @@ public class HostAppointmentController {
   }
 
   @Autowired
-  AppointmentService_host appointmentService_host;
+  private AppointmentService_host appointmentService_host;
 
   /*** [Host] 요청된 약속 관리 ***/
   @GetMapping("/getRequestedAppointment")
-  public Map<String, Object> getRequestedAppointment(String ID) {
-    /*
-     * 1. 로그인 체크 (security나 interceptor에서)
-     */
+  public Map<String, Object> getRequestedAppointment(Principal principal) {
 
-    Map<String, Object> results = appointmentService_host.getRequestedAppointment(ID);
-
+    Map<String, Object> results = appointmentService_host.getRequestedAppointment(principal.getName());
     return results;
   }
 
   /*** [HOST] 약속 승인 ***/
   @PostMapping("/approvalAppointment")
   public int approvalAppointment(long appointmentID) {
-    /*
-     * 1. 로그인 체크 (security나 interceptor에서)
-     * 2. 권한체크 (security나 interceptor에서)
-     */
-
     return appointmentService_host.approvalAppointment(appointmentID);
   }
 
   /*** [HOST] 약속 거절 ***/
   @PostMapping("/rejectAppointment")
   public int rejectAppointment(long appointmentID, String rejectReason) {
-    /*
-     * 1. 로그인 체크 (security나 interceptor에서)
-     * 2. 권한체크 (security나 interceptor에서)
-     */
-
     return appointmentService_host.rejectAppointment(appointmentID, rejectReason);
   }
 
   /*** [HOST] 내 약속 가져오기 ***/
   @GetMapping("/getMyAppointment")
-  public Map<String, Object> getMyAppointment(String ID) {
-    /*
-     * 1. 로그인 체크 (security나 interceptor에서)
-     */
-
-    Map<String, Object> results = appointmentService_host.getMyAppointment(ID);
+  public Map<String, Object> getMyAppointment(Principal principal) {
+    Map<String, Object> results = appointmentService_host.getMyAppointment(principal.getName());
 
     return results;
   }
