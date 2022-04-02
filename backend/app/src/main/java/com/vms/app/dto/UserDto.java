@@ -29,7 +29,7 @@ public class UserDto {
 
   // private int isCheckLogin; // 로그인 승인 여부
 
-  private String refreshToken;
+  // private String refreshToken;
 
   private CompanyDto company;
 

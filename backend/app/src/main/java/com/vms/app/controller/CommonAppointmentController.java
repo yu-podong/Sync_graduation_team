@@ -29,16 +29,16 @@ public class CommonAppointmentController {
   @Autowired
   AppointmentService_host appointmentService_host;
 
-  /*** [HOST & GUEST] 약속 거절 ***/
-  @GetMapping("/getMyAppointment")
-  public Map<String, Object> getMyAppointment(String ID, String tempRole) {
-    /*
-     * 1. 로그인 체크 (security나 interceptor에서)
-     */
+  // @GetMapping("/getMyAppointment")
+  // public Map<String, Object> getMyAppointment(String ID, String tempRole) {
+  // /*
+  // * 1. 로그인 체크 (security나 interceptor에서)
+  // */
 
-    // guestService에서 분기
-    Map<String, Object> results = appointmentService_guest.getMyAppointment(ID, tempRole);
+  // // guestService에서 분기
+  // Map<String, Object> results = appointmentService_guest.getMyAppointment(ID,
+  // tempRole);
 
-    return results;
-  }
+  // return results;
+  // }
 }

@@ -27,9 +27,6 @@ public class HostAppointmentController {
   }
 
   @Autowired
-  AppointmentService_guest appointmentService_guest;
-
-  @Autowired
   AppointmentService_host appointmentService_host;
 
   /*** [Host] 요청된 약속 관리 ***/
@@ -64,6 +61,18 @@ public class HostAppointmentController {
      */
 
     return appointmentService_host.rejectAppointment(appointmentID, rejectReason);
+  }
+
+  /*** [HOST] 내 약속 가져오기 ***/
+  @GetMapping("/getMyAppointment")
+  public Map<String, Object> getMyAppointment(String ID) {
+    /*
+     * 1. 로그인 체크 (security나 interceptor에서)
+     */
+
+    Map<String, Object> results = appointmentService_host.getMyAppointment(ID);
+
+    return results;
   }
 
 }

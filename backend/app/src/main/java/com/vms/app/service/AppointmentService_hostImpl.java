@@ -55,10 +55,32 @@ public class AppointmentService_hostImpl implements AppointmentService_host {
     return results;
   }
 
-  // Not Use
+  @Transactional
   @Override
   public Map<String, Object> getMyAppointment(String ID) {
-    return null;
+
+    Map<String, Object> results = new LinkedHashMap<>();
+
+    User user = userRepository.findById(ID).get();
+    List<Appointment> my_appointmentList = user.getAppointments();
+    List<AppointmentDto> appointmentDtoList = new ArrayList<>();
+
+    my_appointmentList.forEach(item -> {
+      if (!item.getAppointmentRequestResult_list().isEmpty()) {
+
+        int arrListSize = item.getAppointmentRequestResult_list().size();
+
+        // size 문제 생길 수도 있음 Integer -> Long
+        int check_isApproval = item.getAppointmentRequestResult_list().get(arrListSize - 1).getIsApproval();
+        if (check_isApproval == 1) // 승인확인
+          appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
+      }
+    });
+    log.warn("my_appointmentList size : " + my_appointmentList.size());
+
+    results.put("myAppointmentList", appointmentDtoList);
+
+    return results;
   }
 
   @Transactional

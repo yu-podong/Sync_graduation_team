@@ -77,7 +77,7 @@ public class User {
   @OneToMany(mappedBy = "host", fetch = FetchType.LAZY)
   private List<Appointment> appointments = new ArrayList<Appointment>();
 
-  @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY) // 양방향 관계를 맞추기 위해 (사용 X)
+  @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY)
   private List<Appointment> _appointments = new ArrayList<Appointment>();
 
   // Setting은 1:1매핑이지만 @oneToOne은 지양함으로 1:N 양방향 매핑
