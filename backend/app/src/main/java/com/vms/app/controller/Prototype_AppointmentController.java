@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.log4j.Log4j2;
@@ -44,6 +45,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
+@RequestMapping("/prototype")
 public class Prototype_AppointmentController {
 
   @ModelAttribute("cp")
@@ -69,41 +71,6 @@ public class Prototype_AppointmentController {
     return results;
   }
 
-  @GetMapping("/getMyAppointment")
-  public Map<String, Object> getMyAppointment(String ID, String tempRole) {
-    /*
-     * 1. 로그인 체크 (security나 interceptor에서)
-     */
-
-    // guestService에서 분기
-    Map<String, Object> results = appointmentService_guest.getMyAppointment(ID, tempRole);
-
-    return results;
-  }
-
-  /*** [Guest] 신청내역 확인하기 ***/
-  @GetMapping("/getMyHistory")
-  public Map<String, Object> getMyHistory(String ID) {
-    /*
-     * 1. 로그인 체크 (security나 interceptor에서)
-     */
-
-    /*** [Host][Guest] 내 약속 보기 ***/
-    Map<String, Object> results = appointmentService_guest.getMyHistory(ID);
-    return results;
-  }
-
-  /*** [GUEST] 도착 알림 보내기 ***/
-  @PostMapping("/sendArrived")
-  public int sendArrived(long appointmentID) {
-    /*
-     * 1. 로그인 체크 (security나 interceptor에서)
-     * 2. 권한체크 (security나 interceptor에서)
-     */
-
-    return appointmentService_guest.sendArrived(appointmentID);
-  }
-
   /*** [HOST] 약속 승인 ***/
   @PostMapping("/approvalAppointment")
   public int approvalAppointment(long appointmentID) {
@@ -123,7 +90,45 @@ public class Prototype_AppointmentController {
      * 2. 권한체크 (security나 interceptor에서)
      */
 
-    return appointmentService_host.rejectAppointment(appointmentID, rejectReason);
+    return appointmentService_host.rejectAppointment(appointmentID,
+        rejectReason);
+  }
+
+  /*** [HOST & GUEST] 약속 거절 ***/
+  @GetMapping("/getMyAppointment")
+  public Map<String, Object> getMyAppointment(String ID, String tempRole) {
+    /*
+     * 1. 로그인 체크 (security나 interceptor에서)
+     */
+
+    // guestService에서 분기
+    Map<String, Object> results = appointmentService_guest.getMyAppointment(ID,
+        tempRole);
+
+    return results;
+  }
+
+  /*** [GUEST] 신청내역 확인하기 ***/
+  @GetMapping("/getMyHistory")
+  public Map<String, Object> getMyHistory(String ID) {
+    /*
+     * 1. 로그인 체크 (security나 interceptor에서)
+     */
+
+    /*** [HOST][GUEST] 내 약속 보기 ***/
+    Map<String, Object> results = appointmentService_guest.getMyHistory(ID);
+    return results;
+  }
+
+  /*** [GUEST] 도착 알림 보내기 ***/
+  @PostMapping("/sendArrived")
+  public int sendArrived(long appointmentID) {
+    /*
+     * 1. 로그인 체크 (security나 interceptor에서)
+     * 2. 권한체크 (security나 interceptor에서)
+     */
+
+    return appointmentService_guest.sendArrived(appointmentID);
   }
 
 }

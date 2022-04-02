@@ -16,4 +16,6 @@ public interface AppointmentService_guest {
 
   /*** [GUEST] 도착 알림 보내기 ***/
   public int sendArrived(long appointmentID);
+
+  public Map<String, Object> getMyAppointment(String ID);
 }
