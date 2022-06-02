@@ -15,5 +15,8 @@ public class CompanyDto {
   private String company_name;
 
   private String department;
+
+  private String position;
+
   // @OneToMany는 표기X;
 }

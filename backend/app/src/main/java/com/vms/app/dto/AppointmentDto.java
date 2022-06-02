@@ -32,11 +32,15 @@ public class AppointmentDto {
 
   private String remark; // 비고
 
+  private int type; // 내방 종류(일반, 공사, 기타)
+
   private UserDto guest;
 
   private UserDto host;
 
   private List<AppointmentPeriodOfUseDto> appointmentPeriodOfUse_list = new ArrayList<AppointmentPeriodOfUseDto>();
   private List<AppointmentRequestResultDto> appointmentRequestResult_list = new ArrayList<AppointmentRequestResultDto>();
+
+  // private List<> isArrival; // 동행자 정보
 
 }
