@@ -39,7 +39,7 @@ public class User {
   @Id
   @Column(length = 45)
   @JsonProperty("ID") // JwtAuthenticationFilter.java 에서 jackson ObejctMapper 대문자가 소문자로 출력되는 오류
-  private String ID;
+  private String ID; // 사원번호
 
   @Column(length = 100, nullable = false)
   private String password;

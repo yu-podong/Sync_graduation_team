@@ -124,19 +124,23 @@ public class TestController {
 			Company company1 = Company.builder()
 					.company_name("삼성")
 					.department("영업부")
+					.position("상무")
 					.build();
 
 			Company company2 = Company.builder()
 					.company_name("하이닉스")
 					.department("인사부")
+					.position("상무")
 					.build();
 			Company company3 = Company.builder()
 					.company_name("엘지")
 					.department("생산부")
+					.position("상무")
 					.build();
 			Company company4 = Company.builder()
 					.company_name("삼성")
 					.department("마케팅")
+					.position("상무")
 					.build();
 
 			companies.add(company1);
