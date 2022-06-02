@@ -62,6 +62,9 @@ public class Appointment {
   @Column(length = 100)
   private String remark; // 비고
 
+  @Column
+  private int type; // 내방 종류(일반, 공사, 기타)
+
   // --------- [Relation Mapping] -------------------------------------
 
   // Appointment - User (N:1) [Onwer]
@@ -82,6 +85,8 @@ public class Appointment {
   @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
   private List<AppointmentRequestResult> appointmentRequestResult_list = new ArrayList<AppointmentRequestResult>();
 
+  // @Column
+  // private List<> isArrival; // 동행자 정보
   // ------------------------------------------------------------------
 
   /**************************************************

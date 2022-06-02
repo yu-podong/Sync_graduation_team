@@ -42,6 +42,9 @@ public class Company {
   @Column(length = 45, nullable = false)
   private String department;
 
+  @Column(length = 45, nullable = false)
+  private String position;
+
   // Company - User (1:N)
   @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
   private List<User> users = new ArrayList<User>();

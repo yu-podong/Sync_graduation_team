@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserDto {
 
-  private String ID;
+  private String ID; // 사원번호
 
   // private String password;
 
