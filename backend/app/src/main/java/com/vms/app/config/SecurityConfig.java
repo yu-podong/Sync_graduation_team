@@ -1,15 +1,10 @@
 package com.vms.app.config;
 
-import com.vms.app.filter.MyFilter1;
-import com.vms.app.jwt.JwtAthorizationFilter;
-import com.vms.app.jwt.JwtAuthenticationFilter;
-import com.vms.app.jwt.JwtProvider;
-import com.vms.app.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,7 +12,11 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+
+import com.vms.app.jwt.JwtAthorizationFilter;
+import com.vms.app.jwt.JwtAuthenticationFilter;
+import com.vms.app.jwt.JwtProvider;
+import com.vms.app.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -61,6 +60,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/admin/**")
         .access("hasRole('ROLE_ADMIN')")
         .anyRequest().permitAll();
+  }
+
+  /* Swagger3를 이용하기 위해 관련 url을 ignore */
+  @Override
+  public void configure(WebSecurity web) {
+    web.ignoring()
+        .antMatchers("/favicon.ico", "/error", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs");
   }
 
   @Bean

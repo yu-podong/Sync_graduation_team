@@ -5,14 +5,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.vms.app.service.AppointmentService_guest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.vms.app.service.AppointmentService_guest;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -29,6 +29,8 @@ public class GuestAppointmentController {
   @Autowired
   AppointmentService_guest appointmentService_guest;
 
+  // @ApiOperation(value = "hello, world api", notes = "hellow world swagger
+  // check")
   /*** [GUEST] 신청내역 확인하기 ***/
   @GetMapping("/getMyHistory")
   public Map<String, Object> getMyHistory(Principal principal) {
