@@ -10,6 +10,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.vms.app.dto.CompanyDto;
 import com.vms.app.dto.UserDto;
 import com.vms.app.entity.Appointment;
@@ -27,23 +36,22 @@ import com.vms.app.repository.NoticeRepository;
 import com.vms.app.repository.SettingRepository;
 import com.vms.app.repository.UserRepository;
 
-import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RestController;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.RequestParam;
 
 // 프로토타입 개발중 간단한 데이터 확인을 위한 test컨트롤러
 
 @Log4j2
 @RestController
 @Transactional
+@Tag(name = "bear controller", description = "bear controller desc")
 public class TestController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -83,6 +91,9 @@ public class TestController {
 	}
 
 	@GetMapping("/insertAllData") // 모든 데이터 추가
+	@Operation(summary = "bear eat method", description = "bear eat method description", tags = { "contact" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Contact.class)))) })
 	public String AppointmentPeriodOfUse() {
 
 		try {
@@ -103,6 +114,7 @@ public class TestController {
 			AppointmentPeriodOfUseData();
 			insertSettingmentData();
 			insertNoticeData();
+			log.info("Strping boot version : " + org.springframework.core.SpringVersion.getVersion());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -219,6 +231,7 @@ public class TestController {
 					.accompanyingPerson(1)
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
+					.type(1)
 					.guest(userRepository.findById("ksygt728").get())
 					.host(userRepository.findById("q1q1").get())
 					.build();
@@ -229,6 +242,7 @@ public class TestController {
 					.visit_purpose("생각안남")
 					.accompanyingPerson(1)
 					.isArrival(0)
+					.type(1)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.guest(userRepository.findById("q3q3").get())
 					.host(userRepository.findById("w2w2").get())
@@ -241,6 +255,7 @@ public class TestController {
 					.accompanyingPerson(1)
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
+					.type(1)
 					.guest(userRepository.findById("w2w2").get())
 					.host(userRepository.findById("q3q3").get())
 					.build();
@@ -252,6 +267,7 @@ public class TestController {
 					.accompanyingPerson(1)
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
+					.type(1)
 					.guest(userRepository.findById("ksygt728").get())
 					.host(userRepository.findById("q1q1").get())
 					.build();
@@ -263,6 +279,7 @@ public class TestController {
 					.accompanyingPerson(1)
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
+					.type(1)
 					.guest(userRepository.findById("w2w2").get())
 					.host(userRepository.findById("q3q3").get())
 					.build();
