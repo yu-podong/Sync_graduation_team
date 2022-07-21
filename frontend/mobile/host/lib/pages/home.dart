@@ -1,69 +1,128 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/home_menu_widget.dart';
-import 'package:mobile/components/image_data.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:vms/components/buttons.dart';
+import 'package:vms/pages/MyPromise.dart';
+import 'package:vms/pages/hostrequest1.dart';
+import 'package:vms/pages/newrequestlist.dart';
 
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
-
-  Widget _homeMenuList() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        HomeMenuWidget(
-            type: HomeMenuType.REQUEST,
-            text: '요청된 약속 리스트 보기',
-            color: Color(0xffFFCBCB)),
-        SizedBox(height: 10.0),
-        HomeMenuWidget(
-            type: HomeMenuType.MY,
-            text: '내 약속 리스트 보기',
-            color: Color(0xffCBDCFF)),
-        SizedBox(height: 10.0),
-        HomeMenuWidget(
-          type: HomeMenuType.VISITORLOG,
-          text: '방문자 방문기록 조회',
-          color: Color(0xffC9C9C9),
-        ),
-        SizedBox(height: 10.0),
-        HomeMenuWidget(
-          type: HomeMenuType.NOTICE,
-          text: '공지사항',
-          color: Color(0xffC9C9C9),
-        ),
-      ],
-    );
-  }
+class Main extends StatefulWidget {
+  const Main({Key? key}) : super(key: key);
 
   @override
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false, //뒤로가기 버튼 없애기
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
-          'TODAY',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        actions: [
-          GestureDetector(
-            onTap: () {},
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ImageData(
-                IconsPath.bell,
-              ),
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false, //뒤로가기 버튼 없애기
+          iconTheme: const IconThemeData(color: Colors.black),
+          title: const Text(
+            'TODAY',
+            style: TextStyle(
+              color: Colors.black,
             ),
+          ),
+          backgroundColor: Colors.white,
+          actions: [
+            IconButton(
+                icon: Image.asset('assets/images/bell-ring 1.png'),
+                onPressed: () {}),
+          ],
+        ),
+        body: Column(children: [
+          Container(
+            margin: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+            width: 320,
+            height: 290,
+            color: const Color(0xffFFDE8F),
+          ),
+          Row(
+            children: [
+              //신규 접수내역 버튼
+              Container(
+                margin: const EdgeInsets.fromLTRB(50, 30, 0, 0),
+                child: EleButton(
+                  text: const Text(
+                    '신규 접수내역',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 10.0,
+                        fontFamily: 'Noto Sans KR'),
+                  ),
+                  width: 90,
+                  height: 80,
+                  color: const Color(0xffFFD3AB),
+                  radius: 5.0,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NewRequestList()));
+                  },
+                ),
+              ),
+              //승인내역 버튼
+              Container(
+                margin: const EdgeInsets.fromLTRB(20, 30, 0, 0),
+                child: EleButton(
+                  text: const Text(
+                    '승인내역',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 10.0,
+                        fontFamily: 'Noto Sans KR'),
+                  ),
+                  width: 90,
+                  height: 80,
+                  color: const Color(0xffffd3ab),
+                  radius: 5.0,
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MyPromise()));
+                  },
+                ),
+              ),
+              //방문기록 조회 버튼
+              Container(
+                margin: const EdgeInsets.fromLTRB(20, 30, 0, 0),
+                child: EleButton(
+                  text: const Text(
+                    '방문기록 조회',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 10.0,
+                        fontFamily: 'Noto Sans KR'),
+                  ),
+                  width: 90,
+                  height: 80,
+                  color: const Color(0xffffd3ab),
+                  radius: 5.0,
+                  onPressed: () {},
+                ),
+              ),
+            ],
           )
-        ],
+        ]),
+        //플로팅 버튼
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => HostRequest1()));
+          },
+          label: const Text(
+            '+',
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.white,
+        ),
       ),
-      body: ListView(
-        children: [
-          _homeMenuList(),
-        ],
-      ),
+      onWillPop: () {
+        return Future(() => false);
+      },
     );
   }
 }

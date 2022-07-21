@@ -5,10 +5,26 @@ class Notice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('NoticePage'),
-      ),
-    );
+    return WillPopScope(
+        child: Scaffold(
+            appBar: AppBar(
+          automaticallyImplyLeading: false, //뒤로가기 버튼 없애기
+          iconTheme: const IconThemeData(color: Colors.black),
+          title: const Text(
+            'Notice',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          actions: [
+            IconButton(
+                icon: Image.asset('assets/images/bell-ring 1.png'),
+                onPressed: () {}),
+          ],
+        )),
+        onWillPop: () {
+          return Future(() => false);
+        });
   }
 }
