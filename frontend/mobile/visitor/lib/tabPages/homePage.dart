@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../components/todayListItem.dart';
+import '../class/promise.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -11,11 +14,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
+  List<Promise> promiseList = List.empty(growable: true);
+
+  @override
+  void initState() {
+    promiseList.add(Promise(hostName: 'host1', position: '직위1', place: 'S4-1 114호', time: '14:00 ~ 16:00'));
+    promiseList.add(Promise(hostName: 'host2', position: '직위2', place: 'S4-1 114호', time: '14:00 ~ 16:00'));
+    promiseList.add(Promise(hostName: 'host3', position: '직위3', place: 'S4-1 114호', time: '14:00 ~ 16:00'));
+    promiseList.add(Promise(hostName: 'host4', position: '직위4', place: 'S4-1 114호', time: '14:00 ~ 16:00'));
+    promiseList.add(Promise(hostName: 'host5', position: '직위5', place: 'S4-1 114호', time: '14:00 ~ 16:00'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(30),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           /* TODAY */
           Padding(
@@ -29,9 +44,16 @@ class _HomePage extends State<HomePage> {
           Padding(
               padding: EdgeInsets.only(bottom: 30),
               child: Container(
-                width: 400,
+                width: double.infinity,
                 height: 400,
-                color: CupertinoColors.systemYellow.withOpacity(0.5),
+                padding: EdgeInsets.all(20),
+                color: Color(0xffFFDE8F),
+                child: ListView.builder(
+                  itemBuilder: (context, position) {
+                    return TodayListItem(promise: promiseList[position],);
+                  },
+                  itemCount: promiseList.length,
+                ),
               )
           ),
           /* 3개의 메뉴버튼 */
