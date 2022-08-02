@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 import 'tabPages/homePage.dart';
 
-class HostMainPage extends StatefulWidget {
-  const HostMainPage({Key? key}) : super(key: key);
+class VisitorMainPage extends StatefulWidget {
+  const VisitorMainPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _HostMainPage();
+    return _VisitorMainPage();
   }
 }
 
-class _HostMainPage extends State<HostMainPage> {
+class _VisitorMainPage extends State<VisitorMainPage> {
   CupertinoTabBar? tabBar;
 
   @override

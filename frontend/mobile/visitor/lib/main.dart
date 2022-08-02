@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'hostMainPage.dart';
+import 'visitorMainPage.dart';
 import 'pages/createVisitPage.dart';
 import 'pages/hostInfoPage.dart';
 import 'pages/visitDatePage.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return CupertinoApp(
       initialRoute: '/',
       routes: {
-        '/' : (context) => const HostMainPage(),
+        '/' : (context) => const VisitorMainPage(),
         '/createVisit' : (context) => const CreateVisitPage(),
         '/createVisit/hostInfo' : (context) => const HostInfoPage(),
         '/createVisit/visitDate' : (context) => const VisitDatePage(),
