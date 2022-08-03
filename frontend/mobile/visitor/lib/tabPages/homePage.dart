@@ -59,33 +59,39 @@ class _HomePage extends State<HomePage> {
           /* 3개의 메뉴버튼 */
           Column(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(bottom: 15),
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(bottom: 15),
                 child: ElevatedButton(
                   onPressed: null,
-                  child: Text('신청내역'),
+                  child: Text('신청내역', style: TextStyle(fontSize: 18, color: Colors.black),),
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.amber)
+                      padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                      backgroundColor: MaterialStateProperty.all(Color(0xffFFCBCB))
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 15),
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(bottom: 15),
                 child: ElevatedButton(
                   onPressed: null,
-                  child: Text('승인결과 내역'),
+                  child: Text('승인결과 내역', style: TextStyle(fontSize: 18, color: Colors.black),),
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.amber)
+                      padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                      backgroundColor: MaterialStateProperty.all(Color(0xffCBDCFF))
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 15),
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(bottom: 15),
                 child: ElevatedButton(
                   onPressed: null,
-                  child: Text('방문이력'),
+                  child: Text('방문이력', textAlign: TextAlign.justify, style: TextStyle(fontSize: 18, color: Colors.black),),
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.amber)
+                      padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                      backgroundColor: MaterialStateProperty.all(Color(0xffECD0F9))
                   ),
                 ),
               ),
