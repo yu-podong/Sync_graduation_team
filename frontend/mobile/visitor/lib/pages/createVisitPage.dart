@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/utils.dart';
 
 class CreateVisitPage extends StatefulWidget {
   const CreateVisitPage({Key? key}) : super(key : key);
@@ -23,7 +24,7 @@ class _CreateVisitPage extends State<CreateVisitPage> {
   void initState() {
     visitPurpose.add(
       Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(CupertinoIcons.alarm),
@@ -33,7 +34,7 @@ class _CreateVisitPage extends State<CreateVisitPage> {
     );
     visitPurpose.add(
       Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(CupertinoIcons.alarm),
@@ -66,86 +67,106 @@ class _CreateVisitPage extends State<CreateVisitPage> {
       /* Body */
       body: CupertinoPageScaffold(
         child: Container(
+          height: double.infinity,
           padding: EdgeInsets.symmetric(vertical: 40, horizontal: 50),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              /* Page title */
-              Container(
-                margin: EdgeInsets.only(bottom: 30),
-                child: Text('방문목적 입력', style: TextStyle(fontSize: 23),),
-              ),
-              /* Description */
-              Container(
-                margin: EdgeInsets.only(bottom: 50),
-                child: Text('000회사에 방문하려는 목적을 선택해주세요.', style: TextStyle(fontSize: 18),),
-              ),
-              /* Visit purpose list */
-              Container(
-                  width: double.infinity,
-                  height: 100,
-                  padding: EdgeInsets.all(0.0),
-                  margin: EdgeInsets.only(bottom: 40),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xffDEDEDE)),
-                      borderRadius: BorderRadius.circular(5)
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  /* Page title */
+                  Container(
+                    margin: EdgeInsets.only(bottom: 30),
+                    child: Text('방문목적 입력', style: TextStyle(fontSize: 23),),
                   ),
-                  child: Column(
-                    children: [
-                      // 일반내방
-                      GestureDetector(
-                        onTap: () {
-                          _compose(detailValue1);
-                          tapColor[0] = CupertinoColors.systemYellow;
-                          tapColor[1] = CupertinoColors.systemBackground;
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          height: 49,
-                          padding: EdgeInsets.all(0.0),
-                          margin: EdgeInsets.all(0.0),
-                          decoration: BoxDecoration(
-                              color: tapColor[0],
-                              border: Border(
-                                  bottom: BorderSide(width: 0.7, color: Color(0xffDEDEDE))
-                              )
-                          ),
-                          child: visitPurpose[0],
-                        ),
+                  /* Description */
+                  Container(
+                    margin: EdgeInsets.only(bottom: 50),
+                    child: Text('000회사에 방문하려는 목적을 선택해주세요.', style: TextStyle(fontSize: 18),),
+                  ),
+                  /* Visit purpose list */
+                  Container(
+                      width: double.infinity,
+                      height: 100,
+                      padding: EdgeInsets.all(0.0),
+                      margin: EdgeInsets.only(bottom: 40),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xffDEDEDE)),
+                          borderRadius: BorderRadius.circular(5)
                       ),
-                      // 공사내방
-                      GestureDetector(
-                        onTap: () {
-                          _compose(detailValue2);
-                          tapColor[0] = CupertinoColors.systemBackground;
-                          tapColor[1] = CupertinoColors.systemYellow;
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          height: 49,
-                          padding: EdgeInsets.all(0.0),
-                          margin: EdgeInsets.all(0.0),
-                          color: tapColor[1],
-                          child: visitPurpose[1],
-                        ),
+                      child: Column(
+                        children: [
+                          // 일반내방
+                          GestureDetector(
+                            onTap: () {
+                              _compose(detailValue1);
+                              tapColor[0] = CupertinoColors.systemYellow;
+                              tapColor[1] = CupertinoColors.systemBackground;
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 49,
+                              padding: EdgeInsets.all(0.0),
+                              margin: EdgeInsets.all(0.0),
+                              decoration: BoxDecoration(
+                                  color: tapColor[0],
+                                  border: Border(
+                                      bottom: BorderSide(width: 0.7, color: Color(0xffDEDEDE))
+                                  )
+                              ),
+                              child: Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                padding: EdgeInsets.only(left: 30),
+                                child: visitPurpose[0],
+                              ),
+                            ),
+                          ),
+                          // 공사내방
+                          GestureDetector(
+                            onTap: () {
+                              _compose(detailValue2);
+                              tapColor[0] = CupertinoColors.systemBackground;
+                              tapColor[1] = CupertinoColors.systemYellow;
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 49,
+                              padding: EdgeInsets.all(0.0),
+                              margin: EdgeInsets.all(0.0),
+                              color: tapColor[1],
+                              child: Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                padding: EdgeInsets.only(left: 30),
+                                child: visitPurpose[1],
+                              ),
+                            ),
+                          )
+                        ],
                       )
-                    ],
-                  )
-              ),
-              /* After choosing */
-              Padding(
-                padding: EdgeInsets.all(0.0),
-                child: detailPurposeSection,
+                  ),
+                  /* After choosing */
+                  Padding(
+                    padding: EdgeInsets.all(0.0),
+                    child: detailPurposeSection,
+                  ),
+
+                ],
               ),
               /* Next button */
-              GestureDetector(
-                child: Text('다음 >'),
-                onTap: () {
-                  Navigator.of(context).pushReplacementNamed('/createVisit/hostInfo');
-                },
-              )
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: GestureDetector(
+                  child: Text('다음 >', style: TextStyle(fontSize: 20),),
+                  onTap: () {
+                    Navigator.of(context).pushReplacementNamed('/createVisit/hostInfo');
+                  },
+                )
+              ),
             ],
-          ),
+          )
         ),
       ),
     );
