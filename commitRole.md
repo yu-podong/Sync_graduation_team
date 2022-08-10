@@ -1,5 +1,5 @@
 # 1️⃣ Commit 규칙
-해당 프로젝트에서는 크게 `Create`, `Add`, `Modify`, `Delete`라는 핵심어를 포함하여, 커밋 메세지를 사용한다. 메세지를 작성할 때는 필히 영어를 사용하고, 
+해당 프로젝트에서는 크게 `Create`, `Add`, `Modify`, `Change`, `Delete`라는 핵심어를 포함하여, 커밋 메세지를 사용한다. 메세지를 작성할 때는 필히 영어를 사용하고, 
 최대한 간결한 형태로 작성한다. (서술하는 형식 X)
 
 커밋 메세지의 형태는 `핵심어: 관련내용`이고, 핵심어, 콜론, 관련내용 사이의 공백유무는 가능하면 지킬 것을 요청한다.<br/>
@@ -33,6 +33,7 @@
 
 **[ 예시2 ]**
 아래의 사진처럼 새로운 component(s)를 추가한 상황이면,
+
 ![스크린샷 2022-08-09 오후 5 01 53](https://user-images.githubusercontent.com/62629742/183597100-849c1832-5468-42d9-babb-db66f336e0f7.png)<br/>
 `Add: three menu elevatedButton` 이라고 작성한 후, 커밋한다.<br/><br/>
 
@@ -50,7 +51,8 @@
 <br/><br/>
 
 **[ 예시1 ]**
-아래의 사진처럼 특정 컴포넌트의 클릭 시, 색이 바뀌는 기능을 적용한 상황이라면,
+아래의 사진처럼 아이콘과 텍스트 크기를 변경한 상황이면,
+
 ![스크린샷 2022-08-09 오후 6 02 47](https://user-images.githubusercontent.com/62629742/183609607-68831779-48ad-4f27-ae39-a1192f366bcf.png)<br/>
 `Modify: icon & font size of host list items` 이라고 작성한 후, 커밋한다.
 <br/><br/>
@@ -79,6 +81,7 @@
 
 **[ 예시 ]**
 아래의 사진처럼 'newClass.dart'를 삭제한 상황이면,
+
 ![스크린샷 2022-08-09 오후 6 20 25](https://user-images.githubusercontent.com/62629742/183613408-d75b1b98-f452-459d-96ce-c88dbfa3760e.png)<br/>
 `Delete: newClass.dart` 이라고 작성한 후, 커밋한다.
 
