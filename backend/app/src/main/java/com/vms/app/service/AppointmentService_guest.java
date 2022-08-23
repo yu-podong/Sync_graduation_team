@@ -18,4 +18,6 @@ public interface AppointmentService_guest {
   public int sendArrived(long appointmentID);
 
   public Map<String, Object> getMyAppointment(String ID);
+
+  public Map<String, Object> getApprovalResult(String name);
 }

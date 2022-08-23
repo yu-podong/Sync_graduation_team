@@ -1,3 +1,51 @@
 {
-  "java.configuration.updateBuildConfiguration": "automatic"
+  "files.autoSave": "onFocusChange",
+  "editor.tabSize": 2,
+  "terminal.integrated.defaultProfile.windows": "Command Prompt",
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "redhat.telemetry.enabled": true,
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -javaagent:\"/Users/seungyeonkim/.vscode/extensions/vscjava.vscode-lombok-1.0.1/server/lombok.jar\"",
+  "material-icon-theme.folders.theme": "specific",
+  "workbench.iconTheme": "material-icon-theme",
+  "files.associations": {
+    "*.html": "html"
+  },
+  "java.home":"/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home",
+  "java.configuration.runtimes": {
+    "name": "JavaSE-17",
+    "path": "/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home",
+    "default": true
+  },
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [80],
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": false
+  },
+  "cmake.configureOnOpen": true,
+  "dart.openDevTools": "flutter",
+  "git.autofetch": true,
+  "code-runner.runInTerminal": true,
+  "remote.SSH.remotePlatform": {
+    "192.168.219.104": "linux",
+    "192.168.219.130": "linux",
+    "192.168.219.105": "linux",
+    "192.168.219.103": "linux",
+    "113.198.137.181": "linux"
+  },
+  "editor.formatOnSave": true,
+  "java.debug.settings.exceptionBreakpoint.skipClasses": [],
+  "java.jdt.ls.java.home": "/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

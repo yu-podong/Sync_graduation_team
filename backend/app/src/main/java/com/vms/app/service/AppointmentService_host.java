@@ -15,4 +15,6 @@ public interface AppointmentService_host {
 
   /** [Host] 약속 거절하기 **/
   public int rejectAppointment(long appointmentID, String rejectReason);
+
+  public Map<String, Object> getApprovalResult(String name);
 }

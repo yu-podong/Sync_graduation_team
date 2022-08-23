@@ -32,13 +32,13 @@ public class HostAppointmentController {
   @Autowired
   private AppointmentService_host appointmentService_host;
 
-  // public String commonJWTNote = "\n - <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는
-  // 상태)만 호출가능합니다.\n - 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n-
-  // Parameter는 필요 없습니다.\n\n- Try out 실행 안될겁니다";
+  /* ================= THREE MENU ELEVATED BUTTON ================= */
+  /* ============================================================== */
+  /* ============================================================== */
 
   /*** [Host] 신규접수내역 ***/
   @ApiOperation(value = "<Button>[신규접수내역]", notes = "- 접견자의 [신규접수내역] 버튼을 눌렀을 때의 기능입니다.\n" +
-      "- 접견자가 아직 처리하지 않은 대기중인 약속(isApproval = 0)인 값만 가져옵니다<b>(구현예정)</b>\n" +
+      "- 접견자가 아직 처리하지 않은 대기중인 약속(isApproval = 0)인 값만 가져옵니다.\n" +
       "- <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n" +
       "- 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n" +
       "- Parameter는 필요 없습니다.\n\n" +
@@ -50,32 +50,26 @@ public class HostAppointmentController {
     return results;
   }
 
-  /*** [HOST] 약속 승인 ***/
-  @PostMapping("/approvalAppointment")
-  @ApiOperation(value = "<Button>[신규접수내역] > ListDetail의 [승인]버튼 클릭시", notes = "- 접견자에게 접수된 약속중 [승인] 버튼을 눌렀을 때의 기능입니다.\n"
-      +
-      "- DB의 isApproval값이 1(승인)로 바뀝니다.\n" +
-      "- 승인 시, 접견자나 방문자의 일정이 중복되면 log를 띄우고 현재 일정을 처리하지 않습니다.<b>(구현예정)</b>")
-  public int approvalAppointment(long appointmentID) {
-    return appointmentService_host.approvalAppointment(appointmentID);
-  }
+  /*** [HOST] 승인내역 ***/
+  @ApiOperation(value = "<Button>[승인내역]", notes = "- 접견자의 [승인내역] 버튼을 클릭했을 때의 기능입니다.\n" +
+      "- 승인된 내역만 가져옵니다(isApproval = 1)\n" +
+      "- <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n" +
+      "- 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n" +
+      "- Parameter는 필요 없습니다.\n\n" +
+      "- Try out 실행 안될겁니다")
+  @GetMapping("/getApprovalResult")
+  public Map<String, Object> getApprovalResult(Principal principal) {
+    Map<String, Object> results = appointmentService_host.getApprovalResult(principal.getName());
 
-  /*** [HOST] 약속 거절 ***/
-  @PostMapping("/rejectAppointment")
-  @ApiOperation(value = "<Button>[신규접수내역] > ListDetail의 [거절]버튼 클릭시", notes = "- 접견자에게 접수된 약속중 [거절] 버튼을 눌렀을 때의 기능입니다.\n"
-      +
-      "- DB의 isApproval값이 1(승인)로 바뀝니다.\n" +
-      "- Parameters 탭의 거절 사유(rejectReason)는 Not Null = false 이기 때문에 굳이 안적어도 되도록 해놨습니다.(무조건 적게 하려면 말씀해주세요!)")
-  public int rejectAppointment(long appointmentID, String rejectReason) {
-    return appointmentService_host.rejectAppointment(appointmentID, rejectReason);
+    return results;
   }
 
   /*** [HOST] 방문기록조회 ***/
   @ApiOperation(value = "<Button>[방문기록조회]", notes = "- 접견자의 [방문기록조회] 버튼을 클릭했을 때의 기능입니다.\n" +
-      "- 현재시간을 기준으로 checkout(방문종료시간)이 작은 값, 즉 이미 방문을 마친 약속만 보여집니다.<b>(구현예정)</b>\n" +
+      "- 현재시간을 기준으로 checkout(방문종료시간)이 작은 값, 즉 이미 방문을 마친 약속만 보여집니다.\n" +
       "- <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n" +
       "- 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n" +
-      "-Parameter는 필요 없습니다.\n\n" +
+      "- Parameter는 필요 없습니다.\n\n" +
       "- Try out 실행 안될겁니다")
   @GetMapping("/getMyAppointment")
   public Map<String, Object> getMyAppointment(Principal principal) {
@@ -84,5 +78,27 @@ public class HostAppointmentController {
     return results;
   }
 
-  // 승인 내역 구현할 것 isApproval = 1 방문기록 조회랑 다른점 :날짜 체크 하지 않고 전부 가져오기
+  /* ============================================================== */
+  /* ============================================================== */
+  /* ============================================================== */
+
+  /*** [HOST] 약속 승인 ***/
+  @ApiOperation(value = "<Button>[신규접수내역] > ListDetail의 [승인]버튼 클릭시", notes = "- 접견자에게 접수된 약속중 [승인] 버튼을 눌렀을 때의 기능입니다.\n"
+      +
+      "- DB의 isApproval값이 1(승인)로 바뀝니다.\n" +
+      "- 승인 시, 접견자나 방문자의 일정이 중복되면 log를 띄우고 현재 일정을 처리하지 않습니다.<b>(구현예정)</b>")
+  @PostMapping("/approvalAppointment")
+  public int approvalAppointment(long appointmentID) {
+    return appointmentService_host.approvalAppointment(appointmentID);
+  }
+
+  /*** [HOST] 약속 거절 ***/
+  @ApiOperation(value = "<Button>[신규접수내역] > ListDetail의 [거절]버튼 클릭시", notes = "- 접견자에게 접수된 약속중 [거절] 버튼을 눌렀을 때의 기능입니다.\n"
+      +
+      "- DB의 isApproval값이 1(승인)로 바뀝니다.\n" +
+      "- Parameters 탭의 거절 사유(rejectReason)는 Not Null = false 이기 때문에 굳이 안적어도 되도록 해놨습니다.(무조건 적게 하려면 말씀해주세요!)")
+  @PostMapping("/rejectAppointment")
+  public int rejectAppointment(long appointmentID, String rejectReason) {
+    return appointmentService_host.rejectAppointment(appointmentID, rejectReason);
+  }
 }

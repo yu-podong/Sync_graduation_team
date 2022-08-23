@@ -50,6 +50,19 @@ public class AppointmentService_hostImpl implements AppointmentService_host {
     List<Appointment> list = appointmentRepository.findByHostOrderByAppointmentIDDesc(User.builder().ID(ID).build());
 
     List<AppointmentDto> appointment_userDtoList = new ArrayList<>();
+
+    list.forEach(item -> {
+      if (!item.getAppointmentRequestResult_list().isEmpty()) {
+
+        int arrListSize = item.getAppointmentRequestResult_list().size();
+
+        // size 문제 생길 수도 있음 Integer -> Long
+        int check_isApproval = item.getAppointmentRequestResult_list().get(arrListSize - 1).getIsApproval();
+        if (check_isApproval == 0) // 대기중
+          appointment_userDtoList.add(modelMapper.map(item, AppointmentDto.class));
+      }
+    });
+
     list.forEach(item -> appointment_userDtoList.add(modelMapper.map(item, AppointmentDto.class)));
     results.put("results", appointment_userDtoList);
     return results;
@@ -72,11 +85,16 @@ public class AppointmentService_hostImpl implements AppointmentService_host {
 
         // size 문제 생길 수도 있음 Integer -> Long
         int check_isApproval = item.getAppointmentRequestResult_list().get(arrListSize - 1).getIsApproval();
-        if (check_isApproval == 1) // 승인확인
-          appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
+        if (check_isApproval == 1) { // 승인확인
+          // 현재 시간 > checkoutTime(이미 끝난 약속)
+          int lstIdx = item.getAppointmentPeriodOfUse_list().size();
+          String checkoutTime = item.getAppointmentPeriodOfUse_list().get(lstIdx - 1).getCheckOut();
+          String currentTime = time.format(new Date(System.currentTimeMillis()));
+          if (currentTime.compareTo(checkoutTime) == 1)
+            appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
+        }
       }
     });
-    log.warn("my_appointmentList size : " + my_appointmentList.size());
 
     results.put("myAppointmentList", appointmentDtoList);
 
@@ -118,6 +136,33 @@ public class AppointmentService_hostImpl implements AppointmentService_host {
 
     return 1;
 
+  }
+
+  @Transactional
+  @Override
+  public Map<String, Object> getApprovalResult(String ID) {
+
+    Map<String, Object> results = new LinkedHashMap<>();
+
+    User user = userRepository.findById(ID).get();
+    List<Appointment> my_appointmentList = user.getAppointments();
+    List<AppointmentDto> appointmentDtoList = new ArrayList<>();
+
+    my_appointmentList.forEach(item -> {
+      if (!item.getAppointmentRequestResult_list().isEmpty()) {
+
+        int arrListSize = item.getAppointmentRequestResult_list().size();
+
+        // size 문제 생길 수도 있음 Integer -> Long
+        int check_isApproval = item.getAppointmentRequestResult_list().get(arrListSize - 1).getIsApproval();
+        if (check_isApproval == 1) // 승인확인
+          appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
+      }
+    });
+
+    results.put("myAppointmentList", appointmentDtoList);
+
+    return results;
   }
 
 }
