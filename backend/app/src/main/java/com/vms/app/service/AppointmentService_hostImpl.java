@@ -50,6 +50,19 @@ public class AppointmentService_hostImpl implements AppointmentService_host {
     List<Appointment> list = appointmentRepository.findByHostOrderByAppointmentIDDesc(User.builder().ID(ID).build());
 
     List<AppointmentDto> appointment_userDtoList = new ArrayList<>();
+
+    list.forEach(item -> {
+      if (!item.getAppointmentRequestResult_list().isEmpty()) {
+
+        int arrListSize = item.getAppointmentRequestResult_list().size();
+
+        // size 문제 생길 수도 있음 Integer -> Long
+        int check_isApproval = item.getAppointmentRequestResult_list().get(arrListSize - 1).getIsApproval();
+        if (check_isApproval == 0) // 대기중
+          appointment_userDtoList.add(modelMapper.map(item, AppointmentDto.class));
+      }
+    });
+
     list.forEach(item -> appointment_userDtoList.add(modelMapper.map(item, AppointmentDto.class)));
     results.put("results", appointment_userDtoList);
     return results;
