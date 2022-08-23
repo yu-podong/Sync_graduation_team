@@ -20,4 +20,9 @@ public class IndexController {
 		return request.getContextPath();
 	}
 
+	@GetMapping("/")
+	public String getMyAppointment(String ID, String tempRole) {
+		return "Good service!";
+	}
+
 }
