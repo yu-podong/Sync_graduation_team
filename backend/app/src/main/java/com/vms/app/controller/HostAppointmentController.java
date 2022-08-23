@@ -84,5 +84,18 @@ public class HostAppointmentController {
     return results;
   }
 
-  // 승인 내역 구현할 것 isApproval = 1 방문기록 조회랑 다른점 :날짜 체크 하지 않고 전부 가져오기
+  /*** [HOST] 승인내역 ***/
+  @ApiOperation(value = "<Button>[승인내역]", notes = "- 접견자의 [승인내역] 버튼을 클릭했을 때의 기능입니다.\n" +
+      "- 승인된 내역만 가져옵니다(isApproval = 1)\n" +
+      "- <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n" +
+      "- 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n" +
+      "-Parameter는 필요 없습니다.\n\n" +
+      "- Try out 실행 안될겁니다")
+  @GetMapping("/getApprovalResult")
+  public Map<String, Object> getApprovalResult(Principal principal) {
+    Map<String, Object> results = appointmentService_host.getApprovalResult(principal.getName());
+
+    return results;
+  }
+
 }
