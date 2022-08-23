@@ -2,21 +2,21 @@ package com.vms.app.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vms.app.dto.AppointmentDto;
 import com.vms.app.entity.Appointment;
 import com.vms.app.entity.User;
 import com.vms.app.repository.AppointmentRepository;
 import com.vms.app.repository.UserRepository;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -141,8 +141,14 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
 
         // size 문제 생길 수도 있음 Integer -> Long
         int check_isApproval = item.getAppointmentRequestResult_list().get(arrListSize - 1).getIsApproval();
-        if (check_isApproval == 1) // 승인확인
-          appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
+        if (check_isApproval == 1) { // 승인확인
+          // 현재 시간 > checkoutTime(이미 끝난 약속)
+          int lstIdx = item.getAppointmentPeriodOfUse_list().size();
+          String checkoutTime = item.getAppointmentPeriodOfUse_list().get(lstIdx - 1).getCheckOut();
+          String currentTime = time.format(new Date(System.currentTimeMillis()));
+          if (currentTime.compareTo(checkoutTime) == 1)
+            appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
+        }
       }
     });
     log.warn("my_appointmentList size : " + my_appointmentList.size());

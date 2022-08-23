@@ -85,11 +85,16 @@ public class AppointmentService_hostImpl implements AppointmentService_host {
 
         // size 문제 생길 수도 있음 Integer -> Long
         int check_isApproval = item.getAppointmentRequestResult_list().get(arrListSize - 1).getIsApproval();
-        if (check_isApproval == 1) // 승인확인
-          appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
+        if (check_isApproval == 1) { // 승인확인
+          // 현재 시간 > checkoutTime(이미 끝난 약속)
+          int lstIdx = item.getAppointmentPeriodOfUse_list().size();
+          String checkoutTime = item.getAppointmentPeriodOfUse_list().get(lstIdx - 1).getCheckOut();
+          String currentTime = time.format(new Date(System.currentTimeMillis()));
+          if (currentTime.compareTo(checkoutTime) == 1)
+            appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
+        }
       }
     });
-    log.warn("my_appointmentList size : " + my_appointmentList.size());
 
     results.put("myAppointmentList", appointmentDtoList);
 
