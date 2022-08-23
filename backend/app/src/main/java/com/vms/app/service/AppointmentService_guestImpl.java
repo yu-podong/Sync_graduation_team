@@ -152,4 +152,30 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
     return results;
   }
 
+  @Transactional
+  @Override
+  public Map<String, Object> getApprovalResult(String ID) {
+    Map<String, Object> results = new LinkedHashMap<>();
+
+    User user = userRepository.findById(ID).get();
+    List<Appointment> my_appointmentList = user.get_appointments();
+    List<AppointmentDto> appointmentDtoList = new ArrayList<>();
+
+    my_appointmentList.forEach(item -> {
+      if (!item.getAppointmentRequestResult_list().isEmpty()) {
+
+        int arrListSize = item.getAppointmentRequestResult_list().size();
+
+        // size 문제 생길 수도 있음 Integer -> Long
+        int check_isApproval = item.getAppointmentRequestResult_list().get(arrListSize - 1).getIsApproval();
+        if (check_isApproval == 1) // 승인확인
+          appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
+      }
+    });
+
+    results.put("myAppointmentList", appointmentDtoList);
+
+    return results;
+  }
+
 }

@@ -64,5 +64,15 @@ public class GuestAppointmentController {
     return results;
   }
 
-  // [GUEST] 승인결과 내역 구현할 것 isApproval = 1, 방문이력이랑 다른점 :날짜 체크 하지 않고 전부 가져오기
+  /*** [GUEST] 승인결과 내역 구현할 것 isApproval = 1, 방문이력이랑 다른점 :날짜 체크 하지 않고 전부 가져오기 ***/
+  @ApiOperation(value = "<Button>[승인결과내역]", notes = "- 방문자의 [승인결과내역] 버튼을 클릭했을 때의 기능입니다.\n- 승인된 결과에 대해서 데이터를 가져옵니다. \n-"
+      +
+      "Parameter는 필요 없습니다.\n\n- Try out 실행 안될겁니다")
+  @GetMapping("/getApprovalResult")
+  public Map<String, Object> getApprovalResult(Principal principal) {
+    Map<String, Object> results = appointmentService_guest.getApprovalResult(principal.getName());
+
+    return results;
+
+  }
 }
