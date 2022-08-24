@@ -26,6 +26,7 @@ import com.vms.app.entity.AppointmentPeriodOfUse;
 import com.vms.app.entity.AppointmentRequestResult;
 import com.vms.app.entity.Company;
 import com.vms.app.entity.Notice;
+import com.vms.app.entity.Place;
 import com.vms.app.entity.Setting;
 import com.vms.app.entity.User;
 import com.vms.app.repository.AppointmentPeriodOfUseRepository;
@@ -33,6 +34,7 @@ import com.vms.app.repository.AppointmentRepository;
 import com.vms.app.repository.AppointmentRequestResultRepository;
 import com.vms.app.repository.CompanyRepository;
 import com.vms.app.repository.NoticeRepository;
+import com.vms.app.repository.PlaceRepository;
 import com.vms.app.repository.SettingRepository;
 import com.vms.app.repository.UserRepository;
 
@@ -77,6 +79,9 @@ public class TestController {
 	private SettingRepository settingRepository;
 
 	@Autowired
+	private PlaceRepository placeRepository;
+
+	@Autowired
 	private ModelMapper modelMapper;
 
 	@Autowired
@@ -103,11 +108,13 @@ public class TestController {
 			appointmentPeriodOfUseRepository.deleteAll();
 			appointmentRequestResultRepository.deleteAll();
 			appointmentRepository.deleteAll();
+			placeRepository.deleteAll();
 			userRepository.deleteAll();
 			companyRepository.deleteAll();
 			settingRepository.deleteAll();
 
 			insertCompanyData();
+			insertPlaceData();
 			insertUserData();
 			insertAppointmentData();
 			insertAppointmentRequestResultData();
@@ -213,6 +220,94 @@ public class TestController {
 		return "sucess";
 	}
 
+	@GetMapping("/insertPlaceData") // 세팅 추가
+	public String insertPlaceData() {
+
+		try {
+			List<Place> list = new ArrayList();
+
+			Place place1 = Place.builder()
+					.roomNum("101")
+					.name("강의실1")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place2 = Place.builder()
+					.roomNum("102")
+					.name("강의실2")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place3 = Place.builder()
+					.roomNum("103")
+					.name("강의실3")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place4 = Place.builder()
+					.roomNum("104")
+					.name("강의실4")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place5 = Place.builder()
+					.roomNum("105")
+					.name("강의실5")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place6 = Place.builder()
+					.roomNum("106")
+					.name("강의실6")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place7 = Place.builder()
+					.roomNum("107")
+					.name("강의실7")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place8 = Place.builder()
+					.roomNum("201")
+					.name("실습실1")
+					.floor(2)
+					.isUse(0)
+					.build();
+			Place place9 = Place.builder()
+					.roomNum("202")
+					.name("실습실2")
+					.floor(2)
+					.isUse(0)
+					.build();
+			Place place10 = Place.builder()
+					.roomNum("203")
+					.name("실습실3")
+					.floor(2)
+					.isUse(0)
+					.build();
+
+			list.add(place1);
+			list.add(place2);
+			list.add(place3);
+			list.add(place4);
+			list.add(place5);
+			list.add(place6);
+			list.add(place7);
+			list.add(place8);
+			list.add(place9);
+			list.add(place10);
+
+			placeRepository.saveAll(list);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+
+		return "success";
+	}
+
 	@GetMapping("/insertAppointmentData") // 일정 데이터 추가
 	public String insertAppointmentData() {
 
@@ -223,10 +318,10 @@ public class TestController {
 
 		try {
 			List<Appointment> list = new ArrayList<>();
-
+			List<Place> placeList = placeRepository.findAll();
 			Appointment appoint1 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
-					.visit_place("삼성 대기실 1")
+					.visit_place(placeList.get(0))
 					.visit_purpose("거래")
 					.accompanyingPerson(1)
 					.isArrival(0)
@@ -238,7 +333,7 @@ public class TestController {
 
 			Appointment appoint2 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
-					.visit_place("엘지 어디어디")
+					.visit_place(placeList.get(1))
 					.visit_purpose("생각안남")
 					.accompanyingPerson(1)
 					.isArrival(0)
@@ -250,7 +345,7 @@ public class TestController {
 
 			Appointment appoint3 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
-					.visit_place("하이닉스 어디어디")
+					.visit_place(placeList.get(2))
 					.visit_purpose("생각안남2")
 					.accompanyingPerson(1)
 					.isArrival(0)
@@ -262,7 +357,7 @@ public class TestController {
 
 			Appointment appoint4 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
-					.visit_place("삼성 생각안남")
+					.visit_place(placeList.get(7))
 					.visit_purpose("생각안남2")
 					.accompanyingPerson(1)
 					.isArrival(0)
@@ -274,7 +369,7 @@ public class TestController {
 
 			Appointment appoint5 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
-					.visit_place("하이닉스 생각안남")
+					.visit_place(placeList.get(8))
 					.visit_purpose("생각안남")
 					.accompanyingPerson(1)
 					.isArrival(0)

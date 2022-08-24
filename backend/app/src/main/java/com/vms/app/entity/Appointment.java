@@ -44,8 +44,8 @@ public class Appointment {
   @Column(length = 100)
   private String date; // 방문 날짜
 
-  @Column(length = 20)
-  private String visit_place; // 방문 장소
+  // @Column(length = 20)
+  // private String visit_place; // 방문 장소
 
   @Column(length = 100)
   private String visit_purpose; // 방문 목적 or 작업 목적
@@ -84,6 +84,11 @@ public class Appointment {
   // Appointment - AppointmentRequestResult (1:N)
   @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
   private List<AppointmentRequestResult> appointmentRequestResult_list = new ArrayList<AppointmentRequestResult>();
+
+  // Appointment - Place (N:1)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "visit_place")
+  private Place visit_place; // 방문 장소
 
   // @Column
   // private List<> isArrival; // 동행자 정보

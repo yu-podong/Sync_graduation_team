@@ -1,7 +1,6 @@
 package com.vms.app.dto;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.vms.app.entity.Place;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +17,7 @@ public class AppointmentDto_main {
 
   private String date; // 방문 날짜
 
-  private String visit_place; // 방문 장소
+  // private String visit_place; // 방문 장소
 
   private String visit_purpose; // 방문 목적
 
@@ -35,6 +34,8 @@ public class AppointmentDto_main {
   private UserDto guest;
 
   private UserDto host;
+
+  private PlaceDto visit_place; // 방문 장소
 
   // private List<> isArrival; // 동행자 정보
 
