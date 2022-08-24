@@ -32,6 +32,16 @@ public class GuestAppointmentController {
   @Autowired
   AppointmentService_guest appointmentService_guest;
 
+  /* ================= Main Today Appointment List ================= */
+
+  /*** [Guest] 메인 Toady ***/
+  @GetMapping(value = "/getTodayList")
+  public Map<String, Object> getTodayList(Principal principal) {
+
+    Map<String, Object> results = appointmentService_guest.getTodayList(principal.getName());
+    return results;
+  }
+
   /* ================= THREE MENU ELEVATED BUTTON ================= */
   /* ============================================================== */
   /* ============================================================== */

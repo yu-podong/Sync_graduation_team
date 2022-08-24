@@ -20,4 +20,6 @@ public interface AppointmentService_guest {
   public Map<String, Object> getMyAppointment(String ID);
 
   public Map<String, Object> getApprovalResult(String name);
+
+  public Map<String, Object> getTodayList(String iD);
 }

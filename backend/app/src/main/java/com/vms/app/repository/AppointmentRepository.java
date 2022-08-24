@@ -24,6 +24,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
   @Query("SELECT a FROM appointment a WHERE DATE(a.date) = DATE(NOW()) and a.host = ?1")
   public List<Appointment> getTodayList_host(User user);
 
+  @EntityGraph(value = "Appointment.all", type = EntityGraphType.LOAD)
+  @Query("SELECT a FROM appointment a WHERE DATE(a.date) = DATE(NOW()) and a.guest = ?1")
+  public List<Appointment> getTodayList_guest(User user);
+
   // 호스트의 승인된 것만
   // @Query("select a from appointment a where a.host = ?1 and a.is")
   // public List<Appointment> findByHostIsApprovalTrue();
