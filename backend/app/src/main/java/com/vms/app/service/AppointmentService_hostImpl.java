@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.vms.app.dto.AppointmentDto;
+import com.vms.app.dto.AppointmentDto_main;
 import com.vms.app.entity.Appointment;
 import com.vms.app.entity.AppointmentRequestResult;
 import com.vms.app.entity.User;
@@ -158,6 +159,28 @@ public class AppointmentService_hostImpl implements AppointmentService_host {
         if (check_isApproval == 1) // 승인확인
           appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
       }
+    });
+
+    results.put("myAppointmentList", appointmentDtoList);
+
+    return results;
+  }
+
+  @Transactional
+  @Override
+  public Map<String, Object> getTodayList(String iD) {
+    Map<String, Object> results = new LinkedHashMap<>();
+
+    User user = User.builder().ID(iD).build();
+    List<Appointment> appointmentList = appointmentRepository.getTodayList_host(user);
+
+    // List<AppointmentDto> appointmentDtoList = new ArrayList<>();
+    List<AppointmentDto_main> appointmentDtoList = new ArrayList<>();
+
+    appointmentList.forEach(item -> {
+      // appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
+      appointmentDtoList.add(modelMapper.map(item, AppointmentDto_main.class));
+
     });
 
     results.put("myAppointmentList", appointmentDtoList);

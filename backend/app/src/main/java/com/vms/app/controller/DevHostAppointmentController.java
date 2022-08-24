@@ -35,6 +35,15 @@ public class DevHostAppointmentController {
 
   @Autowired
   AppointmentService_host appointmentService_host;
+
+  /*** [HOST] 메인 Toady ***/
+  @GetMapping(value = "/getTodayList")
+  public Map<String, Object> getTodayList(String ID) {
+
+    Map<String, Object> results = appointmentService_host.getTodayList(ID);
+    return results;
+  }
+
   /* ================= THREE MENU ELEVATED BUTTON ================= */
   /* ============================================================== */
   /* ============================================================== */

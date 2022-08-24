@@ -48,7 +48,7 @@ public class Appointment {
   private String visit_place; // 방문 장소
 
   @Column(length = 100)
-  private String visit_purpose; // 방문 목적
+  private String visit_purpose; // 방문 목적 or 작업 목적
 
   @Column
   private int accompanyingPerson; // 동반인원

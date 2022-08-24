@@ -17,6 +17,7 @@ import com.vms.app.service.AppointmentService_host;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Log4j2
 @Api("접견자의 기능을 담당하는 Controller 입니다")
@@ -32,11 +33,21 @@ public class HostAppointmentController {
   @Autowired
   private AppointmentService_host appointmentService_host;
 
+  /* ================= Main Today Appointment List ================= */
+
+  /*** [HOST] 메인 Toady ***/
+  @GetMapping(value = "/getTodayList")
+  public Map<String, Object> getTodayList(Principal principal) {
+
+    Map<String, Object> results = appointmentService_host.getTodayList(principal.getName());
+    return results;
+  }
+
   /* ================= THREE MENU ELEVATED BUTTON ================= */
   /* ============================================================== */
   /* ============================================================== */
 
-  /*** [Host] 신규접수내역 ***/
+  /*** [HOST] 신규접수내역 ***/
   @ApiOperation(value = "<Button>[신규접수내역]", notes = "- 접견자의 [신규접수내역] 버튼을 눌렀을 때의 기능입니다.\n" +
       "- 접견자가 아직 처리하지 않은 대기중인 약속(isApproval = 0)인 값만 가져옵니다.\n" +
       "- <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n" +
