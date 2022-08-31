@@ -3,8 +3,7 @@ package com.vms.app.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vms.app.entity.AppointmentPeriodOfUse;
-import com.vms.app.entity.AppointmentRequestResult;
+import com.vms.app.entity.Place;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +19,7 @@ public class AppointmentDto {
 
   private String date; // 방문 날짜
 
-  private String visit_place; // 방문 장소
+  // private String visit_place; // 방문 장소
 
   private String visit_purpose; // 방문 목적
 
@@ -37,6 +36,8 @@ public class AppointmentDto {
   private UserDto guest;
 
   private UserDto host;
+
+  private PlaceDto visit_place; // 방문 장소
 
   private List<AppointmentPeriodOfUseDto> appointmentPeriodOfUse_list = new ArrayList<AppointmentPeriodOfUseDto>();
   private List<AppointmentRequestResultDto> appointmentRequestResult_list = new ArrayList<AppointmentRequestResultDto>();

@@ -40,13 +40,14 @@ public class SwaggerConfig {
             "<b>구현 되지 않은 API가 있거나, 필요한 기능이 없거나 설명이 부족하거나 헷갈리시면 언제든지 말씀해주세요!</b>\n\n\n"
             // RELEASE NOTE
             + "[RELEASE NOTE]\n\n"
+            + "v1.4.1 : 2022.8.31 - Today List 추가 [commit : 5cede1600ec6b3746cc52fd4ab0a8c698a93507c]\n\n"
             + "v1.3.1 : 2022.8.24 - host, guest Dev Controller추가(실행환경 제공) [commit : e4fb7b124a9964d2cd53f32443f8d3242cf31aa7]\n\n"
             + "v1.2.1 : 2022.8.23 - Host, Guest Controller 세부 기능 추가, [GUEST]승인이력 추가, [HOST] 승인내역 추가 [commit : 48d8699d06cfa37f8252e889f58917a7fd0c9c11]\n\n"
             + "v1.1.1 : 2022.8.23 - 추가 개발로 인한 설명 정리\n\n"
             + "v1.1.0 : 2022.7.20 - Host, Guest Controller [api : approvalAppointment, getMyAppointment, getRequestedAppointment, rejectAppointment etc] [commit : cfd023fbb829c07a647bd5e34dcc462c9a875dca]\n\n"
             + "v1.0.0 : 2022.7.13 - swagger 연동, TEST [commit : e40ede476cf27d4affed242e9d9e68afd9f8cbc8]" +
             "")
-        .version("1.3.1")
+        .version("1.4.1")
         .build();
   }
 
