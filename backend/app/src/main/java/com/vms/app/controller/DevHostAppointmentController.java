@@ -37,6 +37,8 @@ public class DevHostAppointmentController {
   AppointmentService_host appointmentService_host;
 
   /*** [HOST] 메인 Toady ***/
+  @ApiOperation(value = "<List>[메인 Today]", notes = "- 접견자의 [Today] 부분.\n" +
+      "- 오늘의 해당하는 약속만 가져옵니다.\n")
   @GetMapping(value = "/getTodayList")
   public Map<String, Object> getTodayList(String ID) {
 

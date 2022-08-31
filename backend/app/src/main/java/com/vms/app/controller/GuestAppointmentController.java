@@ -35,6 +35,12 @@ public class GuestAppointmentController {
   /* ================= Main Today Appointment List ================= */
 
   /*** [Guest] 메인 Toady ***/
+  @ApiOperation(value = "<List>[메인 Today]", notes = "- 방문자의 [Today] 부분.\n" +
+      "- 오늘의 해당하는 약속만 가져옵니다.\n" +
+      "- <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n" +
+      "- 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n" +
+      "- Parameter는 필요 없습니다.\n\n" +
+      "- Try out 실행 안될겁니다")
   @GetMapping(value = "/getTodayList")
   public Map<String, Object> getTodayList(Principal principal) {
 
