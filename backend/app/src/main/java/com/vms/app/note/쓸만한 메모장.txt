@@ -5,9 +5,9 @@ getRequestedAppointment approval = 0 인것만 가져오기
 
 
 --- swagger 주석 ---
-  // public String commonJWTNote = "\n - <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는
-  // 상태)만 호출가능합니다.\n - 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n-
-  // Parameter는 필요 없습니다.\n\n- Try out 실행 안될겁니다";
+  <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n- 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n- Parameter는 필요 없습니다.\n\n- Try out 실행 안될겁니다";
+  
+  
 
 
 

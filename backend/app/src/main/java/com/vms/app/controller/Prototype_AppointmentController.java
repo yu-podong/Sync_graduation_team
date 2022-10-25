@@ -1,15 +1,8 @@
 package com.vms.app.controller;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
-
-import com.vms.app.entity.Appointment;
-import com.vms.app.service.AppointmentService_guest;
-import com.vms.app.service.AppointmentService_guestImpl;
-import com.vms.app.service.AppointmentService_host;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.vms.app.service.AppointmentService_guest;
+import com.vms.app.service.AppointmentService_host;
 
 import lombok.extern.log4j.Log4j2;
 

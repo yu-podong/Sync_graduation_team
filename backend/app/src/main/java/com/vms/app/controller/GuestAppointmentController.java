@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vms.app.entity.Appointment;
 import com.vms.app.service.AppointmentService_guest;
 
 import io.swagger.annotations.Api;
@@ -88,9 +89,21 @@ public class GuestAppointmentController {
   /* ============================================================== */
 
   /*** [GUEST] 도착 알림 보내기 ***/
-  @ApiOperation(value = "<Button>[도착알림]", notes = "- 방문자가 [도착알림] 버튼을 눌렀을 때의 기능입니다.(figma에서 없어졌네요?!) \n- 방문자가 도착했을 때 해당 버튼을 누르면 접견자에게 도착알림이 전송됩니다.\n- 방문날짜/시각 1시간 전후로만 버튼이 눌립니다.<b>(구현예정)</b>\n- DB의 해당 약속이 isArrival = 1으로 저장됩니다.")
+  @ApiOperation(value = "<Button>[도착알림]", notes = "- 방문자가 [도착알림] 버튼을 눌렀을 때의 기능입니다. \n- 방문자가 도착했을 때 해당 버튼을 누르면 접견자에게 도착알림이 전송됩니다.\n- 방문날짜/시각 1시간 전후로만 버튼이 눌립니다.<b>(구현예정)</b>\n- DB의 해당 약속이 isArrival = 1으로 저장됩니다.")
   @PostMapping("/sendArrived")
   public int sendArrived(long appointmentID) {
     return appointmentService_guest.sendArrived(appointmentID);
+  }
+
+  /*** [GUEST] 약속 생성 ***/
+  @ApiOperation(value = "<Button>[약속 생성]", notes = "- 방문자가 [+] 버튼을 눌렀을 때의 기능입니다. \n- 약속을 생성하기 위한 기능입니다. \n <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n- 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n\n- Try out 실행 안될겁니다")
+  @PostMapping("/createAppointment")
+  public int createAppointment(Principal principal, String hostID, int placeID, Appointment appointment, String checkIn,
+      String checkOut) {
+
+    log.info("**[VMS]** " + principal.getName() + " 방문자가 약속생성을 하였습니다.\n");
+
+    return appointmentService_guest.createAppointment(principal.getName(), hostID, placeID, appointment, checkIn,
+        checkOut);
   }
 }
