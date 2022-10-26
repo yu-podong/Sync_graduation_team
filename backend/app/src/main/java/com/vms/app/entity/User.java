@@ -62,6 +62,9 @@ public class User {
   @Column(length = 20)
   private String role;
 
+  @Column(length = 20)
+  private int userType; // 1. 접견자, 2.방문자(직장인), 3.방문자(학생), 4.관리자
+
   @Column
   private int isCheckLogin; // 로그인 승인 여부
 

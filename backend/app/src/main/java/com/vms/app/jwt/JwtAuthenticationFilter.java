@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vms.app.auth.PrincipalDetails;
 import com.vms.app.entity.User;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -49,8 +51,31 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     ObjectMapper om = new ObjectMapper();
     try {
       user = om.readValue(request.getInputStream(), User.class);
-      // log.warn("[info] user is: " + user);
 
+      // ****** User type 체크 ******** */
+      // VMS에서만 필요한 코드
+      if (user.getUserType() == 1) { // 접견자
+        // ID = 사번, password = encode(사번_이름)
+        user.setPassword(user.getID() + "_" + user.getName());
+      } else if (user.getUserType() == 2) { // 방문자(직장인)
+        // ID = 이름_전화번호, password = encode(이름_전화번호)
+        user.setID(user.getName() + "_" + user.getPhoneNum());
+        user.setPassword(user.getName() + "_" + user.getPhoneNum());
+
+      } else if (user.getUserType() == 3) { // 방문자(학생)
+        // ID = 학번, password = encode(학번_이름)
+        user.setPassword(user.getID() + "_" + user.getName());
+      } else if (user.getUserType() == 4) { // 관리자
+        // ID = 관리자 식별번호, password = encode(관리자 식별번호_이름)
+        user.setPassword(user.getID() + "_" + user.getName());
+      } else {
+        log.warn("userType이 들어 오지 않았습니다.");
+        response.sendError(-2, "userType을 같이 실어 보내 주세요.");
+        return null;
+      }
+      // ******************************* */
+
+      // log.warn("[info] user is: " + user);
       /* 토큰생성 */
       UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getID(),
           user.getPassword());

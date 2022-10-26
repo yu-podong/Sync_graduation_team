@@ -187,29 +187,68 @@ public class TestController {
 
 			List<User> users = new ArrayList<>();
 
-			// password : 123 모두 동일
-
-			User user1 = new User("ksygt728", bCryPasswordEncoder.encode("123"), "김승연", "961019-1234567", "01091360767",
+			// 접견자1
+			User user1 = new User("q1q1", bCryPasswordEncoder.encode("q1q1_김승연"), "김승연", "961019-1234567", "01091360767",
 					"ksygt728", "gmail.com", "ROLE_USER",
-					1, null, companies.get(0), null, null);
-			User user2 = new User("saiqgo522", bCryPasswordEncoder.encode("123"), "홍길동", "961022-1222267",
-					"01012142243", "qwee242", "gmail.com", "ROLE_USER",
-					1, null, companies.get(1), null, null);
-			User user3 = new User("q1q1", bCryPasswordEncoder.encode("123"), "김이름", "961019-1232887",
-					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
-					1, null, companies.get(3), null, null);
-			User user4 = new User("q3q3", bCryPasswordEncoder.encode("123"), "유현진", "961027-1452467",
-					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
-					1, null, companies.get(3), null, null);
-			User user5 = new User("w2w2", bCryPasswordEncoder.encode("123"), "이지민", "961022-1342467",
-					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
-					1, null, companies.get(3), null, null);
+					1, 1, null, companies.get(0), null, null);
+
+			// 접견자2
+			User user2 = new User("q2q2", bCryPasswordEncoder.encode("q2q2_홍길동"), "홍길동", "961022-1222267",
+					"01012148888", "qwee242", "gmail.com", "ROLE_USER",
+					1, 1, null, companies.get(1), null, null);
+
+			// 접견자3
+			User user3 = new User("q3q3", bCryPasswordEncoder.encode("q3q3_김이름"), "김이름", "961019-1232887",
+					"01091367777", "zzvs5200", "gmail.com", "ROLE_USER",
+					1, 1, null, companies.get(3), null, null);
+
+			// 방문자(직장인)1
+			User user4 = new User("유현진_01011111232", bCryPasswordEncoder.encode("유현진_01011111232"), "유현진", "961027-1452467",
+					"01011111232", "zzvs5200", "gmail.com", "ROLE_USER",
+					2, 1, null, companies.get(3), null, null);
+
+			// 방문자(직장인)2
+			User user5 = new User("송승우_01091363332", bCryPasswordEncoder.encode("송승우_01091363332"), "송승우", "961022-1346267",
+					"01091363332", "zzvs5200", "gmail.com", "ROLE_USER",
+					2, 1, null, companies.get(3), null, null);
+
+			// 방문자(직장인)3
+			User user6 = new User("이지민_01091367772", bCryPasswordEncoder.encode("이지민_01091367772"), "이지민", "961022-1392567",
+					"01091367772", "zzvs5200", "gmail.com", "ROLE_USER",
+					2, 1, null, companies.get(3), null, null);
+
+			// 방문자(학생)1
+			User user7 = new User("2019395940", bCryPasswordEncoder.encode("2019395940_떠나간지민님"), "떠나간지민님", "961022-1348366",
+					"01091661232", "zzvs5200", "gmail.com", "ROLE_USER",
+					3, 1, null, companies.get(3), null, null);
+
+			// 방문자(학생)2
+			User user8 = new User("2019403922", bCryPasswordEncoder.encode("2019403922_돌아오지않는지민님"), "돌아오지않는지민님",
+					"961022-1335237",
+					"01095551232", "zzvs5200", "gmail.com", "ROLE_USER",
+					3, 1, null, companies.get(3), null, null);
+
+			// 방문자(학생)3
+			User user9 = new User("2005104220", bCryPasswordEncoder.encode("2005104220_군대를가버린지님민"), "군대를가버린지님민",
+					"961022-1069867",
+					"01091361212", "zzvs5200", "gmail.com", "ROLE_USER",
+					3, 1, null, companies.get(3), null, null);
+
+			// 관리자1
+			User user10 = new User("admin", bCryPasswordEncoder.encode("admin_나는관리자"), "나는관리자", "961022-1059377",
+					"01091361422", "zzvs5200", "gmail.com", "ROLE_USER",
+					4, 1, null, companies.get(3), null, null);
 
 			users.add(user1);
 			users.add(user2);
 			users.add(user3);
 			users.add(user4);
 			users.add(user5);
+			users.add(user6);
+			users.add(user7);
+			users.add(user8);
+			users.add(user9);
+			users.add(user10);
 
 			userRepository.saveAll(users);
 
@@ -319,6 +358,7 @@ public class TestController {
 		try {
 			List<Appointment> list = new ArrayList<>();
 			List<Place> placeList = placeRepository.findAll();
+			List<User> userList = userRepository.findAll();
 			Appointment appoint1 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
 					.visit_place(placeList.get(0))
@@ -327,8 +367,8 @@ public class TestController {
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("ksygt728").get())
-					.host(userRepository.findById("q1q1").get())
+					.guest(userList.get(4))
+					.host(userList.get(2))
 					.build();
 
 			Appointment appoint2 = Appointment.builder()
@@ -339,8 +379,8 @@ public class TestController {
 					.isArrival(0)
 					.type(1)
 					.invite_link("asfioafioqjw21ioioaafsopja")
-					.guest(userRepository.findById("q3q3").get())
-					.host(userRepository.findById("w2w2").get())
+					.guest(userList.get(4))
+					.host(userList.get(1))
 					.build();
 
 			Appointment appoint3 = Appointment.builder()
@@ -351,8 +391,8 @@ public class TestController {
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("w2w2").get())
-					.host(userRepository.findById("q3q3").get())
+					.guest(userList.get(4))
+					.host(userList.get(1))
 					.build();
 
 			Appointment appoint4 = Appointment.builder()
@@ -363,8 +403,8 @@ public class TestController {
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("ksygt728").get())
-					.host(userRepository.findById("q1q1").get())
+					.guest(userList.get(6))
+					.host(userList.get(1))
 					.build();
 
 			Appointment appoint5 = Appointment.builder()
@@ -375,8 +415,8 @@ public class TestController {
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("w2w2").get())
-					.host(userRepository.findById("q3q3").get())
+					.guest(userList.get(3))
+					.host(userList.get(2))
 					.build();
 
 			list.add(appoint1);
