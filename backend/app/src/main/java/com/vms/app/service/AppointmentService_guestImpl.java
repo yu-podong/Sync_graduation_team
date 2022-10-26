@@ -15,8 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vms.app.dto.AppointmentDto;
 import com.vms.app.dto.AppointmentDto_main;
 import com.vms.app.entity.Appointment;
+import com.vms.app.entity.AppointmentPeriodOfUse;
+import com.vms.app.entity.Place;
 import com.vms.app.entity.User;
+import com.vms.app.repository.AppointmentPeriodOfUseRepository;
 import com.vms.app.repository.AppointmentRepository;
+import com.vms.app.repository.PlaceRepository;
 import com.vms.app.repository.UserRepository;
 
 import lombok.extern.log4j.Log4j2;
@@ -30,6 +34,12 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
 
   @Autowired
   UserRepository userRepository;
+
+  @Autowired
+  AppointmentPeriodOfUseRepository appointmentPeriodOfUseRepository;
+
+  @Autowired
+  PlaceRepository placeRepository;
 
   @Autowired
   SimpleDateFormat time;
@@ -206,6 +216,44 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
     results.put("myAppointmentList", appointmentDtoList);
 
     return results;
+  }
+
+  @Transactional
+  @Override
+  public int createAppointment(String ID, String hostID, int placeID, Appointment appointment, String checkIn,
+      String checkOut) {
+
+    // 1. host guest place 객체 생성(관계 매핑)
+    User _host = userRepository.findById(hostID).orElse(null);
+    User _guest = userRepository.findById(ID).orElse(null);
+    Place _place = placeRepository.findById((long) placeID).orElse(null);
+
+    // 체크인, 인바이트 링크 추가 데이터
+    appointment.setDate(checkIn);
+    appointment.setInvite_link("inviteLink");
+
+    appointment.setHost(_host); // 매핑
+    appointment.setGuest(_guest); // 매핑
+    appointment.setVisit_place(_place); // 매핑
+
+    // AppointmentPeriodOfUse 객체 생성
+    AppointmentPeriodOfUse appointmentPeriodOfUse = AppointmentPeriodOfUse.builder()
+        .checkIn(checkIn)
+        .checkOut(checkOut)
+        .appointment(appointment)
+        .build();
+
+    // log.warn("[appointment] : " + appointmentPeriodOfUse.getAp_periodID());
+
+    try {
+      appointmentRepository.save(appointment);
+      appointmentPeriodOfUseRepository.save(appointmentPeriodOfUse);
+    } catch (Exception e) {
+      log.warn("방문자 정보가 일치 하지 않습니다.");
+      e.printStackTrace();
+      return -1;
+    }
+    return 0;
   }
 
 }

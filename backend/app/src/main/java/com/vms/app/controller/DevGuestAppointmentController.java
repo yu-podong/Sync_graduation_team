@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vms.app.entity.Appointment;
+import com.vms.app.entity.User;
 import com.vms.app.service.AppointmentService_guest;
 
 import io.swagger.annotations.Api;
@@ -83,5 +85,27 @@ public class DevGuestAppointmentController {
   @PostMapping("/sendArrived")
   public int sendArrived(long appointmentID) {
     return appointmentService_guest.sendArrived(appointmentID);
+  }
+
+  /*** [GUEST] 약속 생성 ***/
+  @ApiOperation(value = "<Button>[약속 생성]", notes = "- 방문자가 [+] 버튼을 눌렀을 때의 기능입니다. \n- 약속을 생성하기 위한 기능입니다. \n")
+  @PostMapping("/createAppointment")
+  public int createAppointment(String ID, String hostID, int placeID, Appointment appointment, String checkIn,
+      String checkOut) {
+
+    /*
+     * <받아야 하는 항목>
+     * - type(일반, 공사)
+     * - visit_purpose (방문 목적)
+     * - user (접견자, 방문자 정보 )
+     * - 날짜 및 입, 퇴실 시간 (date, appointmentPeriodOfData)
+     * - 방문 장소 (Place)
+     * 
+     * - 동행자 정보
+     * 
+     */
+
+    return appointmentService_guest.createAppointment(ID, hostID, placeID, appointment, checkIn,
+        checkOut);
   }
 }

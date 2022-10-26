@@ -2,6 +2,8 @@ package com.vms.app.service;
 
 import java.util.Map;
 
+import com.vms.app.entity.Appointment;
+
 public interface AppointmentService_guest {
 
   /***
@@ -22,4 +24,7 @@ public interface AppointmentService_guest {
   public Map<String, Object> getApprovalResult(String name);
 
   public Map<String, Object> getTodayList(String iD);
+
+  public int createAppointment(String ID, String hostID, int placeID, Appointment appointment, String checkIn,
+      String checkOut);
 }
