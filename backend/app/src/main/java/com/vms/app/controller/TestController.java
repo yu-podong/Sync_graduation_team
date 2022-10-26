@@ -358,6 +358,7 @@ public class TestController {
 		try {
 			List<Appointment> list = new ArrayList<>();
 			List<Place> placeList = placeRepository.findAll();
+			List<User> userList = userRepository.findAll();
 			Appointment appoint1 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
 					.visit_place(placeList.get(0))
@@ -366,8 +367,8 @@ public class TestController {
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("ksygt728").get())
-					.host(userRepository.findById("q1q1").get())
+					.guest(userList.get(4))
+					.host(userList.get(2))
 					.build();
 
 			Appointment appoint2 = Appointment.builder()
@@ -378,8 +379,8 @@ public class TestController {
 					.isArrival(0)
 					.type(1)
 					.invite_link("asfioafioqjw21ioioaafsopja")
-					.guest(userRepository.findById("q3q3").get())
-					.host(userRepository.findById("w2w2").get())
+					.guest(userList.get(4))
+					.host(userList.get(1))
 					.build();
 
 			Appointment appoint3 = Appointment.builder()
@@ -390,8 +391,8 @@ public class TestController {
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("w2w2").get())
-					.host(userRepository.findById("q3q3").get())
+					.guest(userList.get(4))
+					.host(userList.get(1))
 					.build();
 
 			Appointment appoint4 = Appointment.builder()
@@ -402,8 +403,8 @@ public class TestController {
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("ksygt728").get())
-					.host(userRepository.findById("q1q1").get())
+					.guest(userList.get(6))
+					.host(userList.get(1))
 					.build();
 
 			Appointment appoint5 = Appointment.builder()
@@ -414,8 +415,8 @@ public class TestController {
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("w2w2").get())
-					.host(userRepository.findById("q3q3").get())
+					.guest(userList.get(3))
+					.host(userList.get(2))
 					.build();
 
 			list.add(appoint1);
