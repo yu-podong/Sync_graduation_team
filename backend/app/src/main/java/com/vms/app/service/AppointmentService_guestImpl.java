@@ -267,4 +267,36 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
     return 0;
   }
 
+  @Transactional
+  @Override
+  public int agreeAccompany(String ID, long appointmentID) {
+
+    try {
+      Appointment appointment = appointmentRepository.findById(appointmentID).orElse(null);
+      User guest = userRepository.findById(ID).orElse(null);
+
+      List<AccompanyPerson> accompanyList = accompanyPersonRepository.findByGuestAndAppointment(guest, appointment);
+
+      if (!accompanyList.isEmpty()) {
+        log.warn("이미 가입한 사용자입니다.");
+        return 0;
+      } else {
+
+        AccompanyPerson accompanyPerson = AccompanyPerson.builder()
+            .appointment(appointment)
+            .guest(guest)
+            .build();
+
+        accompanyPersonRepository.save(accompanyPerson);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      log.info("입력한 정보가 불일치 합니다.");
+      return -1; // 정보 불일치
+    }
+    log.info("동행인에 추가 되었습니다.");
+    ;
+    return 1;
+  }
+
 }

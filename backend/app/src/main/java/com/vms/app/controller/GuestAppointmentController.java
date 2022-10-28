@@ -106,4 +106,11 @@ public class GuestAppointmentController {
     return appointmentService_guest.createAppointment(principal.getName(), hostID, placeID, appointment, checkIn,
         checkOut);
   }
+
+  /*** [GUEST] 동행여부 동의하기 ***/
+  @ApiOperation(value = "동행인 여부 링크 클릭", notes = "- api요청시 데이터베이스에 해당 약속의 동행인으로 추가 됩니다.")
+  @PostMapping("/agreeAccompany")
+  public int agreeAccompany(Principal principal, long appointmentID) {
+    return appointmentService_guest.agreeAccompany(principal.getName(), appointmentID);
+  }
 }

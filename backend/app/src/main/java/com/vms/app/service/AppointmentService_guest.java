@@ -27,4 +27,6 @@ public interface AppointmentService_guest {
 
   public int createAppointment(String ID, String hostID, int placeID, Appointment appointment, String checkIn,
       String checkOut);
+
+  public int agreeAccompany(String ID, long appointmentID);
 }
