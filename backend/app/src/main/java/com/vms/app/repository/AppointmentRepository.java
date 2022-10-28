@@ -14,8 +14,13 @@ import com.vms.app.entity.User;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
+  // 동반인원 제외하고 약속 가져오기
   @EntityGraph(value = "Appointment.all", type = EntityGraphType.LOAD)
   public List<Appointment> findByGuestOrderByAppointmentIDDesc(User user);
+
+  // 동반인원같이 약속 가져오기
+  @Query(nativeQuery = true, value = "SELECT a.* FROM appointment a INNER JOIN accompanyPerson ap on a.appointmentID = ap.appointment WHERE ap.guest = ?1 UNION (SELECT a.* FROM appointment a WHERE a.user_guest = ?1) ORDER BY date DESC")
+  public List<Appointment> findByGuestOrderByAppointmentIDDesc_withAccompanyPerson(User user);
 
   @EntityGraph(value = "Appointment.all", type = EntityGraphType.LOAD)
   public List<Appointment> findByHostOrderByAppointmentIDDesc(User user);
@@ -27,6 +32,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
   @EntityGraph(value = "Appointment.all", type = EntityGraphType.LOAD)
   @Query("SELECT a FROM appointment a WHERE DATE(a.date) = DATE(NOW()) and a.guest = ?1")
   public List<Appointment> getTodayList_guest(User user);
+
+  // 동반인원 포함
+  @Query(nativeQuery = true, value = "SELECT a.* FROM appointment a INNER JOIN accompanyPerson ap on a.appointmentID = ap.appointment WHERE ap.guest = ?1 AND DATE(a.date) = DATE(NOW()) UNION (SELECT a.* FROM appointment a WHERE a.user_guest = ?1 AND DATE(a.date) = DATE(NOW()))")
+  public List<Appointment> getTodayList_guest_withAccompanyPerson(User user);
 
   // 호스트의 승인된 것만
   // @Query("select a from appointment a where a.host = ?1 and a.is")

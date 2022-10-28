@@ -86,6 +86,10 @@ public class Appointment {
   @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
   private List<AppointmentRequestResult> appointmentRequestResult_list = new ArrayList<AppointmentRequestResult>();
 
+  // Appointment - AccompanyPerson (1:N)
+  @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
+  private List<AccompanyPerson> accompanyPerson_list = new ArrayList<AccompanyPerson>();
+
   // Appointment - Place (N:1)
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "visit_place")

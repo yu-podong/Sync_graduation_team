@@ -14,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vms.app.dto.AppointmentDto;
 import com.vms.app.dto.AppointmentDto_main;
+import com.vms.app.entity.AccompanyPerson;
 import com.vms.app.entity.Appointment;
 import com.vms.app.entity.AppointmentPeriodOfUse;
 import com.vms.app.entity.Place;
 import com.vms.app.entity.User;
+import com.vms.app.repository.AccompanyPersonRepository;
 import com.vms.app.repository.AppointmentPeriodOfUseRepository;
 import com.vms.app.repository.AppointmentRepository;
 import com.vms.app.repository.PlaceRepository;
@@ -40,6 +42,9 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
 
   @Autowired
   PlaceRepository placeRepository;
+
+  @Autowired
+  AccompanyPersonRepository accompanyPersonRepository;
 
   @Autowired
   SimpleDateFormat time;
@@ -109,12 +114,18 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
   @Transactional
   @Override
   public Map<String, Object> getMyHistory(String ID) {
-    /* 1. guest권한 확인 */
+    /* 0. guest권한 확인 */
 
     Map<String, Object> results = new LinkedHashMap<>();
 
-    List<Appointment> list = appointmentRepository.findByGuestOrderByAppointmentIDDesc(User.builder().ID(ID).build());
+    /* 1. guest의 약속 가져오기(동반인원 포함) */
 
+    // List<Appointment> list =
+    // appointmentRepository.findByGuestOrderByAppointmentIDDesc(User.builder().ID(ID).build());
+    List<Appointment> list = appointmentRepository
+        .findByGuestOrderByAppointmentIDDesc_withAccompanyPerson(User.builder().ID(ID).build());
+
+    /* 3. dto 매핑 */
     List<AppointmentDto> appointment_userDtoList = new ArrayList<>();
     list.forEach(item -> appointment_userDtoList.add(modelMapper.map(item, AppointmentDto.class)));
     results.put("results", appointment_userDtoList);
@@ -202,7 +213,7 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
     Map<String, Object> results = new LinkedHashMap<>();
 
     User user = User.builder().ID(iD).build();
-    List<Appointment> appointmentList = appointmentRepository.getTodayList_guest(user);
+    List<Appointment> appointmentList = appointmentRepository.getTodayList_guest_withAccompanyPerson(user);
 
     // List<AppointmentDto> appointmentDtoList = new ArrayList<>();
     List<AppointmentDto_main> appointmentDtoList = new ArrayList<>();
