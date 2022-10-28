@@ -91,7 +91,7 @@ public class DevGuestAppointmentController {
   @ApiOperation(value = "<Button>[약속 생성]", notes = "- 방문자가 [+] 버튼을 눌렀을 때의 기능입니다. \n- 약속을 생성하기 위한 기능입니다. \n")
   @PostMapping("/createAppointment")
   public int createAppointment(String ID, String hostID, int placeID, Appointment appointment, String checkIn,
-      String checkOut) {
+      String checkOut, int check_accompany) {
 
     /*
      * <받아야 하는 항목>
@@ -107,5 +107,12 @@ public class DevGuestAppointmentController {
 
     return appointmentService_guest.createAppointment(ID, hostID, placeID, appointment, checkIn,
         checkOut);
+  }
+
+  /*** [GUEST] 동행여부 동의하기 ***/
+  @ApiOperation(value = "동행인 여부 링크 클릭", notes = "- api요청시 데이터베이스에 해당 약속의 동행인으로 추가 됩니다.")
+  @PostMapping("/agreeAccompany")
+  public int agreeAccompany(String ID, long appointmentID) {
+    return appointmentService_guest.agreeAccompany(ID, appointmentID);
   }
 }

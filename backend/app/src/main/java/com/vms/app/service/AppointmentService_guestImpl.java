@@ -14,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vms.app.dto.AppointmentDto;
 import com.vms.app.dto.AppointmentDto_main;
+import com.vms.app.entity.AccompanyPerson;
 import com.vms.app.entity.Appointment;
 import com.vms.app.entity.AppointmentPeriodOfUse;
 import com.vms.app.entity.Place;
 import com.vms.app.entity.User;
+import com.vms.app.repository.AccompanyPersonRepository;
 import com.vms.app.repository.AppointmentPeriodOfUseRepository;
 import com.vms.app.repository.AppointmentRepository;
 import com.vms.app.repository.PlaceRepository;
@@ -40,6 +42,9 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
 
   @Autowired
   PlaceRepository placeRepository;
+
+  @Autowired
+  AccompanyPersonRepository accompanyPersonRepository;
 
   @Autowired
   SimpleDateFormat time;
@@ -109,12 +114,18 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
   @Transactional
   @Override
   public Map<String, Object> getMyHistory(String ID) {
-    /* 1. guest권한 확인 */
+    /* 0. guest권한 확인 */
 
     Map<String, Object> results = new LinkedHashMap<>();
 
-    List<Appointment> list = appointmentRepository.findByGuestOrderByAppointmentIDDesc(User.builder().ID(ID).build());
+    /* 1. guest의 약속 가져오기(동반인원 포함) */
 
+    // List<Appointment> list =
+    // appointmentRepository.findByGuestOrderByAppointmentIDDesc(User.builder().ID(ID).build());
+    List<Appointment> list = appointmentRepository
+        .findByGuestOrderByAppointmentIDDesc_withAccompanyPerson(User.builder().ID(ID).build());
+
+    /* 3. dto 매핑 */
     List<AppointmentDto> appointment_userDtoList = new ArrayList<>();
     list.forEach(item -> appointment_userDtoList.add(modelMapper.map(item, AppointmentDto.class)));
     results.put("results", appointment_userDtoList);
@@ -142,14 +153,14 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
     Map<String, Object> results = new LinkedHashMap<>();
 
     User user = userRepository.findById(ID).get();
-    List<Appointment> my_appointmentList = user.get_appointments();
+    List<Appointment> my_appointmentList = appointmentRepository
+        .findByGuestOrderByAppointmentIDDesc_withAccompanyPerson(user);
     List<AppointmentDto> appointmentDtoList = new ArrayList<>();
 
     my_appointmentList.forEach(item -> {
       if (!item.getAppointmentRequestResult_list().isEmpty()) {
 
         int arrListSize = item.getAppointmentRequestResult_list().size();
-
         // size 문제 생길 수도 있음 Integer -> Long
         int check_isApproval = item.getAppointmentRequestResult_list().get(arrListSize - 1).getIsApproval();
         if (check_isApproval == 1) { // 승인확인
@@ -157,7 +168,7 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
           int lstIdx = item.getAppointmentPeriodOfUse_list().size();
           String checkoutTime = item.getAppointmentPeriodOfUse_list().get(lstIdx - 1).getCheckOut();
           String currentTime = time.format(new Date(System.currentTimeMillis()));
-          if (currentTime.compareTo(checkoutTime) == 1)
+          if (currentTime.compareTo(checkoutTime) > 0)
             appointmentDtoList.add(modelMapper.map(item, AppointmentDto.class));
         }
       }
@@ -175,7 +186,9 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
     Map<String, Object> results = new LinkedHashMap<>();
 
     User user = userRepository.findById(ID).get();
-    List<Appointment> my_appointmentList = user.get_appointments();
+    // List<Appointment> my_appointmentList = user.get_appointments();
+    List<Appointment> my_appointmentList = appointmentRepository
+        .findByGuestOrderByAppointmentIDDesc_withAccompanyPerson(user);
     List<AppointmentDto> appointmentDtoList = new ArrayList<>();
 
     my_appointmentList.forEach(item -> {
@@ -202,7 +215,7 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
     Map<String, Object> results = new LinkedHashMap<>();
 
     User user = User.builder().ID(iD).build();
-    List<Appointment> appointmentList = appointmentRepository.getTodayList_guest(user);
+    List<Appointment> appointmentList = appointmentRepository.getTodayList_guest_withAccompanyPerson(user);
 
     // List<AppointmentDto> appointmentDtoList = new ArrayList<>();
     List<AppointmentDto_main> appointmentDtoList = new ArrayList<>();
@@ -254,6 +267,38 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
       return -1;
     }
     return 0;
+  }
+
+  @Transactional
+  @Override
+  public int agreeAccompany(String ID, long appointmentID) {
+
+    try {
+      Appointment appointment = appointmentRepository.findById(appointmentID).orElse(null);
+      User guest = userRepository.findById(ID).orElse(null);
+
+      List<AccompanyPerson> accompanyList = accompanyPersonRepository.findByGuestAndAppointment(guest, appointment);
+
+      if (!accompanyList.isEmpty()) {
+        log.warn("이미 가입한 사용자입니다.");
+        return 0;
+      } else {
+
+        AccompanyPerson accompanyPerson = AccompanyPerson.builder()
+            .appointment(appointment)
+            .guest(guest)
+            .build();
+
+        accompanyPersonRepository.save(accompanyPerson);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      log.info("입력한 정보가 불일치 합니다.");
+      return -1; // 정보 불일치
+    }
+    log.info("동행인에 추가 되었습니다.");
+    ;
+    return 1;
   }
 
 }
