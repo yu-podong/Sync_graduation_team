@@ -1,9 +1,10 @@
 package com.vms.app.controller;
 
-import java.security.Principal;
+import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vms.app.entity.Appointment;
-import com.vms.app.entity.User;
+import com.vms.app.entity.Place;
 import com.vms.app.service.AppointmentService_guest;
 
 import io.swagger.annotations.Api;
@@ -52,7 +53,7 @@ public class DevGuestAppointmentController {
   /*** [GUEST] 신청내역 확인하기 ***/
   @ApiOperation(value = "<Button>[신청내역]", notes = "- 방문자의 [신청내역] 버튼을 클릭했을때의 기능입니다.\n- 승인, 거절, 대기중인 모든 약속이 시간순으로 보여집니다.\n")
   @GetMapping("/getMyHistory")
-  public Map<String, Object> getMyHistory(String ID) {
+  public Map<String, Object> getMyHistory(String ID, HttpServletResponse res) {
     Map<String, Object> results = appointmentService_guest.getMyHistory(ID);
     return results;
   }
@@ -114,5 +115,12 @@ public class DevGuestAppointmentController {
   @PostMapping("/agreeAccompany")
   public int agreeAccompany(String ID, long appointmentID) {
     return appointmentService_guest.agreeAccompany(ID, appointmentID);
+  }
+
+  // test용 직접 호출 X
+  @GetMapping("/duplicateAppointment")
+  public int duplicateAppointment(Place place, String checkIn, String checkOut) {
+
+    return appointmentService_guest.duplicateCheckPlace(place, checkIn, checkOut);
   }
 }
