@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vms.app.entity.Appointment;
+import com.vms.app.entity.Place;
 import com.vms.app.service.AppointmentService_guest;
 
 import io.swagger.annotations.Api;
@@ -113,4 +114,5 @@ public class GuestAppointmentController {
   public int agreeAccompany(Principal principal, long appointmentID) {
     return appointmentService_guest.agreeAccompany(principal.getName(), appointmentID);
   }
+
 }
