@@ -38,6 +38,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
   @Query(nativeQuery = true, value = "SELECT a.* FROM appointment a INNER JOIN accompanyPerson ap on a.appointmentID = ap.appointment WHERE ap.guest = ?1 AND DATE(a.date) = DATE(NOW()) UNION (SELECT a.* FROM appointment a WHERE a.user_guest = ?1 AND DATE(a.date) = DATE(NOW()))")
   public List<Appointment> getTodayList_guest_withAccompanyPerson(User user);
 
+  @EntityGraph(value = "Appointment.all", type = EntityGraphType.LOAD)
+  public List<Appointment> findAllByOrderByAppointmentIDDesc();
   // select * from appointmentPeriodOfUse ap inner join (select
   // MAX(ap.Ap_periodID) as id from appointmentPeriodOfUse ap inner join
   // appointment a on a.appointmentID = ap.appointment where a.visit_place = 221
