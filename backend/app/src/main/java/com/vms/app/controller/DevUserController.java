@@ -1,6 +1,5 @@
 package com.vms.app.controller;
 
-import java.security.Principal;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +19,8 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/dev/user")
+public class DevUserController {
 
   @Autowired
   private UserService userService;
@@ -40,9 +39,8 @@ public class UserController {
 
   @ApiOperation(value = "<상단 네비게이션>[MyInfo.dart]", notes = "- 유저와 회사정보를 가져옵니다. \n")
   @GetMapping("/getUserInfo")
-  public Map<String, Object> getUserInfo(Principal principal) {
-
-    return userService.getUserInfo(principal.getName());
+  public Map<String, Object> getUserInfo(String ID) {
+    return userService.getUserInfo(ID);
   }
 
 }

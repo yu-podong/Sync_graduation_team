@@ -17,11 +17,13 @@ import com.vms.app.dto.AppointmentDto_main;
 import com.vms.app.entity.AccompanyPerson;
 import com.vms.app.entity.Appointment;
 import com.vms.app.entity.AppointmentPeriodOfUse;
+import com.vms.app.entity.AppointmentRequestResult;
 import com.vms.app.entity.Place;
 import com.vms.app.entity.User;
 import com.vms.app.repository.AccompanyPersonRepository;
 import com.vms.app.repository.AppointmentPeriodOfUseRepository;
 import com.vms.app.repository.AppointmentRepository;
+import com.vms.app.repository.AppointmentRequestResultRepository;
 import com.vms.app.repository.PlaceRepository;
 import com.vms.app.repository.UserRepository;
 
@@ -39,6 +41,9 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
 
   @Autowired
   AppointmentPeriodOfUseRepository appointmentPeriodOfUseRepository;
+
+  @Autowired
+  AppointmentRequestResultRepository appointmentRequestResultRepository;
 
   @Autowired
   PlaceRepository placeRepository;
@@ -255,6 +260,12 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
         .appointment(appointment)
         .build();
 
+    // AppointmentRequestResult 객체 생성
+    AppointmentRequestResult appointmentRequestResult = AppointmentRequestResult.builder()
+        .appointment(appointment)
+        .isApproval(0)
+        .rejectReason("")
+        .build();
     // log.warn("[appointment] : " + appointmentPeriodOfUse.getAp_periodID());
 
     try {
@@ -264,6 +275,7 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
       if (duplicateCheckPlace == 1 && duplicateCheckUser == 1) { // 모두 중복이 아닐 경우
         appointmentRepository.save(appointment);
         appointmentPeriodOfUseRepository.save(appointmentPeriodOfUse);
+        appointmentRequestResultRepository.save(appointmentRequestResult);
 
       } else {
         return -2; // 일정 중복
