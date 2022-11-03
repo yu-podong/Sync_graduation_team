@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/utils.dart';
 
-class VisitPurposePage extends StatefulWidget {
-  const VisitPurposePage({Key? key}) : super(key : key);
+class ReqPurposePage extends StatefulWidget {
+  const ReqPurposePage({Key? key}) : super(key : key);
 
   @override
   State<StatefulWidget> createState() {
-    return _VisitPurposePage();
+    return _ReqPurposePage();
   }
 }
 
-class _VisitPurposePage extends State<VisitPurposePage> {
+class _ReqPurposePage extends State<ReqPurposePage> {
   List<Row> visitPurpose = List.empty(growable: true);
   List<String> detailValue1 = List.empty(growable: true);
   List<String> detailValue2 = List.empty(growable: true);
@@ -27,7 +27,8 @@ class _VisitPurposePage extends State<VisitPurposePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(CupertinoIcons.alarm),
+          Icon(CupertinoIcons.person_2),
+          Padding(padding: EdgeInsets.only(left: 10.0)),
           Text('일반내방', style: TextStyle(fontSize: 18),)
         ],
       )
@@ -37,7 +38,8 @@ class _VisitPurposePage extends State<VisitPurposePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(CupertinoIcons.alarm),
+          Icon(CupertinoIcons.wrench),
+          Padding(padding: EdgeInsets.only(left: 10.0)),
           Text('공사내방', style: TextStyle(fontSize: 18),)
         ],
       )
@@ -77,7 +79,7 @@ class _VisitPurposePage extends State<VisitPurposePage> {
                   /* Page title */
                   Container(
                     margin: EdgeInsets.only(bottom: 30),
-                    child: Text('방문목적 입력', style: TextStyle(fontSize: 23),),
+                    child: Text('방문목적 입력', style: TextStyle(fontSize: 24),),
                   ),
                   /* Description */
                   Container(
@@ -177,7 +179,7 @@ class _VisitPurposePage extends State<VisitPurposePage> {
       detailPurposeSection = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('방문목적', style: TextStyle(fontSize: 18),),
+          Text('방문목적', style: TextStyle(fontSize: 18, color: Color(0xff5A5A5A)),),
           Container(
             height: 200,
             child: ListView.builder(
@@ -193,7 +195,7 @@ class _VisitPurposePage extends State<VisitPurposePage> {
                         });
                       },
                     ),
-                    Text(valueList[index], style: TextStyle(fontSize: 18),),
+                    Text(valueList[index], style: TextStyle(fontSize: 18, color: Color(0xff5A5A5A),),),
                   ],
                 );
               },
