@@ -3,16 +3,16 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../class/room.dart';
 
-class VisitSpacePage extends StatefulWidget {
-  const VisitSpacePage({Key? key}) : super(key : key);
+class ReqSpacePage extends StatefulWidget {
+  const ReqSpacePage({Key? key}) : super(key : key);
 
   @override
   State<StatefulWidget> createState() {
-    return _VisitSpacePage();
+    return _ReqSpacePage();
   }
 }
 
-class _VisitSpacePage extends State<VisitSpacePage> {
+class _ReqSpacePage extends State<ReqSpacePage> {
   List<Room> _roomList = List.empty(growable: true);
   List<Color> _tapColor = List.empty(growable: true);
   int _isClick = -1;
@@ -46,7 +46,7 @@ class _VisitSpacePage extends State<VisitSpacePage> {
                     /* Page title */
                     Container(
                       margin: EdgeInsets.only(bottom: 30.0),
-                      child: Text('접견 장소 입력', style: TextStyle(fontSize: 23),),
+                      child: Text('접견 장소 입력', style: TextStyle(fontSize: 24),),
                     ),
                     /* Description */
                     Container(
@@ -60,7 +60,7 @@ class _VisitSpacePage extends State<VisitSpacePage> {
                     Container(
                       width: double.infinity,
                       height: 400,
-                      padding: EdgeInsets.symmetric(vertical: 30),
+                      padding: EdgeInsets.symmetric(vertical: 15),
                       decoration: BoxDecoration(
                           border: Border.symmetric(horizontal: BorderSide(color: Color(0xffDEDEDE)))
                       ),
@@ -73,25 +73,25 @@ class _VisitSpacePage extends State<VisitSpacePage> {
                               });
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                               color: _tapColor[index],
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  // Host name
+                                  // Space #
                                   Container(
                                     padding: EdgeInsets.only(left: 10.0),
-                                    child: Text(_roomList[index].roomId!, style: TextStyle(fontSize: 18.0),),
+                                    child: Text(_roomList[index].roomId!, style: TextStyle(fontSize: 16.0),),
                                   ),
-                                  // Room name
+                                  // Space name
                                   Container(
                                     padding: EdgeInsets.only(left: 30.0),
-                                    child: Text(_roomList[index].roomName!, style: TextStyle(fontSize: 18.0),),
+                                    child: Text(_roomList[index].roomName!, style: TextStyle(fontSize: 16.0),),
                                   ),
                                   // isEnable
                                   Container(
                                     padding: EdgeInsets.only(left: 30.0),
-                                    child: Text(_roomList[index].isEnable!, style: TextStyle(fontSize: 18.0, color: _setEnableTextColor(index)),),
+                                    child: Text(_roomList[index].isEnable!, style: TextStyle(fontSize: 16.0, color: _setEnableTextColor(index)),),
                                   ),
                                 ],
                               ),
@@ -109,7 +109,7 @@ class _VisitSpacePage extends State<VisitSpacePage> {
                     child: GestureDetector(
                       child: Text('다음 >', style: TextStyle(fontSize: 20),),
                       onTap: () {
-                        Navigator.of(context).pushReplacementNamed('/createVisit/final');
+                        Navigator.of(context).pushReplacementNamed('/createVisit/companion');
                       },
                     )
                 )

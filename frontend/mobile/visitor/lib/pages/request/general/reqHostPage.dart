@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 import '../../../class/host.dart';
 
-class VisitHostPage extends StatefulWidget {
-  const VisitHostPage({Key? key}) : super(key: key);
+class ReqHostPage extends StatefulWidget {
+  const ReqHostPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _VisitHostPage();
+    return _ReqHostPage();
   }
 }
 
-class _VisitHostPage extends State<VisitHostPage> {
+class _ReqHostPage extends State<ReqHostPage> {
   List<Host> _hostList = List.empty(growable: true);
   List<Color> _tapColor = List.empty(growable: true);
   int _isClick = -1;
@@ -46,7 +46,7 @@ class _VisitHostPage extends State<VisitHostPage> {
                   /* Page title */
                   Container(
                     margin: EdgeInsets.only(bottom: 30.0),
-                    child: Text('접견자 정보 입력', style: TextStyle(fontSize: 23),),
+                    child: Text('접견자 정보 입력', style: TextStyle(fontSize: 24),),
                   ),
                   /* Description */
                   Container(
@@ -60,7 +60,7 @@ class _VisitHostPage extends State<VisitHostPage> {
                   Container(
                     width: double.infinity,
                     height: 400,
-                    padding: EdgeInsets.symmetric(vertical: 30),
+                    padding: EdgeInsets.symmetric(vertical: 15),
                     decoration: BoxDecoration(
                       border: Border.symmetric(horizontal: BorderSide(color: Color(0xffDEDEDE)))
                     ),
@@ -77,23 +77,24 @@ class _VisitHostPage extends State<VisitHostPage> {
                             color: _tapColor[index],
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 // Host image
-                                Icon(Icons.account_circle, size: 45, color: Color(0xffC4C4C4),),
+                                Icon(Icons.account_circle, size: 30, color: Color(0xff8D8D8D),),
                                 // Host name
                                 Container(
                                   padding: EdgeInsets.only(left: 10.0),
-                                  child: Text(_hostList[index].name!, style: TextStyle(fontSize: 18.0),),
+                                  child: Text(_hostList[index].name!, style: TextStyle(fontSize: 16.0),),
                                 ),
                                 // Host group
                                 Container(
                                   padding: EdgeInsets.only(left: 30.0),
-                                  child: Text(_hostList[index].group!, style: TextStyle(fontSize: 18.0),),
+                                  child: Text(_hostList[index].group!, style: TextStyle(fontSize: 16.0),),
                                 ),
                                 // Host position
                                 Container(
                                   padding: EdgeInsets.only(left: 30.0),
-                                  child: Text(_hostList[index].position!, style: TextStyle(fontSize: 18.0),),
+                                  child: Text(_hostList[index].position!, style: TextStyle(fontSize: 16.0),),
                                 ),
                               ],
                             ),

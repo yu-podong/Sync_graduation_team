@@ -2,43 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class VisitDatePage extends StatefulWidget {
-  const VisitDatePage({Key? key}) : super(key : key);
+class ReqDatePage extends StatefulWidget {
+  const ReqDatePage({Key? key}) : super(key : key);
 
   @override
   State<StatefulWidget> createState() {
-    return _VisitDatePage();
+    return _ReqDatePage();
   }
 }
 
-class _VisitDatePage extends State<VisitDatePage>{
+class _ReqDatePage extends State<ReqDatePage>{
   // 캘린더 설정 시, 필요한 변수들
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
   // 입실 & 퇴실시간 설정 시, 필요한 변수들
-  DateTime time = DateTime(2016, 5, 10, 22, 35);
+  DateTime timeIn = DateTime(2016, 5, 10, 22, 35);
+  DateTime timeOut = DateTime(2016, 5, 10, 23, 35);
 
   // This shows a CupertinoModalPopup with a reasonable fixed height which hosts CupertinoDatePicker.
   void _showDialog(Widget child) {
     showCupertinoModalPopup<void>(
-        context: context,
-        builder: (BuildContext context) => Container(
-          height: 216,
-          padding: const EdgeInsets.only(top: 6.0),
-          // The Bottom margin is provided to align the popup above the system navigation bar.
-          margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          // Provide a background color for the popup.
-          color: CupertinoColors.systemBackground.resolveFrom(context),
-          // Use a SafeArea widget to avoid system overlaps.
-          child: SafeArea(
-            top: false,
-            child: child,
-          ),
-        ));
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: 216,
+        padding: const EdgeInsets.only(top: 6.0),
+        // The Bottom margin is provided to align the popup above the system navigation bar.
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        // Provide a background color for the popup.
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        // Use a SafeArea widget to avoid system overlaps.
+        child: SafeArea(
+          top: false,
+          child: child,
+        ),
+      ));
   }
 
   @override
@@ -75,6 +76,18 @@ class _VisitDatePage extends State<VisitDatePage>{
                     Container(
                       margin: EdgeInsets.only(bottom: 60),
                       child: TableCalendar(
+                        headerStyle: HeaderStyle(
+                          titleCentered: true,
+                          formatButtonVisible: false,
+                        ),
+                        calendarStyle: CalendarStyle(
+                          /* 오늘 날짜에 대한 강조 표시 스타일 */
+                          todayDecoration: BoxDecoration(color: Color(0xffFFF1D1), shape: BoxShape.circle),
+                          todayTextStyle: TextStyle(color: Color(0xff000000)),
+                          /* 선택한 날짜에 대한 강조 표시 스타일 */
+                          selectedDecoration: BoxDecoration(color: Color(0xffFFDE8F), shape: BoxShape.circle),
+                          selectedTextStyle: TextStyle(color: Color(0xff000000)),
+                        ),
                         firstDay: DateTime.utc(2010, 10, 16),
                         lastDay: DateTime.utc(2030, 3, 14),
                         focusedDay: DateTime.now(),
@@ -107,24 +120,24 @@ class _VisitDatePage extends State<VisitDatePage>{
                             children: <Widget>[
                               _DatePickerItem(
                                 children: <Widget>[
-                                  const Text('입실시간'),
+                                  const Text('입실시간', style: TextStyle(fontSize: 14, color: Color(0xff5A5A5A)),),
                                   CupertinoButton(
                                     // Display a CupertinoDatePicker in time picker mode.
                                     onPressed: () => _showDialog(
                                       CupertinoDatePicker(
-                                        initialDateTime: time,
+                                        initialDateTime: timeIn,
                                         mode: CupertinoDatePickerMode.time,
                                         use24hFormat: true,
                                         // This is called when the user changes the time.
                                         onDateTimeChanged: (DateTime newTime) {
-                                          setState(() => time = newTime);
+                                          setState(() => timeIn = newTime);
                                         },
                                       ),
                                     ),
                                     // In this example, the time value is formatted manually. You can use intl package to
                                     // format the value based on the user's locale settings.
                                     child: Text(
-                                      '${time.hour}시 ${time.minute}분',
+                                      '${timeIn.hour}시 ${timeIn.minute}분',
                                       style: const TextStyle(
                                         fontSize: 18.0,
                                       ),
@@ -150,24 +163,24 @@ class _VisitDatePage extends State<VisitDatePage>{
                             children: <Widget>[
                               _DatePickerItem(
                                 children: <Widget>[
-                                  const Text('퇴실시간'),
+                                  const Text('퇴실시간', style: TextStyle(fontSize: 14, color: Color(0xff5A5A5A)),),
                                   CupertinoButton(
                                     // Display a CupertinoDatePicker in time picker mode.
                                     onPressed: () => _showDialog(
                                       CupertinoDatePicker(
-                                        initialDateTime: time,
+                                        initialDateTime: timeOut,
                                         mode: CupertinoDatePickerMode.time,
                                         use24hFormat: true,
                                         // This is called when the user changes the time.
                                         onDateTimeChanged: (DateTime newTime) {
-                                          setState(() => time = newTime);
+                                          setState(() => timeOut = newTime);
                                         },
                                       ),
                                     ),
                                     // In this example, the time value is formatted manually. You can use intl package to
                                     // format the value based on the user's locale settings.
                                     child: Text(
-                                      '${time.hour}시 ${time.minute}분',
+                                      '${timeOut.hour}시 ${timeOut.minute}분',
                                       style: const TextStyle(
                                         fontSize: 18.0,
                                       ),
