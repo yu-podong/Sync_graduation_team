@@ -188,7 +188,7 @@ class _VisitDatePage extends State<VisitDatePage>{
                     child: GestureDetector(
                       child: Text('다음 >', style: TextStyle(fontSize: 20),),
                       onTap: () {
-                        Navigator.of(context).pushReplacementNamed('/createVisit/visitSpace');
+                        Navigator.of(context).pushReplacementNamed('/createVisit/space');
                       },
                     )
                 )

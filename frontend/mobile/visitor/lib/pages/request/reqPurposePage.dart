@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/utils.dart';
 
-class CreateVisitPage extends StatefulWidget {
-  const CreateVisitPage({Key? key}) : super(key : key);
+class VisitPurposePage extends StatefulWidget {
+  const VisitPurposePage({Key? key}) : super(key : key);
 
   @override
   State<StatefulWidget> createState() {
-    return _CreateVisitPage();
+    return _VisitPurposePage();
   }
 }
 
-class _CreateVisitPage extends State<CreateVisitPage> {
+class _VisitPurposePage extends State<VisitPurposePage> {
   List<Row> visitPurpose = List.empty(growable: true);
   List<String> detailValue1 = List.empty(growable: true);
   List<String> detailValue2 = List.empty(growable: true);
@@ -161,7 +161,7 @@ class _CreateVisitPage extends State<CreateVisitPage> {
                 child: GestureDetector(
                   child: Text('다음 >', style: TextStyle(fontSize: 20),),
                   onTap: () {
-                    Navigator.of(context).pushReplacementNamed('/createVisit/hostInfo');
+                    Navigator.of(context).pushReplacementNamed('/createVisit/host');
                   },
                 )
               ),

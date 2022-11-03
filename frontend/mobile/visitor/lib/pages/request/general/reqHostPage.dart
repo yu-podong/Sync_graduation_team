@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../class/host.dart';
+import '../../../class/host.dart';
 
-class HostInfoPage extends StatefulWidget {
-  const HostInfoPage({Key? key}) : super(key: key);
+class VisitHostPage extends StatefulWidget {
+  const VisitHostPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _HostInfoPage();
+    return _VisitHostPage();
   }
 }
 
-class _HostInfoPage extends State<HostInfoPage> {
+class _VisitHostPage extends State<VisitHostPage> {
   List<Host> _hostList = List.empty(growable: true);
   List<Color> _tapColor = List.empty(growable: true);
   int _isClick = -1;
@@ -111,7 +111,7 @@ class _HostInfoPage extends State<HostInfoPage> {
                   child: GestureDetector(
                     child: Text('다음 >', style: TextStyle(fontSize: 20),),
                     onTap: () {
-                      Navigator.of(context).pushReplacementNamed('/createVisit/visitDate');
+                      Navigator.of(context).pushReplacementNamed('/createVisit/date');
                     },
                   )
               )
