@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 
 import 'package:mobile/pages/requestList/reqListPage.dart';
 import 'package:mobile/pages/result/resListPage.dart';
-import 'package:mobile/pages/tab/myInfoPage.dart';
-import 'package:mobile/pages/tab/noticePage.dart';
+import 'package:mobile/pages/tab/myPage.dart';
+import 'package:mobile/pages/tab/noPage.dart';
 import 'package:mobile/pages/tab/homePage.dart';
 import 'package:mobile/pages/visit/visListPage.dart';
 
-class VisitorMainPage extends StatefulWidget {
-  const VisitorMainPage({Key? key}) : super(key: key);
+class VisMainPage extends StatefulWidget {
+  const VisMainPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _VisitorMainPage();
+    return _VisMainPage();
   }
 }
 
-class _VisitorMainPage extends State<VisitorMainPage> {
+class _VisMainPage extends State<VisMainPage> {
   CupertinoTabBar? tabBar;
 
   @override
@@ -51,7 +51,7 @@ class _VisitorMainPage extends State<VisitorMainPage> {
             builder: (BuildContext context) {
               /* Notice menu */
               if(value == 0) {
-                return NoticePage();
+                return NoPage();
               }
               /* Home menu */
               else if(value == 1) {
