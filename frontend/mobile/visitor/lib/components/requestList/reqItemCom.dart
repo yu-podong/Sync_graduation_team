@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../class/promise.dart';
+import '../../class/Promise.dart';
 
 
 class ReqItemCom extends StatefulWidget {
