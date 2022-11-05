@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
-
-class Space {
+class Room {
   int id;
   String? roomId;
   String? roomName;
   String? isEnable;
 
-  Space({
+  Room({
     required this.id,
     required this.roomId,
     required this.roomName,
