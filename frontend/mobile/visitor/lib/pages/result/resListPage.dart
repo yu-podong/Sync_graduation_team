@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/result/re-reqPopCom.dart';
 
-import '../../class/promise.dart';
+import '../../class/Promise.dart';
 import '../../components/proDetailCom.dart';
 import '../../components/result/resItemCom.dart';
 
