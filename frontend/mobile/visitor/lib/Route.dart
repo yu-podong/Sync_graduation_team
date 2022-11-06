@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:mobile/class/Notice.dart';
 import 'package:mobile/pages/request/companionPage.dart';
 import 'package:mobile/pages/tab/myPage.dart';
 import 'package:mobile/pages/tab/noPage.dart';
+import 'package:mobile/pages/tab/noReadPage.dart';
 
 import 'pages/visLoginPage.dart';
 import 'pages/visMainPage.dart';
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/' : (context) => const VisMainPage(),
         '/notice' : (context) => const NoPage(),
+        '/notice/read' : (context) => const NoReadPage(),
         '/my' : (context) => const MyPage(),
         '/login' : (context) => const VisLoginPage(),
         '/reqList' : (context) => const ReqListPage(),
