@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../class/host.dart';
+import '../../../class/Host.dart';
 
 class ReqHostPage extends StatefulWidget {
   const ReqHostPage({Key? key}) : super(key: key);

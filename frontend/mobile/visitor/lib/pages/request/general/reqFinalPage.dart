@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:mobile/components/proDetailCom.dart';
 import 'package:mobile/components/request/reqFinalPopCom.dart';
 
-import '../../../class/promise.dart';
+import '../../../class/Promise.dart';
 
 
 class ReqFinalPage extends StatefulWidget {

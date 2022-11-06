@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../class/room.dart';
+import '../../../class/Room.dart';
 
 class ReqSpacePage extends StatefulWidget {
   const ReqSpacePage({Key? key}) : super(key : key);
