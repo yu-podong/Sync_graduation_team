@@ -6,7 +6,10 @@ import 'package:mobile/pages/result/resListPage.dart';
 import 'package:mobile/pages/tab/myPage.dart';
 import 'package:mobile/pages/tab/noPage.dart';
 import 'package:mobile/pages/tab/homePage.dart';
+import 'package:mobile/pages/tab/noReadPage.dart';
 import 'package:mobile/pages/visit/visListPage.dart';
+
+import '../class/Notice.dart';
 
 class VisMainPage extends StatefulWidget {
   const VisMainPage({Key? key}) : super(key: key);
@@ -76,6 +79,13 @@ class _VisMainPage extends State<VisMainPage> {
               else if(settings.name == '/visList') {
                 return CupertinoPageRoute(
                     builder: (_) => VisListPage()
+                );
+              }
+              else if(settings.name == '/notice/read') {
+                //final args = settings.arguments as Notice;
+
+                return CupertinoPageRoute(
+                    builder: (_) => NoReadPage()
                 );
               }
               return null;
