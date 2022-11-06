@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
         '/' : (context) => const VisMainPage(),
         '/notice' : (context) => const NoPage(),
