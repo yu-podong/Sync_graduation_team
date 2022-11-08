@@ -25,6 +25,7 @@ public class UserDto {
 
   private String email_back;
 
+  private int userType;
   // private String role;
 
   // private int isCheckLogin; // 로그인 승인 여부

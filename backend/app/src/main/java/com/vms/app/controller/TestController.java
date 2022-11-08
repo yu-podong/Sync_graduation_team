@@ -21,18 +21,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vms.app.dto.CompanyDto;
 import com.vms.app.dto.UserDto;
+import com.vms.app.entity.AccompanyPerson;
 import com.vms.app.entity.Appointment;
 import com.vms.app.entity.AppointmentPeriodOfUse;
 import com.vms.app.entity.AppointmentRequestResult;
 import com.vms.app.entity.Company;
 import com.vms.app.entity.Notice;
+import com.vms.app.entity.Place;
 import com.vms.app.entity.Setting;
 import com.vms.app.entity.User;
+import com.vms.app.repository.AccompanyPersonRepository;
 import com.vms.app.repository.AppointmentPeriodOfUseRepository;
 import com.vms.app.repository.AppointmentRepository;
 import com.vms.app.repository.AppointmentRequestResultRepository;
 import com.vms.app.repository.CompanyRepository;
 import com.vms.app.repository.NoticeRepository;
+import com.vms.app.repository.PlaceRepository;
 import com.vms.app.repository.SettingRepository;
 import com.vms.app.repository.UserRepository;
 
@@ -77,6 +81,12 @@ public class TestController {
 	private SettingRepository settingRepository;
 
 	@Autowired
+	private PlaceRepository placeRepository;
+
+	@Autowired
+	private AccompanyPersonRepository accompanyPersonRepository;
+
+	@Autowired
 	private ModelMapper modelMapper;
 
 	@Autowired
@@ -100,18 +110,22 @@ public class TestController {
 			// 순서 바뀌면 안됨 (외래키를 가진거 부터 지워야 함)
 
 			noticeRepository.deleteAll();
+			accompanyPersonRepository.deleteAll();
 			appointmentPeriodOfUseRepository.deleteAll();
 			appointmentRequestResultRepository.deleteAll();
 			appointmentRepository.deleteAll();
+			placeRepository.deleteAll();
 			userRepository.deleteAll();
 			companyRepository.deleteAll();
 			settingRepository.deleteAll();
 
 			insertCompanyData();
+			insertPlaceData();
 			insertUserData();
 			insertAppointmentData();
 			insertAppointmentRequestResultData();
-			AppointmentPeriodOfUseData();
+			insertAppointmentPeriodOfUseData();
+			insertAccompanyPersonData();
 			insertSettingmentData();
 			insertNoticeData();
 			log.info("Strping boot version : " + org.springframework.core.SpringVersion.getVersion());
@@ -180,29 +194,166 @@ public class TestController {
 
 			List<User> users = new ArrayList<>();
 
-			// password : 123 모두 동일
+			// 접견자1
+			User user1 = User.builder()
+					.ID("q1q1")
+					.password(bCryPasswordEncoder.encode("q1q1_김승연"))
+					.identityNum("961019-1234567")
+					.name("김승연")
+					.email_front("ksygt728")
+					.email_back("gmail.com")
+					.phoneNum("01091360767")
+					.isCheckLogin(1)
+					.role("ROLE_USER")
+					.userType(1)
+					.company(companies.get(3))
+					.build();
 
-			User user1 = new User("ksygt728", bCryPasswordEncoder.encode("123"), "김승연", "961019-1234567", "01091360767",
-					"ksygt728", "gmail.com", "ROLE_USER",
-					1, null, companies.get(0), null, null);
-			User user2 = new User("saiqgo522", bCryPasswordEncoder.encode("123"), "홍길동", "961022-1222267",
-					"01012142243", "qwee242", "gmail.com", "ROLE_USER",
-					1, null, companies.get(1), null, null);
-			User user3 = new User("q1q1", bCryPasswordEncoder.encode("123"), "김이름", "961019-1232887",
-					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
-					1, null, companies.get(3), null, null);
-			User user4 = new User("q3q3", bCryPasswordEncoder.encode("123"), "유현진", "961027-1452467",
-					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
-					1, null, companies.get(3), null, null);
-			User user5 = new User("w2w2", bCryPasswordEncoder.encode("123"), "이지민", "961022-1342467",
-					"01091361232", "zzvs5200", "gmail.com", "ROLE_USER",
-					1, null, companies.get(3), null, null);
+			// 접견자2
+			User user2 = User.builder()
+					.ID("q2q2")
+					.password(bCryPasswordEncoder.encode("q2q2_홍길동"))
+					.identityNum("961022-1222267")
+					.name("홍길동")
+					.email_front("qwee242")
+					.email_back("gmail.com")
+					.phoneNum("01012148888")
+					.isCheckLogin(1)
+					.role("ROLE_USER")
+					.userType(1)
+					.company(companies.get(1))
+					.build();
+
+			// 접견자3
+			User user3 = User.builder()
+					.ID("q3q3")
+					.password(bCryPasswordEncoder.encode("q3q3_김이름"))
+					.identityNum("961019-1232887")
+					.name("김이름")
+					.email_front("zzvs5200")
+					.email_back("gmail.com")
+					.phoneNum("01091367777")
+					.isCheckLogin(1)
+					.role("ROLE_USER")
+					.userType(1)
+					.company(companies.get(3))
+					.build();
+
+			// 방문자(직장인)1
+			User user4 = User.builder()
+					.ID("유현진_01011111232")
+					.password(bCryPasswordEncoder.encode("유현진_01011111232"))
+					.identityNum("961027-1452467")
+					.name("유현진")
+					.email_front("zzvs5200")
+					.email_back("gmail.com")
+					.phoneNum("01011111232")
+					.isCheckLogin(1)
+					.role("ROLE_USER")
+					.userType(2)
+					.company(companies.get(2))
+					.build();
+
+			// 방문자(직장인)2
+			User user5 = User.builder()
+					.ID("송승우_01091363332")
+					.password(bCryPasswordEncoder.encode("송승우_01091363332"))
+					.identityNum("961022-1346267")
+					.name("송승우")
+					.email_front("zzvs5200")
+					.email_back("gmail.com")
+					.phoneNum("01091363332")
+					.isCheckLogin(1)
+					.role("ROLE_USER")
+					.userType(2)
+					.company(companies.get(1))
+					.build();
+
+			// 방문자(직장인)3
+			User user6 = User.builder()
+					.ID("이지민_01091367772")
+					.password(bCryPasswordEncoder.encode("이지민_01091367772"))
+					.identityNum("961022-1392567")
+					.name("이지민")
+					.email_front("zzvs5200")
+					.email_back("gmail.com")
+					.phoneNum("01091367772")
+					.isCheckLogin(1)
+					.role("ROLE_USER")
+					.userType(2)
+					.company(companies.get(1))
+					.build();
+
+			// 방문자(학생)1
+			User user7 = User.builder()
+					.ID("2019395940")
+					.password(bCryPasswordEncoder.encode("2019395940_떠나간지민님"))
+					.identityNum("961022-1348366")
+					.name("떠나간지민님")
+					.email_front("zzvs5200")
+					.email_back("gmail.com")
+					.phoneNum("01091661232")
+					.isCheckLogin(1)
+					.role("ROLE_USER")
+					.userType(3)
+					.company(companies.get(0))
+					.build();
+
+			// 방문자(학생)2
+			User user8 = User.builder()
+					.ID("2019403922")
+					.password(bCryPasswordEncoder.encode("2019403922_돌아오지않는지민님"))
+					.identityNum("961022-1335237")
+					.name("돌아오지않는지민님")
+					.email_front("zzvs5200")
+					.email_back("gmail.com")
+					.phoneNum("01091360767")
+					.isCheckLogin(1)
+					.role("ROLE_USER")
+					.userType(3)
+					.company(companies.get(2))
+					.build();
+
+			// 방문자(학생)3
+			User user9 = User.builder()
+					.ID("2005104220")
+					.password(bCryPasswordEncoder.encode("2005104220_군대를가버린지님민"))
+					.identityNum("961022-1069867")
+					.name("김승연")
+					.email_front("zzvs5200")
+					.email_back("gmail.com")
+					.phoneNum("01091361212")
+					.isCheckLogin(1)
+					.role("ROLE_USER")
+					.userType(3)
+					.company(companies.get(3))
+					.build();
+
+			// 관리자1
+			User user10 = User.builder()
+					.ID("admin")
+					.password(bCryPasswordEncoder.encode("admin_나는관리자"))
+					.identityNum("961022-1059377")
+					.name("김승나는관리자연")
+					.email_front("zzvs5200")
+					.email_back("gmail.com")
+					.phoneNum("01091361422")
+					.isCheckLogin(1)
+					.role("ROLE_USER")
+					.userType(4)
+					.company(companies.get(0))
+					.build();
 
 			users.add(user1);
 			users.add(user2);
 			users.add(user3);
 			users.add(user4);
 			users.add(user5);
+			users.add(user6);
+			users.add(user7);
+			users.add(user8);
+			users.add(user9);
+			users.add(user10);
 
 			userRepository.saveAll(users);
 
@@ -213,6 +364,96 @@ public class TestController {
 		return "sucess";
 	}
 
+	@Transactional
+	@GetMapping("/insertPlaceData") // 세팅 추가
+	public String insertPlaceData() {
+
+		try {
+			List<Place> list = new ArrayList();
+
+			Place place1 = Place.builder()
+					.roomNum("101")
+					.name("강의실1")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place2 = Place.builder()
+					.roomNum("102")
+					.name("강의실2")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place3 = Place.builder()
+					.roomNum("103")
+					.name("강의실3")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place4 = Place.builder()
+					.roomNum("104")
+					.name("강의실4")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place5 = Place.builder()
+					.roomNum("105")
+					.name("강의실5")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place6 = Place.builder()
+					.roomNum("106")
+					.name("강의실6")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place7 = Place.builder()
+					.roomNum("107")
+					.name("강의실7")
+					.floor(1)
+					.isUse(0)
+					.build();
+			Place place8 = Place.builder()
+					.roomNum("201")
+					.name("실습실1")
+					.floor(2)
+					.isUse(0)
+					.build();
+			Place place9 = Place.builder()
+					.roomNum("202")
+					.name("실습실2")
+					.floor(2)
+					.isUse(0)
+					.build();
+			Place place10 = Place.builder()
+					.roomNum("203")
+					.name("실습실3")
+					.floor(2)
+					.isUse(0)
+					.build();
+
+			list.add(place1);
+			list.add(place2);
+			list.add(place3);
+			list.add(place4);
+			list.add(place5);
+			list.add(place6);
+			list.add(place7);
+			list.add(place8);
+			list.add(place9);
+			list.add(place10);
+
+			placeRepository.saveAll(list);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+
+		return "success";
+	}
+
+	@Transactional
 	@GetMapping("/insertAppointmentData") // 일정 데이터 추가
 	public String insertAppointmentData() {
 
@@ -223,65 +464,73 @@ public class TestController {
 
 		try {
 			List<Appointment> list = new ArrayList<>();
+			List<Place> placeList = placeRepository.findAll();
+			List<User> userList = userRepository.findAll();
+
+			log.warn("여기서 오류나냐??");
 
 			Appointment appoint1 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
-					.visit_place("삼성 대기실 1")
+					.visit_place(placeList.get(0))
 					.visit_purpose("거래")
 					.accompanyingPerson(1)
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("ksygt728").get())
-					.host(userRepository.findById("q1q1").get())
+					.guest(userRepository.findById("2005104220").orElse(null))
+					// .guest(userList.get(4))
+					.host(userRepository.findById("q1q1").orElse(null))
+					// .host(userList.get(2))
 					.build();
+			log.warn("여기서 오류나냐??");
 
 			Appointment appoint2 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
-					.visit_place("엘지 어디어디")
+					.visit_place(placeList.get(1))
 					.visit_purpose("생각안남")
 					.accompanyingPerson(1)
 					.isArrival(0)
 					.type(1)
 					.invite_link("asfioafioqjw21ioioaafsopja")
-					.guest(userRepository.findById("q3q3").get())
-					.host(userRepository.findById("w2w2").get())
+					// .guest(userList.get(4))
+					.guest(userRepository.findById("송승우_01091363332").orElse(null))
+					.host(userRepository.findById("q3q3").orElse(null))
 					.build();
 
 			Appointment appoint3 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
-					.visit_place("하이닉스 어디어디")
+					.visit_place(placeList.get(2))
 					.visit_purpose("생각안남2")
 					.accompanyingPerson(1)
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("w2w2").get())
-					.host(userRepository.findById("q3q3").get())
+					.guest(userRepository.findById("2019395940").orElse(null))
+					.host(userList.get(1))
 					.build();
 
 			Appointment appoint4 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
-					.visit_place("삼성 생각안남")
+					.visit_place(placeList.get(7))
 					.visit_purpose("생각안남2")
 					.accompanyingPerson(1)
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("ksygt728").get())
-					.host(userRepository.findById("q1q1").get())
+					.guest(userList.get(6))
+					.host(userList.get(1))
 					.build();
 
 			Appointment appoint5 = Appointment.builder()
 					.date(time.format(new Timestamp(System.currentTimeMillis())))
-					.visit_place("하이닉스 생각안남")
+					.visit_place(placeList.get(8))
 					.visit_purpose("생각안남")
 					.accompanyingPerson(1)
 					.isArrival(0)
 					.invite_link("asfioafioqjw21ioioaafsopja")
 					.type(1)
-					.guest(userRepository.findById("w2w2").get())
-					.host(userRepository.findById("q3q3").get())
+					.guest(userList.get(3))
+					.host(userList.get(2))
 					.build();
 
 			list.add(appoint1);
@@ -301,6 +550,7 @@ public class TestController {
 
 	}
 
+	@Transactional
 	@GetMapping("/insertSettingData") // 세팅 추가
 	public String insertSettingmentData() {
 
@@ -308,13 +558,13 @@ public class TestController {
 			List<Setting> list = new ArrayList();
 
 			Setting setting1 = Setting.builder()
-					.userID("ksygt728")
-					.user(userRepository.findById("ksygt728").get())
+					.userID("x")
+					.user(userRepository.findById("q1q1").get())
 					.build();
 
 			Setting setting2 = Setting.builder()
-					.userID("w2w2")
-					.user(userRepository.findById("w2w2").get())
+					.userID("q1q1")
+					.user(userRepository.findById("q1q1").get())
 					.build();
 
 			list.add(setting1);
@@ -443,6 +693,7 @@ public class TestController {
 		return "success";
 	}
 
+	@Transactional
 	@GetMapping("/insertAppointmentRequestResultData")
 	public String insertAppointmentRequestResultData() {
 
@@ -495,8 +746,9 @@ public class TestController {
 		return "success";
 	}
 
+	@Transactional
 	@GetMapping("/AppointmentPeriodOfUseData")
-	public String AppointmentPeriodOfUseData() {
+	public String insertAppointmentPeriodOfUseData() {
 
 		try {
 			List<AppointmentPeriodOfUse> list = new ArrayList<>();
@@ -551,6 +803,110 @@ public class TestController {
 		}
 
 		return "success";
+	}
+
+	@Transactional
+	@GetMapping("/insertAccompanyPersonData") // 일정 데이터 추가
+	public String insertAccompanyPersonData() {
+
+		/*
+		 * new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new
+		 * Timestamp(System.currentTimeMillis()))
+		 */
+
+		try {
+			List<AccompanyPerson> list = new ArrayList<>();
+			List<User> userList = userRepository.findAll();
+			List<Appointment> appointmentList = appointmentRepository.findAll();
+
+			AccompanyPerson a1 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(0))
+					.guest(userRepository.findById("2019395940").orElse(null))
+					.build();
+			AccompanyPerson a2 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(0))
+					.guest(userRepository.findById("송승우_01091363332").orElse(null))
+					.build();
+			AccompanyPerson a3 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(0))
+					.guest(userRepository.findById("유현진_01011111232").orElse(null))
+					// .guest(userList.get(0))
+					.build();
+			AccompanyPerson a4 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(0))
+					.guest(userRepository.findById("2019403922").orElse(null))
+					// .guest(userList.get(0))
+					.build();
+			AccompanyPerson a5 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(1))
+					.guest(userList.get(0))
+					.build();
+			AccompanyPerson a6 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(0))
+					.guest(userList.get(0))
+					.build();
+			AccompanyPerson a7 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(1))
+					.guest(userList.get(0))
+					.build();
+			AccompanyPerson a8 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(1))
+					.guest(userList.get(0))
+					.build();
+			AccompanyPerson a9 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(1))
+					.guest(userList.get(0))
+					.build();
+			AccompanyPerson a10 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(1))
+					.guest(userList.get(0))
+					.build();
+			AccompanyPerson a11 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(1))
+					.guest(userList.get(0))
+					.build();
+			AccompanyPerson a12 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(1))
+					.guest(userList.get(0))
+					.build();
+			AccompanyPerson a13 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(1))
+					.guest(userList.get(0))
+					.build();
+			AccompanyPerson a14 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(1))
+					.guest(userList.get(0))
+					.build();
+			AccompanyPerson a15 = AccompanyPerson.builder()
+					.appointment(appointmentList.get(1))
+					.guest(userList.get(0))
+					.build();
+
+			list.add(a1);
+			list.add(a2);
+			list.add(a3);
+			list.add(a4);
+			list.add(a5);
+			list.add(a6);
+			list.add(a7);
+			list.add(a8);
+			list.add(a9);
+			list.add(a10);
+			list.add(a11);
+			list.add(a12);
+			list.add(a13);
+			list.add(a14);
+			list.add(a15);
+
+			accompanyPersonRepository.saveAll(list);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+
+		return "success";
+
 	}
 
 	/*

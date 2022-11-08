@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vms.app.service.AppointmentService_guest;
 import com.vms.app.service.AppointmentService_host;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Log4j2
-@Api("접견자의 기능을 담당하는 Controller 입니다")
-@RequestMapping("/host")
 @RestController
-public class HostAppointmentController {
+@Api("방문자의 기능을 담당하는 Controller 입니다")
+@RequestMapping("/dev/host")
+public class DevHostAppointmentController {
 
   @ModelAttribute("cp")
   public String getContextPath(HttpServletRequest request) {
@@ -31,21 +31,18 @@ public class HostAppointmentController {
   }
 
   @Autowired
-  private AppointmentService_host appointmentService_host;
+  AppointmentService_guest appointmentService_guest;
 
-  /* ================= Main Today Appointment List ================= */
+  @Autowired
+  AppointmentService_host appointmentService_host;
 
   /*** [HOST] 메인 Toady ***/
   @ApiOperation(value = "<List>[메인 Today]", notes = "- 접견자의 [Today] 부분.\n" +
-      "- 오늘의 해당하는 약속만 가져옵니다.\n" +
-      "- <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n" +
-      "- 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n" +
-      "- Parameter는 필요 없습니다.\n\n" +
-      "- Try out 실행 안될겁니다")
+      "- 오늘의 해당하는 약속만 가져옵니다.\n")
   @GetMapping(value = "/getTodayList")
-  public Map<String, Object> getTodayList(Principal principal) {
+  public Map<String, Object> getTodayList(String ID) {
 
-    Map<String, Object> results = appointmentService_host.getTodayList(principal.getName());
+    Map<String, Object> results = appointmentService_host.getTodayList(ID);
     return results;
   }
 
@@ -53,44 +50,32 @@ public class HostAppointmentController {
   /* ============================================================== */
   /* ============================================================== */
 
-  /*** [HOST] 신규접수내역 ***/
+  /*** [Host] 신규접수내역 ***/
   @ApiOperation(value = "<Button>[신규접수내역]", notes = "- 접견자의 [신규접수내역] 버튼을 눌렀을 때의 기능입니다.\n" +
-      "- 접견자가 아직 처리하지 않은 대기중인 약속(isApproval = 0)인 값만 가져옵니다.\n" +
-      "- <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n" +
-      "- 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n" +
-      "- Parameter는 필요 없습니다.\n\n" +
-      "- Try out 실행 안될겁니다")
+      "- 접견자가 아직 처리하지 않은 대기중인 약속(isApproval = 0)인 값만 가져옵니다.\n")
   @GetMapping("/getRequestedAppointment")
-  public Map<String, Object> getRequestedAppointment(Principal principal) {
+  public Map<String, Object> getRequestedAppointment(String ID) {
 
-    Map<String, Object> results = appointmentService_host.getRequestedAppointment(principal.getName());
+    Map<String, Object> results = appointmentService_host.getRequestedAppointment(ID);
     return results;
   }
 
   /*** [HOST] 승인내역 ***/
   @ApiOperation(value = "<Button>[승인내역]", notes = "- 접견자의 [승인내역] 버튼을 클릭했을 때의 기능입니다.\n" +
-      "- 승인된 내역만 가져옵니다(isApproval = 1)\n" +
-      "- <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n" +
-      "- 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n" +
-      "- Parameter는 필요 없습니다.\n\n" +
-      "- Try out 실행 안될겁니다")
+      "- 승인된 내역만 가져옵니다(isApproval = 1)\n")
   @GetMapping("/getApprovalResult")
-  public Map<String, Object> getApprovalResult(Principal principal) {
-    Map<String, Object> results = appointmentService_host.getApprovalResult(principal.getName());
+  public Map<String, Object> getApprovalResult(String ID) {
+    Map<String, Object> results = appointmentService_host.getApprovalResult(ID);
 
     return results;
   }
 
   /*** [HOST] 방문기록조회 ***/
   @ApiOperation(value = "<Button>[방문기록조회]", notes = "- 접견자의 [방문기록조회] 버튼을 클릭했을 때의 기능입니다.\n" +
-      "- 현재시간을 기준으로 checkout(방문종료시간)이 작은 값, 즉 이미 방문을 마친 약속만 보여집니다.\n" +
-      "- <Strong>JWT로 인증된 방문자</Strong>(로그인이 되어 있는 상태)만 호출가능합니다.\n" +
-      "- 프론트엔드에서는 요청시 Header에 발급받은 Token을 실어야지만 정상적으로 요청 가능합니다.\n" +
-      "- Parameter는 필요 없습니다.\n\n" +
-      "- Try out 실행 안될겁니다")
+      "- 현재시간을 기준으로 checkout(방문종료시간)이 작은 값, 즉 이미 방문을 마친 약속만 보여집니다.\n")
   @GetMapping("/getMyAppointment")
-  public Map<String, Object> getMyAppointment(Principal principal) {
-    Map<String, Object> results = appointmentService_host.getMyAppointment(principal.getName());
+  public Map<String, Object> getMyAppointment(String ID) {
+    Map<String, Object> results = appointmentService_host.getMyAppointment(ID);
 
     return results;
   }

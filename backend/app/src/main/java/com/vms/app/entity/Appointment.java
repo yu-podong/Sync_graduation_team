@@ -3,6 +3,7 @@ package com.vms.app.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,11 +45,11 @@ public class Appointment {
   @Column(length = 100)
   private String date; // 방문 날짜
 
-  @Column(length = 20)
-  private String visit_place; // 방문 장소
+  // @Column(length = 20)
+  // private String visit_place; // 방문 장소
 
   @Column(length = 100)
-  private String visit_purpose; // 방문 목적
+  private String visit_purpose; // 방문 목적 or 작업 목적
 
   @Column
   private int accompanyingPerson; // 동반인원
@@ -84,6 +85,15 @@ public class Appointment {
   // Appointment - AppointmentRequestResult (1:N)
   @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
   private List<AppointmentRequestResult> appointmentRequestResult_list = new ArrayList<AppointmentRequestResult>();
+
+  // Appointment - AccompanyPerson (1:N)
+  @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
+  private List<AccompanyPerson> accompanyPerson_list = new ArrayList<AccompanyPerson>();
+
+  // Appointment - Place (N:1)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "visit_place")
+  private Place visit_place; // 방문 장소
 
   // @Column
   // private List<> isArrival; // 동행자 정보
