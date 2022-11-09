@@ -204,7 +204,7 @@ public class TestController {
 					.email_back("gmail.com")
 					.phoneNum("01091360767")
 					.isCheckLogin(1)
-					.role("ROLE_USER")
+					.role("ROLE_HOST")
 					.userType(1)
 					.company(companies.get(3))
 					.build();
@@ -219,7 +219,7 @@ public class TestController {
 					.email_back("gmail.com")
 					.phoneNum("01012148888")
 					.isCheckLogin(1)
-					.role("ROLE_USER")
+					.role("ROLE_HOST")
 					.userType(1)
 					.company(companies.get(1))
 					.build();
@@ -234,7 +234,7 @@ public class TestController {
 					.email_back("gmail.com")
 					.phoneNum("01091367777")
 					.isCheckLogin(1)
-					.role("ROLE_USER")
+					.role("ROLE_HOST")
 					.userType(1)
 					.company(companies.get(3))
 					.build();
@@ -249,7 +249,7 @@ public class TestController {
 					.email_back("gmail.com")
 					.phoneNum("01011111232")
 					.isCheckLogin(1)
-					.role("ROLE_USER")
+					.role("ROLE_GUEST")
 					.userType(2)
 					.company(companies.get(2))
 					.build();
@@ -264,7 +264,7 @@ public class TestController {
 					.email_back("gmail.com")
 					.phoneNum("01091363332")
 					.isCheckLogin(1)
-					.role("ROLE_USER")
+					.role("ROLE_GUEST")
 					.userType(2)
 					.company(companies.get(1))
 					.build();
@@ -279,7 +279,7 @@ public class TestController {
 					.email_back("gmail.com")
 					.phoneNum("01091367772")
 					.isCheckLogin(1)
-					.role("ROLE_USER")
+					.role("ROLE_GUEST")
 					.userType(2)
 					.company(companies.get(1))
 					.build();
@@ -294,7 +294,7 @@ public class TestController {
 					.email_back("gmail.com")
 					.phoneNum("01091661232")
 					.isCheckLogin(1)
-					.role("ROLE_USER")
+					.role("ROLE_GUEST")
 					.userType(3)
 					.company(companies.get(0))
 					.build();
@@ -309,7 +309,7 @@ public class TestController {
 					.email_back("gmail.com")
 					.phoneNum("01091360767")
 					.isCheckLogin(1)
-					.role("ROLE_USER")
+					.role("ROLE_GUEST")
 					.userType(3)
 					.company(companies.get(2))
 					.build();
@@ -324,7 +324,7 @@ public class TestController {
 					.email_back("gmail.com")
 					.phoneNum("01091361212")
 					.isCheckLogin(1)
-					.role("ROLE_USER")
+					.role("ROLE_GUEST")
 					.userType(3)
 					.company(companies.get(3))
 					.build();
@@ -334,12 +334,12 @@ public class TestController {
 					.ID("admin")
 					.password(bCryPasswordEncoder.encode("admin_나는관리자"))
 					.identityNum("961022-1059377")
-					.name("김승나는관리자연")
+					.name("나는관리자")
 					.email_front("zzvs5200")
 					.email_back("gmail.com")
 					.phoneNum("01091361422")
 					.isCheckLogin(1)
-					.role("ROLE_USER")
+					.role("ROLE_ADMIN")
 					.userType(4)
 					.company(companies.get(0))
 					.build();
