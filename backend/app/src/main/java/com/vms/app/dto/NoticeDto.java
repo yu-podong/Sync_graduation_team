@@ -1,6 +1,7 @@
 package com.vms.app.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,14 +12,17 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyDto {
-  private long companyID; // 고유 pin 번호
+@Builder
+public class NoticeDto {
 
-  private String company_name;
+  private long noticeID;
 
-  private String department;
+  private String title;
 
-  private String position;
+  private String writer;
 
-  // @OneToMany는 표기X;
+  private String write_date;
+
+  private String content;
+
 }

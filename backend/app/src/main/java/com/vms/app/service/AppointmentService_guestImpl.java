@@ -17,11 +17,13 @@ import com.vms.app.dto.AppointmentDto_main;
 import com.vms.app.entity.AccompanyPerson;
 import com.vms.app.entity.Appointment;
 import com.vms.app.entity.AppointmentPeriodOfUse;
+import com.vms.app.entity.AppointmentRequestResult;
 import com.vms.app.entity.Place;
 import com.vms.app.entity.User;
 import com.vms.app.repository.AccompanyPersonRepository;
 import com.vms.app.repository.AppointmentPeriodOfUseRepository;
 import com.vms.app.repository.AppointmentRepository;
+import com.vms.app.repository.AppointmentRequestResultRepository;
 import com.vms.app.repository.PlaceRepository;
 import com.vms.app.repository.UserRepository;
 
@@ -39,6 +41,9 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
 
   @Autowired
   AppointmentPeriodOfUseRepository appointmentPeriodOfUseRepository;
+
+  @Autowired
+  AppointmentRequestResultRepository appointmentRequestResultRepository;
 
   @Autowired
   PlaceRepository placeRepository;
@@ -173,7 +178,6 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
         }
       }
     });
-    log.warn("my_appointmentList size : " + my_appointmentList.size());
 
     results.put("myAppointmentList", appointmentDtoList);
 
@@ -256,11 +260,27 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
         .appointment(appointment)
         .build();
 
+    // AppointmentRequestResult 객체 생성
+    AppointmentRequestResult appointmentRequestResult = AppointmentRequestResult.builder()
+        .appointment(appointment)
+        .isApproval(0)
+        .rejectReason("")
+        .build();
     // log.warn("[appointment] : " + appointmentPeriodOfUse.getAp_periodID());
 
     try {
-      appointmentRepository.save(appointment);
-      appointmentPeriodOfUseRepository.save(appointmentPeriodOfUse);
+      int duplicateCheckPlace = this.duplicateCheckPlace(_place, checkIn, checkOut);
+      int duplicateCheckUser = this.duplicateCheckUser(appointment, checkIn, checkOut);
+
+      if (duplicateCheckPlace == 1 && duplicateCheckUser == 1) { // 모두 중복이 아닐 경우
+        appointmentRepository.save(appointment);
+        appointmentPeriodOfUseRepository.save(appointmentPeriodOfUse);
+        appointmentRequestResultRepository.save(appointmentRequestResult);
+
+      } else {
+        return -2; // 일정 중복
+      }
+
     } catch (Exception e) {
       log.warn("방문자 정보가 일치 하지 않습니다.");
       e.printStackTrace();
@@ -299,6 +319,66 @@ public class AppointmentService_guestImpl implements AppointmentService_guest {
     log.info("동행인에 추가 되었습니다.");
     ;
     return 1;
+  }
+
+  @Override
+  public int duplicateCheckPlace(Place place, String nowCheckIn, String nowCheckOut) {
+
+    try {
+
+      Place now_place = placeRepository.findById(place.getPlaceID()).orElse(null);
+      if (now_place != null) {
+
+        List<AppointmentPeriodOfUse> list = appointmentPeriodOfUseRepository.duplicateCheckPlace(place.getPlaceID(),
+            nowCheckIn, nowCheckOut);
+        // log.warn("list.size() : " + list.size());
+        return (list.isEmpty()) ? 1 : 0;
+      }
+      log.info("장소에 대한 정보가 올바르지 않습니다.");
+      return -1; // 해당 장소가 없음
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return -2; //
+    }
+  }
+
+  @Override
+  public int duplicateCheckUser(Appointment appointment, String nowCheckIn, String nowCheckOut) {
+    try {
+      if (appointment != null) {
+        User host = appointment.getHost();
+        User guest = appointment.getGuest();
+
+        // 중복된 일정이 있는지 체크 한 리스트
+
+        List<AppointmentPeriodOfUse> appointmentPeriodOfUse_guestList = appointmentPeriodOfUseRepository
+            .duplicateCheckHost(host.getID(), nowCheckIn,
+                nowCheckOut);
+
+        List<AppointmentPeriodOfUse> appointmentPeriodOfUse_hostList = appointmentPeriodOfUseRepository
+            .duplicateCheckHost(guest.getID(), nowCheckIn,
+                nowCheckOut);
+
+        if (!appointmentPeriodOfUse_guestList.isEmpty()) {
+          log.info("방문자의 일정이 중복됩니다.");
+          return -1;
+        } else if (!appointmentPeriodOfUse_hostList.isEmpty()) {
+          log.info("접견자의 일정이 중복됩니다.");
+          return -2;
+        } else {
+          return 1; // 일정 중복 X
+        }
+
+      }
+      log.info("약속에 대한 정보가 올바르지 않습니다. (접견자 or 방문자 or 약속에 대한 정보 없음)");
+      return -3; // 약속에 대한 정보가 올바르지 않음
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return -4; //
+    }
+
   }
 
 }

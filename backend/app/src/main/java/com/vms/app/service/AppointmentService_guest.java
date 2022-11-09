@@ -3,6 +3,8 @@ package com.vms.app.service;
 import java.util.Map;
 
 import com.vms.app.entity.Appointment;
+import com.vms.app.entity.Place;
+import com.vms.app.entity.User;
 
 public interface AppointmentService_guest {
 
@@ -29,4 +31,9 @@ public interface AppointmentService_guest {
       String checkOut);
 
   public int agreeAccompany(String ID, long appointmentID);
+
+  public int duplicateCheckPlace(Place place, String nowCheckIn, String nowCheckOut);
+
+  public int duplicateCheckUser(Appointment appointment, String nowCheckIn, String nowCheckOut);
+
 }
