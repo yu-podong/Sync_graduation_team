@@ -17,4 +17,6 @@ public interface AppointmentService_host {
   public int rejectAppointment(long appointmentID, String rejectReason);
 
   public Map<String, Object> getApprovalResult(String name);
+
+  public Map<String, Object> getTodayList(String iD);
 }

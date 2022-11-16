@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vms.app.entity.User;
+import com.vms.app.service.AppointmentService_admin;
 import com.vms.app.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -20,29 +21,22 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/admin")
+public class AdminController {
 
   @Autowired
-  private UserService userService;
+  private AppointmentService_admin appointmentService_admin;
 
   @ModelAttribute("cp")
   public String getContextPath(HttpServletRequest request) {
     return request.getContextPath();
   }
 
-  @PostMapping("/join")
-  public String postMethodName(User user) {
-    userService.join(user);
+  @ApiOperation(value = "[AdminMainPage.dart 모든 약속 정보 가져오기]", notes = "- 모든 약속에 대한 정보를 가져옵니다. \n- 관리자만 접근 가능합니다")
+  @GetMapping("/getAllAppointment")
+  public Map<String, Object> getAllAppointment() {
 
-    return "JOIN SUCCESS";
-  }
-
-  @ApiOperation(value = "<상단 네비게이션>[MyInfo.dart]", notes = "- 유저와 회사정보를 가져옵니다. \n")
-  @GetMapping("/getUserInfo")
-  public Map<String, Object> getUserInfo(Principal principal) {
-
-    return userService.getUserInfo(principal.getName());
+    return appointmentService_admin.getAllAppointment();
   }
 
 }

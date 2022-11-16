@@ -62,6 +62,9 @@ public class User {
   @Column(length = 20)
   private String role;
 
+  @Column(length = 20)
+  private int userType; // 1. 접견자, 2.방문자(직장인), 3.방문자(학생), 4.관리자
+
   @Column
   private int isCheckLogin; // 로그인 승인 여부
 
@@ -80,6 +83,8 @@ public class User {
   @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY)
   private List<Appointment> _appointments = new ArrayList<Appointment>();
 
+  @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY)
+  private List<AccompanyPerson> accompanyingPerson_list = new ArrayList<AccompanyPerson>();
   // Setting은 1:1매핑이지만 @oneToOne은 지양함으로 1:N 양방향 매핑
   // User - Setting (1:N)
   // @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
