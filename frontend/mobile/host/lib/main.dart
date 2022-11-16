@@ -1,46 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:mobile/binding/init_bindings.dart';
-import 'package:mobile/pages/login.dart';
-import 'package:mobile/pages/ScreenB.dart';
-import 'package:mobile/pages/Join.dart';
-import 'package:get/get.dart';
-import 'package:localization/localization.dart';
+import 'package:mobile/pages/HosMainPage.dart';
+import 'package:mobile/pages/ReqListPage.dart';
+import 'package:mobile/pages/VisListPage.dart';
+import 'package:mobile/pages/VisitCheckPage.dart';
+import 'package:mobile/pages/noPage.dart';
+import 'package:mobile/pages/HosLoginPage.dart';
+import 'package:mobile/pages/NavigationPage.dart';
+import 'package:mobile/pages/MyPage.dart';
+import 'package:mobile/pages/noticeReadPage.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('ko'),
-        const Locale('en'),
-      ],
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      getPages: [
-        GetPage(
-          name: '/',
-          page: () => Login(),
-        ),
-        GetPage(
-          name: '/home',
-          page: () => ScreenB(),
-        ),
-        GetPage(
-          name: '/join',
-          page: () => Join(),
-        ),
-      ],
-      initialBinding: InitBinding(),
+    return MaterialApp(
+      initialRoute: '/login',
+      routes: {
+        '/': (context) => const Navigation(),
+        '/notice': (context) => const NoPage(),
+        '/notice/read': (context) => const NoticeReadPage(),
+        '/reqlist':(context) => const ReqListPage(),
+        '/reslis0.t':(context) => const VisListPage(),
+        '/check': (context) => const VisitCheckPage(),
+        '/my': (context) => const MyPage(),
+        '/login': (context) => const HosLoginPage(),
+        '/home':(context) => const HosMainPage(),
+      },
     );
   }
 }
